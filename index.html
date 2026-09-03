@@ -1,0 +1,1668 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa do Pinyin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#FFFFFF; --bg-2:#F7F7F7; --surface:#FFFFFF; --surface-2:#F7F7F7; --ink:#3C3C3C; --ink-2:#4B4B4B; --muted:#777777; --line:#E5E5E5; --line-strong:#CFCFCF;
+  --primary:#58CC02; --primary-dk:#46A302; --danger:#FF4B4B; --danger-dk:#D33131; --danger-bg:#FFDFE0;
+  --info:#1CB0F6; --info-dk:#1899D6; --info-bg:#DDF4FF; --info-ink:#1077B5;
+  --gold:#FFC800; --gold-dk:#E5A800; --gold-bg:#FFF4CC;
+  --accent:#1CB0F6; --accent-bg:#DDF4FF;
+  --a-fg:#CC7A00; --a-bg:#FFF0D1; --a-line:#FFD27A; --a-dk:#9A5C00;
+  --i-fg:#0E8F82; --i-bg:#D3F6F0; --i-line:#7FE0D1; --i-dk:#0B6F65;
+  --u-fg:#2B70C9; --u-bg:#DCEBFF; --u-line:#9DC4F7; --u-dk:#1F569B;
+  --v-fg:#9B4FD1; --v-bg:#F1E3FF; --v-line:#D4B2F5; --v-dk:#7A3AA8;
+  --ok:#46A302; --ok-bg:#E3F5D3; --no:#D33131; --no-bg:#FFDFE0; --part:#B37700; --part-bg:#FFF4CC;
+  --font:'Nunito','Noto Sans','Segoe UI',system-ui,sans-serif;
+  --hanzi:'Noto Sans SC','Microsoft YaHei','PingFang SC','Noto Sans',sans-serif;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#131F24; --bg-2:#0F1A1F; --surface:#1B2B33; --surface-2:#22333C; --ink:#F1F7FB; --ink-2:#DCE6EC; --muted:#AFC1CC; --line:#37464F; --line-strong:#4B5F6B;
+  --primary:#58CC02; --primary-dk:#3E9D00; --danger:#FF4B4B; --danger-dk:#C93030; --danger-bg:#3A2224;
+  --info:#1CB0F6; --info-dk:#1481B8; --info-bg:#173A4D; --info-ink:#7FD0FA;
+  --gold:#FFC800; --gold-dk:#CC9E00; --gold-bg:#3A3212;
+  --accent:#49C0F8; --accent-bg:#173A4D;
+  --a-fg:#FFC466; --a-bg:#3B2A14; --a-line:#7C4A1A; --a-dk:#FFE0A8;
+  --i-fg:#5EEAD4; --i-bg:#123A36; --i-line:#1F6B62; --i-dk:#99F6E4;
+  --u-fg:#93C5FD; --u-bg:#172B4D; --u-line:#2B4A8A; --u-dk:#BFDBFE;
+  --v-fg:#D8B4FE; --v-bg:#33204D; --v-line:#5B3A85; --v-dk:#E9D5FF;
+  --ok:#7BE04A; --ok-bg:#1F3A14; --no:#FF7B7B; --no-bg:#3A2224; --part:#FBBF24; --part-bg:#3B2A14;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:76px;overflow-x:clip}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation:none!important;transition:none!important} }
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.45;overflow-x:clip;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+b,strong{font-weight:800}
+img,svg{max-width:100%}
+.hz{font-family:var(--hanzi);font-weight:500}
+.wrap{max-width:1440px;margin:0 auto;padding:0 20px}
+@media (min-width:1600px){.wrap{max-width:1560px}}
+h1,h2,h3,h4{margin:0;line-height:1.15;font-weight:900;text-wrap:balance}
+h1{font-size:clamp(30px,4vw,44px);letter-spacing:-.01em}
+h2{font-size:clamp(22px,2.6vw,30px)}
+h3{font-size:18px;font-weight:800}
+h4{font-size:15px;font-weight:800}
+p{margin:0}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.lead{font-size:16px;color:var(--ink-2);max-width:78ch}
+
+/* ---- cores de grupo ---- */
+.g-A{--g-fg:var(--a-fg);--g-bg:var(--a-bg);--g-line:var(--a-line);--g-dk:var(--a-dk)}
+.g-I{--g-fg:var(--i-fg);--g-bg:var(--i-bg);--g-line:var(--i-line);--g-dk:var(--i-dk)}
+.g-U{--g-fg:var(--u-fg);--g-bg:var(--u-bg);--g-line:var(--u-line);--g-dk:var(--u-dk)}
+.g-V{--g-fg:var(--v-fg);--g-bg:var(--v-bg);--g-line:var(--v-line);--g-dk:var(--v-dk)}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 12px;border-radius:999px;font-size:13px;font-weight:800;background:var(--g-bg,var(--surface-2));color:var(--g-fg,var(--ink));border:2px solid var(--g-line,var(--line));line-height:1.3;white-space:nowrap}
+.chip.rare{border-style:dashed;background:transparent}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--g-fg);display:inline-block;flex:none}
+
+/* ---- ficha de exemplo: pinyin | 汉字 | significado ---- */
+.tk{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:4px 12px 4px 10px;border-radius:12px;background:var(--surface);border:2px solid var(--line);border-bottom-width:3px;white-space:nowrap;vertical-align:middle;max-width:100%}
+.tk b{font-size:16px;font-weight:900;color:var(--ink)}
+.tk i{font-family:var(--hanzi);font-style:normal;font-size:17px;color:var(--ink-2);background:var(--surface-2);border-radius:8px;padding:0 7px;line-height:1.5}
+.tk small{font-size:12px;color:var(--muted);font-weight:700;white-space:normal}
+.tk.big b{font-size:22px}
+.tk.big i{font-size:22px}
+.tk .arr{color:var(--muted);font-weight:700;padding:0 2px}
+.tk em{font-style:normal;color:var(--danger);font-weight:900}
+.tks{display:flex;gap:8px;flex-wrap:wrap}
+.tks.fill{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.tks.fill .tk{justify-content:center}
+.tks.c3{display:flex;flex-wrap:wrap}
+.tk.g{border-color:var(--g-line);background:var(--g-bg)}
+.tk.g b{color:var(--g-fg)}
+
+body.has-audio .tk{cursor:pointer}
+body.has-audio .tk:hover,body.has-audio .tk:focus-visible{border-color:var(--info);outline:none}
+body.has-audio .tk b::after{content:'▶';font-size:9px;color:var(--primary);margin-left:5px;vertical-align:middle}
+.mini{position:absolute;z-index:35;background:var(--surface);border:2px solid var(--line);border-radius:16px;box-shadow:0 12px 32px rgba(0,0,0,.18);padding:10px 12px;display:none;width:max-content;max-width:min(94vw,560px)}
+.mini.on{display:grid;gap:8px}
+.mini .m-body{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mini .m-body .seg{margin-left:auto}
+.mini .m-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.mini .m-word{font:900 20px/1.1 var(--font);display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.mini .m-word .hz{font-size:18px;color:var(--ink-2)}
+.mini .m-word small{font-size:12px;color:var(--muted);font-weight:700}
+.mini .m-close{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);background:var(--surface-2);color:var(--ink);font:800 18px/1 var(--font);cursor:pointer;flex:none}
+.mini .m-syls{display:flex;gap:6px;flex-wrap:wrap}
+.mini .m-syl{min-height:40px;padding:0 12px;border-radius:10px;border:2px solid var(--line);border-bottom-width:4px;border-bottom-color:var(--line-strong);background:var(--surface-2);color:var(--ink);font:800 16px var(--font);cursor:pointer}
+.mini .m-syl:active{transform:translateY(2px);border-bottom-width:2px}
+.mini .m-syl.playing{background:var(--primary);color:#fff;border-color:var(--primary-dk);border-bottom-color:var(--primary-dk)}
+.mini .m-syl[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.mini .seg label{min-height:34px;padding:0 10px;font-size:13px}
+
+/* ---- botões ---- */
+.btn3{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:16px;border:0;border-bottom:4px solid var(--primary-dk);background:var(--primary);color:#fff;font:800 15px/1.1 var(--font);letter-spacing:.03em;text-transform:uppercase;cursor:pointer;user-select:none;transition:transform .06s ease,border-bottom-width .06s ease;text-decoration:none}
+.btn3:active{transform:translateY(3px);border-bottom-width:1px}
+.btn3:focus-visible{outline:3px solid var(--info);outline-offset:2px}
+.btn3.info{background:#2B70C9;border-bottom-color:#1F569B;color:#fff}
+.btn3.danger{background:var(--danger);border-bottom-color:var(--danger-dk)}
+.btn3.ghost{background:var(--surface);color:var(--ink);border:2px solid var(--line);border-bottom-width:4px;border-bottom-color:var(--line-strong)}
+.btn3.ghost:active{border-bottom-width:2px}
+.btn3[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.btn3.sm{min-height:40px;padding:0 14px;font-size:13px;border-radius:12px}
+.pill{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px 0 12px;border-radius:999px;border:2px solid var(--line);border-bottom-width:4px;border-bottom-color:var(--line-strong);background:var(--surface);color:var(--muted);font:800 14px var(--font);cursor:pointer;user-select:none;white-space:nowrap;position:relative}
+.pill input{position:absolute;opacity:0;width:0;height:0}
+.pill .chk{width:22px;height:22px;border-radius:7px;border:2px solid currentColor;display:grid;place-items:center;font-size:14px;line-height:1;flex:none}
+.pill:has(input:checked){background:var(--info-bg);border-color:var(--info);color:var(--info-ink)}
+.pill:has(input:checked) .chk{background:var(--info);border-color:var(--info);color:#fff}
+.pill:has(input:checked) .chk::after{content:'✓'}
+.pill:active{transform:translateY(2px);border-bottom-width:2px}
+.pill:has(input:focus-visible){outline:3px solid var(--info);outline-offset:2px}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:4px;gap:4px;max-width:100%;border:2px solid var(--line)}
+.seg label,.seg button{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:999px;border:0;background:transparent;font:800 14px var(--font);color:var(--muted);cursor:pointer;white-space:nowrap;position:relative}
+.seg input{position:absolute;opacity:0;width:0;height:0}
+.seg label:has(input:checked),.seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 2px 0 var(--line-strong)}
+.playbtn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:12px;border:2px solid var(--line);border-bottom-width:4px;border-bottom-color:var(--line-strong);background:var(--surface);color:var(--ink);font:800 13px var(--font);cursor:pointer;user-select:none}
+.playbtn:active{transform:translateY(2px);border-bottom-width:2px}
+.playbtn .tri{width:0;height:0;border-left:9px solid var(--primary);border-top:6px solid transparent;border-bottom:6px solid transparent}
+.card{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:18px;min-width:0}
+
+/* ---- cabeçalho e navegação ---- */
+.hero{padding:26px 0 14px;display:grid;gap:14px}
+@media (min-width:1000px){.hero{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:center;column-gap:32px}.hero .txt{display:grid;gap:12px}}
+.hero .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.hero .hzbig{font-family:var(--hanzi);font-size:clamp(20px,2.4vw,28px);color:var(--muted);font-weight:400;letter-spacing:.12em}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}
+@media (min-width:1000px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:719px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stats li{background:var(--surface);border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;padding:12px 14px;display:grid;gap:2px;font-size:12.5px;color:var(--muted);font-weight:700;line-height:1.2}
+.stats li b{color:var(--ink);font-variant-numeric:tabular-nums;font:900 26px/1.1 var(--font)}
+.topnav{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:2px solid var(--line)}
+.topnav ul{list-style:none;margin:0 auto;padding:8px 20px;max-width:1440px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;align-items:center;-webkit-overflow-scrolling:touch}
+@media (min-width:1600px){.topnav ul{max-width:1560px}}
+.topnav ul::-webkit-scrollbar{display:none}
+.topnav a{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:999px;background:var(--surface-2);font-size:13px;font-weight:800;text-decoration:none;color:var(--muted);white-space:nowrap}
+.topnav a:hover,.topnav a:focus-visible{color:var(--ink);outline:none;background:var(--line)}
+.topnav a.hot,.topnav a.on{background:var(--info-bg);color:var(--info-ink)}
+@media (max-width:999px){.topnav{position:sticky}.topnav::after{content:'';position:absolute;right:0;top:0;bottom:0;width:40px;background:linear-gradient(90deg,transparent,var(--bg));pointer-events:none}}
+.topnav ul{padding-right:90px}
+.tswitch{position:fixed;top:10px;right:12px;z-index:40;width:66px;height:36px;border-radius:999px;border:2px solid var(--line);background:var(--gold-bg);cursor:pointer;padding:0;display:block;box-shadow:0 2px 0 var(--line-strong)}
+.tswitch .knob{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:var(--gold);border-bottom:3px solid var(--gold-dk);transition:left .18s ease;display:grid;place-items:center;font-size:15px;line-height:1;color:#3C3C3C}
+.tswitch .knob::after{content:'☀'}
+.tswitch[aria-checked="true"]{background:#0F1A1F;border-color:#37464F}
+.tswitch[aria-checked="true"] .knob{left:33px;background:var(--info);border-bottom-color:var(--info-dk);color:#fff}
+.tswitch[aria-checked="true"] .knob::after{content:'☾'}
+.tswitch:focus-visible{outline:3px solid var(--info);outline-offset:2px}
+.hero .eyebrow{padding-right:84px}
+
+/* ---- seções ---- */
+section{padding:56px 0 20px}
+section.alt{background:var(--bg-2)}
+section.alt .wrap{padding-top:36px;padding-bottom:36px}
+.sec-head{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:center;margin-bottom:18px}
+@media (min-width:1200px){.sec-head:not(.nosplit){grid-template-columns:auto minmax(0,1fr) minmax(0,1.1fr);column-gap:32px}.sec-head:not(.nosplit) .lead{grid-column:3;grid-row:1/3;max-width:none;font-size:17px}}
+@media (max-width:719px){.sec-head .lead{grid-column:1/-1}}
+.silaba-top{display:grid;gap:16px;align-items:center}
+.silaba-top>*{min-width:0}
+@media (max-width:1199px){.silaba-top .formula{width:auto}}
+@media (min-width:1200px){.silaba-top{grid-template-columns:minmax(0,1fr) auto;column-gap:32px}.silaba-top .sec-head{margin-bottom:0}}
+.sec-head .ico{grid-row:1/3;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--info-bg);color:var(--info-ink);border-bottom:4px solid color-mix(in srgb,var(--info) 40%,transparent)}
+.sec-head .ico svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.sec-head .ico.green{background:var(--ok-bg);color:var(--ok)}
+.sec-head .ico.gold{background:var(--gold-bg);color:var(--part)}
+.sec-head .ico.red{background:var(--danger-bg);color:var(--danger-dk)}
+.sec-head .ico.purple{background:var(--v-bg);color:var(--v-fg)}
+.sec-head .ico.teal{background:var(--i-bg);color:var(--i-fg)}
+.sec-head .ico.orange{background:var(--a-bg);color:var(--a-fg)}
+.sec-head h2{grid-column:2}
+.sec-head .lead{grid-column:2}
+
+/* grades que preenchem as linhas */
+.grid{display:grid;gap:12px}
+.grid.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid.c4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.grid.start{align-items:start}
+.grid.c5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.grid.c6{grid-template-columns:repeat(6,minmax(0,1fr))}
+@media (max-width:1199px){
+  .grid.c6{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .grid.c5{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .grid.c4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:899px){
+  .grid.c3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid.c5{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:719px){
+  .grid.c2,.grid.c3,.grid.c4,.grid.c5{grid-template-columns:1fr}
+  .grid.c6{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* ---- roteiro (caminho) ---- */
+.path{position:relative;list-style:none;margin:0;padding:0;counter-reset:s}
+.path li{counter-increment:s;position:relative;display:grid;justify-items:center;text-align:center;gap:8px;padding:8px 6px}
+.path a{text-decoration:none;color:inherit;display:grid;justify-items:center;gap:8px;width:100%}
+.path .node{width:72px;height:72px;border-radius:50%;background:var(--primary);border-bottom:6px solid var(--primary-dk);display:grid;place-items:center;color:#fff;position:relative;z-index:1}
+.path .node svg{width:34px;height:34px;stroke:#fff;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.path .node::after{content:counter(s);position:absolute;right:-4px;top:-4px;width:26px;height:26px;border-radius:50%;background:var(--surface);color:var(--ink);border:2px solid var(--line);font:900 13px var(--font);display:grid;place-items:center}
+.path b{font-size:15px}
+.path span{font-size:13px;color:var(--muted);max-width:22ch}
+.path a:hover .node{filter:brightness(1.05)}
+@media (min-width:1200px){
+  .path::before{content:'';position:absolute;left:8%;right:8%;top:44px;height:6px;border-radius:3px;background:var(--line)}
+}
+
+/* ---- a sílaba ---- */
+.formula{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:18px 16px;display:flex;align-items:flex-start;justify-content:center;gap:8px;flex-wrap:wrap;width:max-content;max-width:100%;margin:0 auto}
+.part{display:grid;justify-items:center;gap:6px;min-width:0}
+.part .big{font:900 46px/1 var(--font);padding:12px 16px;border-radius:14px;background:var(--surface-2);border:2px solid var(--line);border-bottom-width:5px;border-bottom-color:var(--line-strong);min-width:76px;text-align:center}
+.part.fin .big{background:var(--g-bg);color:var(--g-fg);border-color:var(--g-line);border-bottom-color:var(--g-fg)}
+.part.tonemark .big{color:var(--danger);background:var(--danger-bg);border-color:transparent;border-bottom-color:var(--danger)}
+.part.opw .big{background:transparent;border-color:transparent;color:var(--muted);font-size:32px;min-width:0;padding:16px 4px}
+.part.res .big{background:var(--ok-bg);color:var(--ok);border-color:transparent;border-bottom-color:var(--ok)}
+.part .cap{font-size:11px;color:var(--muted);font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-align:center;min-height:32px}
+.part .cap .hz{text-transform:none;letter-spacing:.15em;display:block;font-size:14px;color:var(--ink)}
+.part.res .cap{text-transform:none;letter-spacing:0;font-size:13px}
+.part.res .cap .hz{display:inline;font-size:18px;letter-spacing:0;margin-right:4px}
+.formula .brk{display:none}
+@media (max-width:480px){.formula .brk{display:block;flex-basis:100%;height:0}.formula{gap:6px;padding:14px 10px}.part .big{min-width:60px;font-size:36px;padding:10px 10px}.part.opw .big{padding:12px 0;font-size:24px;min-width:22px}}
+.note{border:2px solid var(--line);background:var(--surface);border-radius:16px;padding:14px 16px;font-size:14.5px;display:grid;gap:8px;min-width:0;align-content:start}
+.note h3{font-size:15.5px}
+.note ol,.note ul{margin:0;padding-left:20px;display:grid;gap:5px}
+.note .tks{margin-top:2px}
+.note.tint{background:var(--surface-2)}
+
+/* ---- iniciais ---- */
+.fam{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:12px;align-content:start;min-width:0}
+.fam .head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.fam .letters{font:900 30px/1 var(--font);letter-spacing:.04em;padding:8px 12px;border-radius:12px;background:var(--surface-2);border:2px solid var(--line);border-bottom-width:4px;white-space:nowrap}
+.fam .head h3{font-size:16px}
+.fam .head span{display:block;font-size:12.5px;color:var(--muted)}
+.fam .rows{display:grid;gap:8px}
+.fam .row{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:start}
+.fam .row .lt{width:44px;height:44px;border-radius:12px;background:var(--info-bg);color:var(--info-ink);font:900 20px var(--font);display:grid;place-items:center}
+.fam .row .tip{font-size:14px;line-height:1.35;padding-top:2px}
+.fam .row .warn{display:block;font-size:13px;color:var(--ink-2);margin-top:2px}
+.fam .accepts{display:grid;gap:6px;padding-top:10px;border-top:2px dashed var(--line);font-size:13px;color:var(--muted)}
+.fam .accepts .lab{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.fam .acc{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.fam .acc .why{font-size:12.5px;color:var(--muted)}
+.fam.zero{grid-column:1/-1}
+@media (min-width:900px){
+  .fam.zero{grid-template-columns:auto 1fr;column-gap:28px;align-items:start}
+  .fam.zero .rows{grid-column:2;grid-row:1/3;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fam.zero .accepts{grid-column:1/-1}
+}
+.callout{background:var(--surface-2);border-radius:18px;padding:16px 18px;display:grid;gap:10px;font-size:14.5px;min-width:0}
+.callout h3{font-size:16px}
+.callout ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.callout .pairs{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:719px){.callout .pairs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pairs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+@media (max-width:1199px){.pairs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:719px){.pairs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pair{font:900 18px var(--font);padding:6px 10px;border-radius:12px;background:var(--surface);border:2px solid var(--line);border-bottom-width:4px;text-align:center;white-space:nowrap}
+.pair i{font-style:normal;color:var(--muted);font-weight:600;padding:0 6px}
+.steps3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;counter-reset:t}
+.steps3 div{counter-increment:t;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:12px 12px 12px 44px;position:relative;font-size:14px}
+.steps3 div::before{content:counter(t);position:absolute;left:10px;top:10px;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#3C3C3C;font:900 13px var(--font);display:grid;place-items:center}
+@media (max-width:719px){.steps3{grid-template-columns:1fr}}
+.ph{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:8px;align-content:start;min-width:0}
+.ph-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ph .pair{font-size:16px;padding:4px 12px}
+.ph .tag{font:900 14px var(--font);color:var(--danger);background:var(--danger-bg);border-radius:10px;padding:6px 10px;white-space:nowrap}
+.ph-t{font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.ph p{font-size:14px;color:var(--ink-2)}
+.reflex{display:grid;gap:8px}
+.reflex .r{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:8px 12px;font-size:14px}
+.reflex .r .tks{grid-column:1/-1}
+.reflex .r .no{font:900 15px var(--font);color:var(--danger);background:var(--danger-bg);border-radius:10px;padding:6px 10px;white-space:nowrap}
+
+/* ---- finais ---- */
+.grp{border:2px solid var(--g-line);border-radius:18px;overflow:hidden;background:var(--surface);display:grid;grid-template-rows:auto 1fr;min-width:0}
+.grp header{background:var(--g-bg);color:var(--g-fg);padding:14px 16px;display:grid;gap:2px}
+.grp header .name{font:900 22px var(--font)}
+.grp header .hz{font-size:14px;letter-spacing:.15em}
+.grp header .how{font-size:13px;color:var(--ink);opacity:.85}
+.grp .body{padding:12px 14px 14px;display:grid;gap:12px;align-content:start}
+.grp .sub{display:grid;gap:6px}
+.grp .sub .lab{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.grp .fl{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.grp .fl li{display:grid;grid-template-columns:52px auto minmax(0,1fr);gap:8px;align-items:center;font-size:12.5px;color:var(--muted)}
+.grp .fl li .tip{line-height:1.3}
+@media (max-width:1399px) and (min-width:1200px){.grp .fl li{grid-template-columns:52px 1fr}.grp .fl li .tip{grid-column:2}}
+.grp .fl li .py{color:var(--g-fg);font-size:18px;font-weight:900}
+.grp .fl li .py.rare{opacity:.75}
+.grp .fl li .py.rare::after{content:" º";font-size:11px;color:var(--muted)}
+.grp .fl li .tk{padding:2px 8px;min-height:30px;gap:6px}
+.grp .fl li .tk b{font-size:14px}
+.grp .fl li .tk i{font-size:14px;padding:0 5px}
+.grp .fl li .tk small{font-size:11px}
+.grp .foot{font-size:12.5px;color:var(--muted);border-top:2px dashed var(--line);padding-top:8px}
+
+.fin-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:start}
+.fin-grid .col4{display:grid;gap:12px;align-content:start;min-width:0}
+@media (min-width:1600px){
+  .fin-grid .grp.g-A{grid-column:1;grid-row:1}
+  .fin-grid .grp.g-I{grid-column:2;grid-row:1}
+  .fin-grid .grp.g-U{grid-column:3;grid-row:1}
+  .fin-grid .col4{grid-column:4;grid-row:1}
+  .fin-grid .col4 .tks .tk{padding:3px 8px;min-height:34px}
+}
+@media (min-width:1200px) and (max-width:1599px){.fin-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.fin-grid .col4{display:contents}}
+@media (max-width:1199px){.fin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.fin-grid .col4{display:contents}}
+@media (max-width:719px){.fin-grid{grid-template-columns:1fr}}
+
+/* ---- combinações ---- */
+.compat{border:2px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden}
+table{border-collapse:collapse;font-variant-numeric:tabular-nums}
+.compat table{width:100%}
+.compat th,.compat td{padding:10px 12px;border-bottom:2px solid var(--line);text-align:left;vertical-align:top;font-size:14px}
+.compat thead th{font-size:12px;color:var(--muted);font-weight:800;background:var(--surface-2);text-transform:uppercase;letter-spacing:.08em;vertical-align:top}
+.compat thead th.g{color:var(--g-fg);background:var(--g-bg)}
+.compat thead th.g .hz{display:block;font-size:11px;letter-spacing:.15em;font-weight:400;opacity:.8}
+.compat thead th.g small{display:block;font-size:11px;font-weight:600;letter-spacing:0;text-transform:none;opacity:.85}
+.compat tbody th{font:900 18px var(--font);letter-spacing:.05em;white-space:nowrap}
+.compat tbody th small{display:block;font:700 12px var(--font);color:var(--muted);letter-spacing:0}
+.compat tr:last-child td,.compat tr:last-child th{border-bottom:0}
+.mark{display:inline-flex;align-items:center;gap:6px;font-weight:800;padding:4px 10px;border-radius:999px;font-size:13px;white-space:nowrap}
+.mark.ok{color:var(--ok);background:var(--ok-bg)}
+.mark.no{color:var(--no);background:var(--no-bg)}
+.mark.part{color:var(--part);background:var(--part-bg)}
+.compat td .why{display:block;font-size:12.5px;color:var(--muted);margin-top:4px}
+@media (max-width:760px){
+  .compat{border:0;background:transparent;overflow:visible}
+  .compat table,.compat tbody,.compat tr,.compat th,.compat td{display:block;width:100%}
+  .compat thead{display:none}
+  .compat tr{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px}
+  .compat tbody th{border:0;padding:0 0 6px;white-space:normal}
+  .compat tbody th small{display:inline;margin-left:8px}
+  .compat td{border:0;padding:6px 0;display:grid;grid-template-columns:74px 1fr;gap:4px 8px;align-items:center}
+  .compat td::before{content:attr(data-g);font:800 12px var(--font);color:var(--muted)}
+  .compat td .why{grid-column:2}
+}
+
+.compat-row{display:grid;gap:14px}
+@media (min-width:1200px){.compat-row{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:start}.compat-row .grid.c4{grid-template-columns:repeat(2,minmax(0,1fr));align-content:start}}
+
+/* ---- localizador ---- */
+.loc-box{display:grid;gap:12px;background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:16px}
+.loc-row{display:grid;gap:8px}
+@media (min-width:900px){.loc-row{grid-template-columns:auto minmax(0,640px);align-items:center;gap:16px}}
+.loc-row label{font-weight:900;font-size:18px}
+.loc-input{width:100%;font:800 22px var(--font);padding:12px 16px;border-radius:14px;border:2px solid var(--line);border-bottom-width:4px;border-bottom-color:var(--line-strong);background:var(--bg);color:var(--ink);min-width:0}
+.loc-input:focus{outline:none;border-color:var(--info)}
+.loc-ex{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--muted);align-items:center}
+.loc-ex button{font:800 14px var(--font);min-height:40px;padding:0 14px;border-radius:999px;border:2px solid var(--line);border-bottom-width:3px;background:var(--surface);color:var(--ink);cursor:pointer}
+.loc-result{display:grid;gap:12px}
+.loc-result:empty{display:none}
+.loc-empty{color:var(--muted);font-size:14px}
+.parse{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font:900 26px var(--font)}
+.parse .piece{padding:4px 14px;border-radius:12px;background:var(--surface-2);border:2px solid var(--line)}
+.parse .piece.fin{background:var(--g-bg);color:var(--g-fg);border-color:var(--g-line)}
+.parse .piece.zero{font-size:15px;font-weight:700;color:var(--muted);padding:10px 12px}
+.parse .op{color:var(--muted);font-weight:700}
+.loc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:1199px){.loc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:719px){.loc-grid{grid-template-columns:1fr}}
+.loc-card{border:2px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--bg);display:grid;gap:4px;font-size:14px;min-width:0;align-content:start}
+.loc-card .lab{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.loc-card .val{font-size:16px;font-weight:800;overflow-wrap:anywhere}
+.loc-card.fin{border-color:var(--g-line);background:var(--g-bg)}
+.loc-card.fin .val{color:var(--g-fg)}
+.loc-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.notfound{border-left:5px solid var(--danger);padding:10px 14px;background:var(--danger-bg);border-radius:0 14px 14px 0;font-size:14.5px}
+.notfound b{color:var(--danger-dk)}
+
+/* ---- tabelas ---- */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.tab{font:800 14px var(--font);min-height:44px;padding:0 16px;border-radius:999px;border:2px solid var(--line);border-bottom-width:4px;border-bottom-color:var(--line-strong);background:var(--surface);color:var(--muted);cursor:pointer}
+.tab:active{transform:translateY(2px);border-bottom-width:2px}
+.tab[aria-selected="true"]{background:var(--info-bg);color:var(--info-ink);border-color:var(--info);border-bottom-color:var(--info-dk)}
+.opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+@media (max-width:719px){.opts .pill{width:100%}}
+.famtable{display:none;gap:10px}
+.famtable.on{display:grid}
+.famtable .fthead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+@media (max-width:719px){.famtable .fthead{flex-direction:column;align-items:flex-start;gap:2px}}
+.famtable .fthead h3{font-size:19px}
+.famtable .fthead p{font-size:13.5px;color:var(--muted)}
+.tscroll{overflow-x:auto;border:2px solid var(--line);border-radius:16px;background:var(--surface);max-width:100%}
+.syl{font-size:13.5px;width:100%}
+.syl th,.syl td{padding:6px 4px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);text-align:center;white-space:nowrap}
+.syl tr>*:last-child{border-right:0}
+.syl tbody tr:last-child>*{border-bottom:0}
+.syl thead .grow th{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:8px 6px;color:var(--g-fg);background:var(--g-bg);border-bottom:2px solid var(--g-line)}
+.syl thead .grow th.corner{background:var(--surface-2);color:var(--muted);text-transform:none;letter-spacing:0}
+.syl thead .frow th{font-weight:800;color:var(--g-fg);background:color-mix(in srgb,var(--g-bg) 45%,var(--surface));font-size:13px}
+.syl thead .frow th.corner{background:var(--surface-2);color:var(--muted);font-weight:600;font-size:11px}
+.syl tbody th{font:900 17px var(--font);background:var(--surface-2);text-align:center;position:sticky;left:0;z-index:2;min-width:44px}
+.syl td{font-weight:700;background:var(--surface);min-width:42px}
+.syl td.empty{color:var(--line-strong);font-weight:400}
+.syl td.empty.rare-hidden{color:var(--muted);cursor:help}
+.syl td.rare{color:var(--muted);text-decoration:underline dotted var(--line-strong);text-underline-offset:3px}
+.syl td.can{cursor:pointer}
+.syl td.can:hover:not(.hit):not(.playing){background:var(--surface-2)}
+.syl td.can:focus-visible{outline:3px solid var(--info);outline-offset:-3px}
+#tables .hit{background:var(--info-bg)!important;color:var(--info-ink)!important;font-weight:900;box-shadow:inset 0 0 0 3px var(--info)}
+#tables .playing{background:var(--ok-bg)!important;color:var(--ok)!important;font-weight:900}
+#tables .flash{animation:flash 1.4s ease-out 1}
+@keyframes flash{0%{box-shadow:inset 0 0 0 5px var(--info)}100%{box-shadow:inset 0 0 0 3px var(--info)}}
+.tdots{display:flex;gap:2px;justify-content:center;margin-top:3px}
+.tdots i{width:7px;height:4px;border-radius:2px;background:var(--line);display:block}
+.tdots i.on{background:var(--g-fg)}
+.chips-wrap{display:grid;gap:4px}
+.rowline{display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:start;padding:10px 0;border-top:2px solid var(--line)}
+.rowline:first-child{border-top:0}
+.rowline .ini{font:900 22px var(--font);padding-top:8px;text-align:center}
+.rowline .list{display:flex;flex-wrap:wrap;gap:8px}
+.chip-s{min-height:48px;min-width:56px;padding:4px 10px;border-radius:12px;border:2px solid var(--g-line);border-bottom-width:4px;background:var(--g-bg);color:var(--g-fg);font:800 16px var(--font);display:inline-flex;flex-direction:column;justify-content:center;align-items:center;gap:1px;cursor:pointer;user-select:none}
+.chip-s:active{transform:translateY(2px);border-bottom-width:2px}
+.chip-s.rare{border-style:dashed;background:transparent}
+.chip-s.rare-hidden{border-style:dashed;background:transparent;color:var(--muted);font-weight:600}
+.chip-s .tdots{gap:3px}
+.chip-s .tdots i{width:9px;height:4px;background:color-mix(in srgb,var(--g-line) 60%,var(--surface))}
+.chip-s .tdots i.on{background:var(--g-fg)}
+.legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 16px;font-size:13px;color:var(--ink-2);margin-top:14px;background:var(--surface-2);border-radius:16px;padding:14px 16px}
+@media (max-width:1199px){.legend{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:719px){.legend{grid-template-columns:1fr}}
+.legend span.lg{display:flex;align-items:center;gap:10px}
+.lg-cell{display:inline-grid;justify-items:center;min-width:46px;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);font-weight:700;font-size:13px;color:var(--ink);flex:none}
+.lg-cell.rare{color:var(--muted);text-decoration:underline dotted var(--line-strong);text-underline-offset:3px}
+.lg-cell.empty{color:var(--line-strong);font-weight:400}
+.lg-cell.hollow{color:var(--muted)}
+.lg-cell.hit{background:var(--info-bg);color:var(--info-ink);box-shadow:inset 0 0 0 3px var(--info)}
+.lg-cell.playing{background:var(--ok-bg);color:var(--ok)}
+.lg-cell .tdots{margin-top:2px}
+.lg-groups{display:inline-flex;gap:6px;flex-wrap:wrap}
+.lg-groups i{display:inline-flex;align-items:center;gap:4px;font-style:normal;font-weight:800;font-size:12px;color:var(--g-fg)}
+.lg-groups i::before{content:'';width:12px;height:12px;border-radius:4px;background:var(--g-bg);border:2px solid var(--g-line)}
+.legend .lab{grid-column:1/-1;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.audio-note{font-size:14px;color:var(--muted);margin:0 0 12px;max-width:80ch}
+.audio-note b{color:var(--ink)}
+
+/* ---- tons ---- */
+.tone{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:8px;align-content:start;min-width:0}
+.tone .num{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+.tone .num b{color:var(--ink);font-variant-numeric:tabular-nums;background:var(--surface-2);border-radius:999px;padding:2px 10px}
+.tone svg{width:100%;height:50px;display:block;color:var(--info)}
+.tone .desc{font-size:13.5px}
+.tone .playbtn{justify-self:start}
+.tone{display:flex;flex-direction:column}
+.tone .playbtn{margin-top:auto;width:100%;justify-content:center;min-height:48px;background:var(--primary);color:#fff;border-color:var(--primary-dk);border-bottom-color:var(--primary-dk)}
+.tone .playbtn .tri{border-left-color:#fff}
+.tone .playbtn.off{background:var(--surface-2);color:var(--muted);border-color:var(--line);border-bottom-color:var(--line-strong);cursor:default}
+.tone .num .alt{font-size:10px;letter-spacing:.06em;margin-right:6px}
+.exs{display:flex;gap:8px;flex-wrap:wrap}
+.exs span{font:800 16px var(--font);padding:5px 12px;border-radius:12px;background:var(--surface-2);border:2px solid var(--line)}
+.exs span em{font-style:normal;color:var(--danger)}
+.exs span i{font-style:normal;color:var(--muted);font-weight:600;padding:0 4px}
+
+/* ---- armadilhas ---- */
+.trap{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;font-size:14.5px;min-width:0}
+.trap>.tks:last-child,.trap>.exs:last-child{margin-top:auto}
+.exs.kbd{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.exs.kbd span{font-family:'Noto Sans',monospace;text-align:center;background:var(--surface-2)}
+.trap h3{font-size:15.5px;display:flex;gap:10px;align-items:center}
+.trap h3 .n{width:30px;height:30px;border-radius:50%;background:var(--gold);color:#3C3C3C;font:900 14px var(--font);display:grid;place-items:center;flex:none}
+.trap .rule{font-size:14px;color:var(--ink-2)}
+
+/* ---- treino ---- */
+.games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:899px){.games{grid-template-columns:1fr}}
+.game{display:flex;flex-direction:column;gap:14px}
+.game .g-actions{margin-top:auto}
+.game .g-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.game .g-head h3{font-size:19px}
+.g-score{display:flex;gap:10px;font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.g-score b{color:var(--ink);font-size:16px;margin-left:4px}
+.g-syl{font:900 56px/1 var(--font);text-align:center;padding:18px 10px;border-radius:16px;background:var(--surface-2);border:2px solid var(--line);min-height:100px;display:grid;place-items:center;overflow-wrap:anywhere}
+.g-syl .hz{font-size:28px;color:var(--muted)}
+.g-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (min-width:720px){.g-opts.four{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.g-opts .btn3{min-height:60px;font-size:22px;text-transform:none;letter-spacing:0}
+.g-opts .btn3.ok{background:var(--primary);border-bottom-color:var(--primary-dk);color:#fff}
+.g-opts .btn3.bad{background:var(--danger);border-bottom-color:var(--danger-dk);color:#fff}
+.g-fb{min-height:24px;font-size:14.5px;font-weight:700}
+.g-fb.ok{color:var(--ok)}
+.g-fb.bad{color:var(--no)}
+.g-actions{display:flex;gap:10px;flex-wrap:wrap}
+.g-actions .btn3{flex:1 1 140px}
+
+footer{padding:34px 0 120px;color:var(--muted);font-size:13px;display:grid;gap:6px}
+footer .srcs{display:flex;gap:8px;flex-wrap:wrap}
+footer .srcs span,footer .srcs a{background:var(--surface-2);border-radius:999px;padding:4px 10px;font-weight:700}
+footer .srcs a{color:var(--info-ink);text-decoration:none;border:2px solid var(--line)}
+footer .srcs a:hover{border-color:var(--info)}
+footer .credit{margin-top:10px;padding-top:12px;border-top:2px solid var(--line);color:var(--ink-2);font-size:14px}
+footer .credit b{color:var(--ink)}
+
+/* ---- tocador ---- */
+.player{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:2px solid var(--line);box-shadow:0 -8px 28px rgba(0,0,0,.12);transform:translateY(110%);transition:transform .25s ease;max-height:70vh;overflow-y:auto}
+.player.on{transform:none}
+.player .in{max-width:1440px;margin:0 auto;padding:12px 20px 14px;display:grid;gap:10px}
+.player .row1{display:flex;align-items:center;gap:12px}
+.player .who{font:900 30px/1 var(--font);min-width:0;flex:1}
+.player .who small{display:block;font:800 11px var(--font);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player .close{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:var(--surface-2);color:var(--ink);font:800 22px/1 var(--font);cursor:pointer;flex:none;display:grid;place-items:center}
+.tonebtns{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.tonebtn{font-family:var(--font);padding:8px 6px 6px;border-radius:14px;border:2px solid var(--line);border-bottom-width:4px;border-bottom-color:var(--line-strong);background:var(--surface-2);color:var(--ink);cursor:pointer;min-height:76px;min-width:0;display:grid;justify-items:center;align-content:center;gap:2px;line-height:1.2;text-align:center;user-select:none}
+.tonebtn .tb-py{font:900 22px/1.1 var(--font)}
+.tonebtn .tb-ex{font-size:12px;color:var(--ink);max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;flex-direction:column;align-items:center;gap:1px}
+.tonebtn .tb-ex .gl{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.tonebtn .tb-ex .hz{font-size:16px}
+.tonebtn .tb-ex.none{color:var(--muted);font-style:italic}
+.tonebtn small{font:800 10px var(--font);letter-spacing:.06em;color:var(--muted);text-transform:uppercase;white-space:nowrap}
+.tonebtn:active{transform:translateY(2px);border-bottom-width:2px}
+.tonebtn.playing{background:var(--primary);color:#fff;border-color:var(--primary-dk);border-bottom-color:var(--primary-dk)}
+.tonebtn.playing .tb-ex,.tonebtn.playing .tb-ex.none,.tonebtn.playing small{color:#fff;opacity:.9}
+.tonebtn.ghost{border-style:dashed;background:transparent}
+.tonebtn[disabled]{cursor:not-allowed;opacity:.5;transform:none}
+.tonebtn.noaudio .tb-py{text-decoration:line-through;text-decoration-color:var(--muted)}
+.player .ctrl{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.player .ctrl .btn3{flex:1 1 150px}
+.voice{display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--muted);flex-wrap:wrap}
+.player .hint{font-size:13px;color:var(--muted);margin:0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.player .hint b{color:var(--ink)}
+.hchip{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:2px 10px;border-radius:999px;background:var(--surface-2);border:2px solid var(--line);font-size:12.5px;font-weight:700;color:var(--ink-2)}
+.hchip.ok{background:var(--ok-bg);border-color:transparent;color:var(--ok)}
+.hchip.warn{background:var(--danger-bg);border-color:transparent;color:var(--danger-dk)}
+.hchip .hz{font-size:14px}
+body.has-player{padding-bottom:440px}
+@media (max-width:759px){.hchip.opt{display:none}.player{max-height:78vh}}
+@media (min-width:760px){
+  .player .in{grid-template-columns:auto 1fr;grid-template-areas:"who tones" "ctrl ctrl" "hint hint";align-items:center;column-gap:18px}
+  .player .row1{grid-area:who}
+  .tonebtns{grid-area:tones}
+  .player .ctrl{grid-area:ctrl}
+  .player .hint{grid-area:hint}
+  .player .ctrl .btn3{flex:0 0 auto}
+  body.has-player{padding-bottom:220px}
+}
+@media (max-width:420px){ .tonebtn .tb-ex .gl{display:none} .tonebtn{min-height:66px;padding:6px 4px} .tonebtn .tb-py{font-size:20px} }
+@media (max-width:759px){ .player .ctrl{flex-direction:column;align-items:stretch} .player .ctrl .btn3{order:3;flex:0 0 auto} .player .ctrl .voice{order:1} .player .ctrl .pill{order:2;justify-content:flex-start} }
+@media print{ .topnav,.tabs,.opts,.player,#roteiro,#treino{display:none} .famtable{display:grid;break-inside:avoid} section{padding:20px 0} body{font-size:12px} }
+</style>
+
+<script>(function(){var t='light';try{if(localStorage.getItem('pinyin-theme')==='dark')t='dark';}catch(e){}document.documentElement.setAttribute('data-theme',t);})();</script>
+</head>
+<body>
+<button class="tswitch" id="theme-btn" type="button" role="switch" aria-checked="false" aria-label="Alternar tema claro ou escuro" title="Tema claro (toque para escuro)"><span class="knob"></span></button>
+<div class="wrap">
+  <header class="hero">
+    <div class="txt">
+      <p class="eyebrow">Mandarim 1 · pronúncia</p>
+      <div class="top">
+        <h1>Mapa do Pinyin</h1>
+        <span class="hzbig">汉语拼音</span>
+      </div>
+      <p class="lead">Toda sílaba é <b>inicial + final + tom</b>. Aqui você vê o que existe de verdade, ouve os tons de cada sílaba e treina.</p>
+    </div>
+    <ul class="stats">
+      <li><b>21</b>iniciais em 6 famílias</li>
+      <li><b>38</b>finais em 4 grupos</li>
+      <li><b id="stat-syl">—</b>sílabas</li>
+      <li><b>1299</b>combinações sílaba + tom com caractere</li>
+    </ul>
+  </header>
+</div>
+
+<nav class="topnav" aria-label="Seções">
+  <ul>
+    <li><a href="#silaba">A sílaba</a></li>
+    <li><a href="#roteiro">Roteiro</a></li>
+    <li><a href="#tons">Tons</a></li>
+    <li><a href="#iniciais">Iniciais</a></li>
+    <li><a href="#finais">Finais</a></li>
+    <li><a href="#compatibilidade">Combinações</a></li>
+    <li><a href="#tabelas">Tabelas + localizador</a></li>
+    <li><a href="#armadilhas">Armadilhas</a></li>
+    <li><a href="#treino">Treino</a></li>
+  </ul>
+</nav>
+
+<!-- ================= A SÍLABA ================= -->
+<section id="silaba">
+  <div class="wrap">
+    <div class="silaba-top">
+    <div class="sec-head nosplit">
+      <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="5" height="8" rx="1"/><rect x="10" y="8" width="5" height="8" rx="1"/><rect x="17" y="8" width="4" height="8" rx="1"/></svg></div>
+      <p class="eyebrow"><span class="hz">音节</span> yīnjié · o básico</p>
+      <h2>Três peças, sempre na mesma ordem</h2>
+      <p class="lead">Uma consoante de abertura, um bloco de vogais e uma melodia por cima. A inicial pode faltar; a final e o tom, nunca.</p>
+    </div>
+    <div class="formula g-A">
+      <div class="part ini"><div class="big">m</div><div class="cap"><span class="hz">声母</span>inicial</div></div>
+      <div class="part opw"><div class="big">+</div><div class="cap"></div></div>
+      <div class="part fin"><div class="big">a</div><div class="cap"><span class="hz">韵母</span>final</div></div>
+      <div class="part opw"><div class="big">+</div><div class="cap"></div></div>
+      <div class="part tonemark"><div class="big">¯</div><div class="cap"><span class="hz">声调</span>tom</div></div>
+      <div class="brk" aria-hidden="true"></div>
+      <div class="part opw"><div class="big">=</div><div class="cap"></div></div>
+      <div class="part res"><div class="big">mā</div><div class="cap"><span class="hz">妈</span>mãe</div></div>
+    </div>
+    </div>
+    <div class="grid c3" style="margin-top:12px">
+      <div class="note"><h3>Como esta página organiza</h3>
+        <ul>
+          <li><b>Iniciais</b> por onde a boca faz o som: lábios, ponta da língua, fundo da língua, palato.</li>
+          <li><b>Finais</b> pela letra que abre a final: a, i, u ou ü.</li>
+          <li>Cada grupo de finais tem <b>uma cor</b>, a mesma em toda a página.</li>
+        </ul>
+      </div>
+      <div class="note"><h3>Por que a tabela tradicional tem buracos</h3>
+        <ul>
+          <li><b>De sistema:</b> a família de iniciais nunca aceita aquele grupo (gi, ja, xo).</li>
+          <li><b>De acaso:</b> daria para pronunciar, mas nenhuma palavra usa (bou, fe, zuang).</li>
+          <li>A seção <a href="#compatibilidade">Combinações</a> resume isso em 7 linhas e 4 colunas.</li>
+        </ul>
+      </div>
+      <div class="note"><h3>Sílaba sem inicial</h3>
+        <ul>
+          <li>Grupo A: escrita crua, sem letra de apoio.</li>
+          <li>i, u, ü sozinhos ganham y ou w na frente.</li>
+          <li>Com outra vogal atrás, i vira y e u vira w.</li>
+        </ul>
+        <div class="tks fill"><span class="tk"><b>ài</b><i>爱</i><small>amar</small></span><span class="tk"><b>yī</b><i>一</i><small>um</small></span><span class="tk"><b>wǔ</b><i>五</i><small>cinco</small></span><span class="tk"><b>yā</b><i>鸭</i><small>pato</small></span><span class="tk"><b>wǒ</b><i>我</i><small>eu</small></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ROTEIRO ================= -->
+<section id="roteiro" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="ico green"><svg viewBox="0 0 24 24"><path d="M4 6h6a4 4 0 0 1 0 8H8a4 4 0 0 0 0 8h12"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="22" r="2"/></svg></div>
+      <p class="eyebrow">por onde começar</p>
+      <h2>O caminho, de cima para baixo</h2>
+      <p class="lead">As seções seguem esta ordem. Toque num passo para ir até ele.</p>
+    </div>
+    <ol class="path grid c6">
+      <li><a href="#tons"><span class="node"><svg viewBox="0 0 24 24"><path d="M3 12h2l2-5 3 10 3-14 3 14 3-10 2 5h2"/></svg></span><b>Tons</b><span>Ouça mā má mǎ mà até distinguir de olhos fechados.</span></a></li>
+      <li><a href="#iniciais"><span class="node"><svg viewBox="0 0 24 24"><path d="M3 12c3-4 6-5 9-5s6 1 9 5c-3 4-6 5-9 5s-6-1-9-5z"/><path d="M3 12h18"/></svg></span><b>Iniciais</b><span>Os seis pares de sopro, com o teste do papel.</span></a></li>
+      <li><a href="#finais"><span class="node"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 13c1 2 2.5 3 4 3s3-1 4-3"/></svg></span><b>Finais</b><span>Quatro grupos e a diferença entre -n e -ng.</span></a></li>
+      <li><a href="#tabelas"><span class="node"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></span><b>Tabelas</b><span>Toque nas sílabas da sua aula e ouça só os tons que existem.</span></a></li>
+      <li><a href="#armadilhas"><span class="node"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M13 6l3 3"/></svg></span><b>Armadilhas</b><span>Quando o escrito não bate com o ouvido.</span></a></li>
+      <li><a href="#treino"><span class="node"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3M15 12h.01M18 13h.01"/></svg></span><b>Treino</b><span>Dois jogos rápidos com sequência de acertos.</span></a></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= TONS ================= -->
+<section id="tons">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 12h2l2-5 3 10 3-14 3 14 3-10 2 5h2"/></svg></div>
+      <p class="eyebrow"><span class="hz">声调</span> shēngdiào · passo 1 de 6</p>
+      <h2>Quatro melodias e uma sílaba átona</h2>
+      <p class="lead">O tom faz parte da palavra. As cinco versões de "ma" são cinco palavras, e são o exemplo oficial do pinyin desde 1958. A altura vai de 1 (grave) a 5 (agudo).</p>
+    </div>
+    <div class="grid c5">
+      <div class="tone">
+        <div class="num"><span>1º tom</span><span><span class="alt">altura</span><b>5→5</b></span></div>
+        <svg viewBox="0 0 100 50" aria-hidden="true"><line x1="6" y1="10" x2="94" y2="10" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
+        <span class="tk big"><b>mā</b><i>妈</i><small>mãe</small></span>
+        <p class="desc">Alto e reto, como uma nota segurada.</p>
+      </div>
+      <div class="tone">
+        <div class="num"><span>2º tom</span><span><span class="alt">altura</span><b>3→5</b></span></div>
+        <svg viewBox="0 0 100 50" aria-hidden="true"><line x1="10" y1="30" x2="90" y2="8" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
+        <span class="tk big"><b>má</b><i>麻</i><small>cânhamo</small></span>
+        <p class="desc">Sobe do meio para o alto, como um "é?" de pergunta.</p>
+      </div>
+      <div class="tone">
+        <div class="num"><span>3º tom</span><span><span class="alt">altura</span><b>2→1→4</b></span></div>
+        <svg viewBox="0 0 100 50" aria-hidden="true"><polyline points="8,26 40,44 92,14" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="tk big"><b>mǎ</b><i>马</i><small>cavalo</small></span>
+        <p class="desc">Sozinho: desce e sobe. No meio da frase: só desce.</p>
+      </div>
+      <div class="tone">
+        <div class="num"><span>4º tom</span><span><span class="alt">altura</span><b>5→1</b></span></div>
+        <svg viewBox="0 0 100 50" aria-hidden="true"><line x1="10" y1="8" x2="90" y2="44" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
+        <span class="tk big"><b>mà</b><i>骂</i><small>xingar</small></span>
+        <p class="desc">Cai de uma vez, seco, como um "não!"</p>
+      </div>
+      <div class="tone">
+        <div class="num"><span>tom neutro</span><span><span class="alt">altura</span><b>livre</b></span></div>
+        <svg viewBox="0 0 100 50" aria-hidden="true"><circle cx="50" cy="28" r="6" fill="currentColor"/></svg>
+        <span class="tk big"><b>ma</b><i>吗</i><small>partícula de pergunta</small></span>
+        <p class="desc">Curto e leve, sem marca. Pendura-se na sílaba anterior.</p>
+      </div>
+    </div>
+    <div class="grid c4" style="margin-top:12px">
+      <div class="note"><h3>Onde vai a marca do tom</h3>
+        <ol>
+          <li>Tem <b>a</b>? Vai no a.</li>
+          <li>Não tem a, mas tem <b>o</b> ou <b>e</b>? Vai nele.</li>
+          <li>Só i, u, ü: duas juntas, vai na <b>última</b>; uma só, vai nela.</li>
+        </ol>
+        <div class="tks c3"><span class="tk"><b>h<em>ǎ</em>o</b><i>好</i><small>bom</small></span><span class="tk"><b>xi<em>è</em></b><i>谢</i><small>agradecer</small></span><span class="tk"><b>gu<em>ó</em></b><i>国</i><small>país</small></span><span class="tk"><b>li<em>ù</em></b><i>六</i><small>seis</small></span><span class="tk"><b>gu<em>ī</em></b><i>归</i><small>voltar</small></span><span class="tk"><b>l<em>ǜ</em></b><i>绿</i><small>verde</small></span></div>
+        <p class="small muted">O i perde o pingo: ī í ǐ ì.</p>
+      </div>
+      <div class="note"><h3>Dois terceiros tons seguidos</h3>
+        <p>O primeiro vira <b>segundo tom</b> na fala. A escrita não muda.</p>
+        <div class="tks"><span class="tk"><b>nǐ hǎo</b><span class="arr">→</span><b>n<em>í</em> hǎo</b><i>你好</i></span><span class="tk"><b>hěn hǎo</b><span class="arr">→</span><b>h<em>é</em>n hǎo</b><i>很好</i></span></div>
+        <p class="small muted">Antes de 1º, 2º, 4º e tom neutro, o 3º só desce (meio-terceiro tom).</p>
+      </div>
+      <div class="note"><h3>yī e bù mudam de tom</h3>
+        <p><b>bù</b> vira <b>bú</b> antes de 4º tom. <b>yī</b> vira <b>yí</b> antes de 4º e <b>yì</b> antes de 1º, 2º e 3º.</p>
+        <div class="tks"><span class="tk"><b>yī</b><i>一</i><small>um</small></span><span class="tk"><b>bù</b><i>不</i><small>não</small></span><span class="tk"><b>b<em>ú</em> shì</b><i>不是</i></span><span class="tk"><b>bù hǎo</b><i>不好</i></span><span class="tk"><b>y<em>í</em> gè</b><i>一个</i></span><span class="tk"><b>y<em>ì</em> tiān</b><i>一天</i></span><span class="tk"><b>yī yuè</b><i>一月</i></span></div>
+        <p class="small muted">Sozinho e em números, fica yī. Textos oficiais escrevem sempre bù e yī.</p>
+      </div>
+      <div class="note"><h3>Tom neutro: onde aparece</h3>
+        <div class="tks"><span class="tk"><b>ma</b><i>吗</i><small>partícula</small></span><span class="tk"><b>de</b><i>的</i><small>partícula</small></span><span class="tk"><b>zi</b><i>子</i><small>sufixo</small></span><span class="tk"><b>men</b><i>们</i><small>plural</small></span><span class="tk"><b>māma</b><i>妈妈</i><small>repetição</small></span><span class="tk"><b>péngyou</b><i>朋友</i><small>amigo</small></span></div>
+        <p class="small muted">Altura: baixa depois de 1º, 2º e 4º tom; <b>alta</b> depois de 3º.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INICIAIS ================= -->
+<section id="iniciais" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="ico orange"><svg viewBox="0 0 24 24"><path d="M3 12c3-4 6-5 9-5s6 1 9 5c-3 4-6 5-9 5s-6-1-9-5z"/><path d="M3 12h18"/></svg></div>
+      <p class="eyebrow"><span class="hz">声母</span> shēngmǔ · passo 2 de 6</p>
+      <h2>Seis famílias, pelo lugar da boca onde o som nasce</h2>
+      <p class="lead">É o gesto, não a letra, que você treina. A ordem oficial do pinyin já é esta.</p>
+    </div>
+    <div class="grid c3" id="fam-grid"></div>
+    <div class="callout" style="margin-top:12px">
+      <h3>Teste do papel</h3>
+      <p>Segure um papel a dois dedos da boca. Com <b>p t k q ch c</b> ele balança (sopro forte). Com <b>b d g j zh z</b> ele não mexe (sem sopro), e nenhum deles vibra a garganta como o b, d, g do português. Toque nas fichas para ouvir a diferença.</p>
+    </div>
+    <div class="grid c3" style="margin-top:12px">
+      <div class="ph"><div class="ph-h"><span class="pair">b <i>×</i> p</span><span class="ph-t">sem sopro × com sopro</span></div><p>Os dois são o "p" de "espada"; o <b>p</b> ganha um jato de ar. O <b>b</b> nunca é o b de "bola".</p><div class="tks"><span class="tk"><b>bā</b><i>八</i><small>oito</small></span><span class="tk"><b>pá</b><i>爬</i><small>escalar</small></span></div></div>
+      <div class="ph"><div class="ph-h"><span class="pair">d <i>×</i> t</span><span class="ph-t">sem sopro × com sopro</span></div><p>Os dois são o "t" de "estar"; o <b>t</b> ganha o sopro. O <b>d</b> nunca é o d de "dado".</p><div class="tks"><span class="tk"><b>dà</b><i>大</i><small>grande</small></span><span class="tk"><b>tā</b><i>他</i><small>ele</small></span></div></div>
+      <div class="ph"><div class="ph-h"><span class="pair">g <i>×</i> k</span><span class="ph-t">sem sopro × com sopro</span></div><p>Os dois são o "c" de "escola"; o <b>k</b> ganha o sopro. O <b>g</b> nunca é o g de "gato" com voz.</p><div class="tks"><span class="tk"><b>gē</b><i>哥</i><small>irmão mais velho</small></span><span class="tk"><b>kě</b><i>可</i><small>poder</small></span></div></div>
+      <div class="ph"><div class="ph-h"><span class="pair">j <i>×</i> q</span><span class="ph-t">sem sopro × com sopro</span></div><p>Os dois são um "tch" fino, sorrindo; o <b>q</b> ganha o sopro. O <b>j</b> parece "dj", mas é surdo.</p><div class="tks"><span class="tk"><b>jī</b><i>鸡</i><small>galinha</small></span><span class="tk"><b>qī</b><i>七</i><small>sete</small></span></div></div>
+      <div class="ph"><div class="ph-h"><span class="pair">zh <i>×</i> ch</span><span class="ph-t">sem sopro × com sopro</span></div><p>Os dois são "tch" com a língua para trás; o <b>ch</b> ganha o sopro.</p><div class="tks"><span class="tk"><b>zhī</b><i>知</i><small>saber</small></span><span class="tk"><b>chī</b><i>吃</i><small>comer</small></span></div></div>
+      <div class="ph"><div class="ph-h"><span class="pair">z <i>×</i> c</span><span class="ph-t">sem sopro × com sopro</span></div><p>Os dois são o "ts" de "pizza"; o <b>c</b> ganha o sopro. O <b>z</b> nunca é o z de "zebra".</p><div class="tks"><span class="tk"><b>zì</b><i>字</i><small>caractere</small></span><span class="tk"><b>cì</b><i>次</i><small>vez</small></span></div></div>
+      <div class="ph"><div class="ph-h"><span class="tag">q, c ≠ k</span><span class="ph-t">reflexo do português</span></div><p>Não é "ki" nem "ka": é "tch" fino e "ts", os dois com sopro.</p><div class="tks"><span class="tk"><b>qī</b><i>七</i><small>sete</small></span><span class="tk"><b>cā</b><i>擦</i><small>esfregar</small></span></div></div>
+      <div class="ph"><div class="ph-h"><span class="tag">g é duro</span><span class="ph-t">reflexo do português</span></div><p>Sempre como em "gato", nunca "jê": gē é "kê" sem sopro.</p><div class="tks"><span class="tk"><b>gē</b><i>哥</i><small>irmão mais velho</small></span><span class="tk"><b>gè</b><i>个</i><small>classificador</small></span></div></div>
+      <div class="ph"><div class="ph-h"><span class="tag">ch ≠ chá</span><span class="ph-t">reflexo do português</span></div><p>O ch do português é o <b>sh</b> do pinyin. O ch do pinyin é "tch".</p><div class="tks"><span class="tk"><b>chá</b><i>茶</i><small>chá</small></span><span class="tk"><b>shā</b><i>沙</i><small>areia</small></span></div></div>
+      <div class="ph"><div class="ph-h"><span class="tag">x é fino</span><span class="ph-t">reflexo do português</span></div><p>Mais fino que o x de "xarope": língua espalhada, sorrindo.</p><div class="tks"><span class="tk"><b>xiè</b><i>谢</i><small>agradecer</small></span><span class="tk"><b>xī</b><i>西</i><small>oeste</small></span></div></div>
+      <div class="ph"><div class="ph-h"><span class="tag">m, n sem nasal</span><span class="ph-t">reflexo do português</span></div><p>A vogal fica limpa: "ma", não "mã". A nasal só entra no fim, em -n e -ng.</p><div class="tks"><span class="tk"><b>mā</b><i>妈</i><small>mãe</small></span><span class="tk"><b>nà</b><i>那</i><small>aquele</small></span></div></div>
+      <div class="ph"><div class="ph-h"><span class="tag">r ≠ rr</span><span class="ph-t">reflexo do português</span></div><p>É o r caipira de "porta", língua para trás, com leve zumbido. Nunca o rr de "carro".</p><div class="tks"><span class="tk"><b>rè</b><i>热</i><small>quente</small></span><span class="tk"><b>rén</b><i>人</i><small>pessoa</small></span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINAIS ================= -->
+<section id="finais">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="ico teal"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 13c1 2 2.5 3 4 3s3-1 4-3"/></svg></div>
+      <p class="eyebrow"><span class="hz">韵母</span> yùnmǔ · passo 3 de 6</p>
+      <h2>Quatro grupos, pela letra que abre a final</h2>
+      <p class="lead">Aqui os grupos seguem a letra escrita. A fonética chinesa usa a mesma ideia com outro nome, e só ong e iong fogem dela; as fichas avisam.</p>
+      <div class="tks" style="grid-column:2"><span class="tk"><b>sìhū</b><i>四呼</i><small>as quatro aberturas</small></span></div>
+    </div>
+    <div class="fin-grid">
+    <div id="grp-grid" style="display:contents"></div>
+      <div class="col4">
+      <div class="callout callout-n">
+        <h3>-n não é -ng</h3>
+        <ul>
+          <li><b>-n</b>: a ponta da língua encosta atrás dos dentes de cima e fica lá.</li>
+          <li><b>-ng</b>: o fundo da língua sobe, a ponta não toca em nada (o som do meio de "manga").</li>
+          <li>Em português o n de "canto" some; em mandarim ele fica e separa palavras.</li>
+        </ul>
+        <div class="tks"><span class="tk"><b>sān</b><i>三</i><small>três</small></span><span class="tk"><b>sāng</b><i>桑</i><small>amoreira</small></span><span class="tk"><b>yīn</b><i>因</i><small>causa</small></span><span class="tk"><b>yīng</b><i>英</i><small>herói</small></span><span class="tk"><b>guān</b><i>关</i><small>fechar</small></span><span class="tk"><b>guāng</b><i>光</i><small>luz</small></span></div>
+      </div>
+      <div class="note tint note-f"><h3>Fora das tabelas</h3>
+        <ul>
+          <li>Interjeições sem vogal, e sílabas não padrão ou raríssimas. O áudio decide; o português é só ponto de partida.</li>
+        </ul>
+        <div class="tks"><span class="tk"><b>m</b><i>呣</i></span><span class="tk"><b>ng</b><i>嗯</i></span><span class="tk"><b>hm</b><i>噷</i></span><span class="tk"><b>hng</b><i>哼</i></span><span class="tk"><b>cei</b><i>𤭢</i><small>Pequim</small></span><span class="tk"><b>nun</b><i>黁</i></span><span class="tk"><b>fiao</b><i>覅</i><small>xangainês</small></span><span class="tk"><b>biang</b><small>macarrão de Shaanxi</small></span></div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMBINAÇÕES ================= -->
+<section id="compatibilidade" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="ico purple"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></div>
+      <p class="eyebrow">famílias × grupos · entre os passos 3 e 4</p>
+      <h2>Quem combina com quem</h2>
+      <p class="lead">Sete linhas e quatro colunas no lugar de 400 células. "Não" significa que nenhuma sílaba daquela combinação existe.</p>
+    </div>
+    <div class="compat-row">
+    <div class="compat">
+      <table>
+        <thead><tr>
+          <th>Família</th>
+          <th class="g g-A">Grupo A <span class="hz">开口呼</span><small>boca aberta: a, o, e…</small></th>
+          <th class="g g-I">Grupo I <span class="hz">齐齿呼</span><small>dentes alinhados: i…</small></th>
+          <th class="g g-U">Grupo U <span class="hz">合口呼</span><small>lábios arredondados: u…</small></th>
+          <th class="g g-V">Grupo Ü <span class="hz">撮口呼</span><small>lábios em bico: ü…</small></th>
+        </tr></thead>
+        <tbody id="compat-body"></tbody>
+      </table>
+    </div>
+    <div class="grid c4">
+      <div class="note"><h3>A regra de ouro</h3>
+        <ul>
+          <li><b>j q x</b> só aceitam <b>I</b> e <b>Ü</b>.</li>
+          <li><b>g k h</b>, <b>zh ch sh r</b> e <b>z c s</b> só aceitam <b>A</b> e <b>U</b>.</li>
+          <li>Os dois times nunca disputam a mesma final: gi, ki, hi, ja, qe, xo não existem.</li>
+        </ul>
+      </div>
+      <div class="note"><h3>Os três "i"</h3>
+        <ul>
+          <li><b>yi, bi, xi</b>: a vogal i de "vi".</li>
+          <li><b>zi ci si</b>: zumbido fino, língua nos dentes.</li>
+          <li><b>zhi chi shi ri</b>: zumbido grosso, língua para trás.</li>
+        </ul>
+        <div class="tks"><span class="tk"><b>xì</b><i>细</i><small>fino</small></span><span class="tk"><b>sì</b><i>四</i><small>quatro</small></span><span class="tk"><b>shì</b><i>是</i><small>ser</small></span></div>
+      </div>
+      <div class="note"><h3>Ü disfarçado de u</h3>
+        <ul>
+          <li>Depois de <b>j q x y</b> o trema some na final inteira.</li>
+          <li><b>juan</b> não rima com wan; <b>jun</b> não rima com wen.</li>
+          <li>Só <b>n</b> e <b>l</b> mantêm o trema: nǚ, lǜ.</li>
+        </ul>
+        <div class="tks"><span class="tk"><b>juān</b><i>捐</i><small>= jüan</small></span><span class="tk"><b>guān</b><i>关</i><small>u normal</small></span><span class="tk"><b>nǚ</b><i>女</i><small>mulher</small></span></div>
+      </div>
+      <div class="note"><h3>Dois tipos de buraco</h3>
+        <ul>
+          <li><b>De sistema:</b> a família nunca aceita o grupo. Nunca vai existir.</li>
+          <li><b>De acaso:</b> pronunciável, mas sem palavra: bou, fe, zuang.</li>
+          <li><b>f</b> nunca entra no grupo I (fi, fian), embora b, p, m entrem.</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TABELAS + LOCALIZADOR ================= -->
+<section id="tabelas">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="ico gold"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></div>
+      <p class="eyebrow">todas as sílabas · passo 4 de 6</p>
+      <h2>Tabelas por família, com áudio</h2>
+      <p class="lead">Toque numa sílaba para ouvir os tons que existem. Os quatro tracinhos mostram quais tons têm caractere. Uma célula com · não existe; com ◦ é rara.</p>
+    </div>
+    <div class="loc-box" id="localizador">
+      <div class="loc-row">
+        <label for="loc">Onde está essa sílaba?</label>
+        <input id="loc" class="loc-input" type="text" autocomplete="off" spellcheck="false" placeholder="digite: xiang, zhuang, lv, yuan…" aria-describedby="loc-help">
+      </div>
+      <div class="loc-ex" id="loc-help">
+        <span>Com tom (xiāng, xiang1) ou sem. Para o <b>ü</b>, digite <b>v</b>. Exemplos:</span>
+        <button type="button" data-ex="xiāng">xiāng</button>
+        <button type="button" data-ex="zhuang">zhuang</button>
+        <button type="button" data-ex="lv">lv</button>
+        <button type="button" data-ex="yuan">yuan</button>
+        <button type="button" data-ex="qu">qu</button>
+        <button type="button" data-ex="shi">shi</button>
+        <button type="button" data-ex="gi">gi</button>
+      </div>
+      <div class="loc-result" id="loc-result" role="status" aria-live="polite"></div>
+    </div>
+    <p class="audio-note" id="audio-note" style="margin-top:14px"></p>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="opts" id="opts"></div>
+    <div id="tables"></div>
+    <div class="legend">
+      <span class="lab">Legenda</span>
+      <span class="lg"><span class="lg-cell g-A">ma<span class="tdots" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></span> sílaba que existe; os 4 tracinhos são os tons 1º, 2º, 3º e 4º</span>
+      <span class="lg"><span class="lg-cell g-A">fo<span class="tdots" aria-hidden="true"><i></i><i class="on"></i><i></i><i></i></span></span> tracinho colorido = esse tom tem caractere; cinza = não tem</span>
+      <span class="lg"><span class="lg-cell rare g-A">zhei</span> sílaba rara (pontilhada): aparece em poucas palavras</span>
+      <span class="lg"><span class="lg-cell empty">·</span> combinação que não existe em mandarim</span>
+      <span class="lg"><span class="lg-cell hollow">◦</span> existe, mas é rara e está escondida (marque "mostrar as sílabas raras")</span>
+      <span class="lg"><span class="lg-cell hit">ma</span> sílaba que você procurou no localizador</span>
+      <span class="lg"><span class="lg-cell playing">ma</span> sílaba tocando agora</span>
+      <span class="lg"><span class="lg-groups"><i class="g-A">A</i><i class="g-I">I</i><i class="g-U">U</i><i class="g-V">Ü</i></span> cor da coluna = grupo da final</span>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ARMADILHAS ================= -->
+<section id="armadilhas" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="ico red"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M13 6l3 3"/></svg></div>
+      <p class="eyebrow">ortografia · passo 5 de 6</p>
+      <h2>Nove regras de escrita que confundem</h2>
+      <p class="lead">O pinyin foi feito para ser curto, não transparente. Estas são as abreviações e os disfarces.</p>
+    </div>
+    <div class="grid c3">
+      <div class="trap"><h3><span class="n">1</span>y e w não são iniciais</h3><p class="rule">Sozinhas, i u ü ganham uma letra de apoio. Com outra vogal atrás, i vira y e u vira w. O som não muda.</p><div class="tks"><span class="tk"><b>i → yī</b><i>一</i></span><span class="tk"><b>u → wǔ</b><i>五</i></span><span class="tk"><b>ia → yā</b><i>鸭</i></span><span class="tk"><b>uo → wǒ</b><i>我</i></span><span class="tk"><b>üe → yuè</b><i>月</i></span></div></div>
+      <div class="trap"><h3><span class="n">2</span>Três finais encolhem</h3><p class="rule"><b>iou, uei, uen</b> viram <b>iu, ui, un</b> depois de uma inicial. O som continua inteiro.</p><div class="tks"><span class="tk"><b>liù</b><i>六</i><small>soa "liôu"</small></span><span class="tk"><b>guī</b><i>归</i><small>soa "guei"</small></span><span class="tk"><b>lún</b><i>轮</i><small>soa "luen"</small></span></div></div>
+      <div class="trap"><h3><span class="n">3</span>ü se escreve u depois de j q x y</h3><p class="rule">Vale para a final inteira: ju, juan, jun, quan, xun, yuan, yun. Leia tudo com boca em bico.</p><div class="tks"><span class="tk"><b>jù</b><small>= jǜ</small></span><span class="tk"><b>xuě</b><small>= xüě</small></span><span class="tk"><b>juān</b><small>= jüān</small></span><span class="tk"><b>yún</b><small>= ǘn</small></span></div></div>
+      <div class="trap"><h3><span class="n">4</span>O i de zhi chi shi ri zi ci si</h3><p class="rule">Não é "i": a língua fica travada e a voz sai como zumbido. Fino em zi ci si, grosso em zhi chi shi ri.</p><div class="tks"><span class="tk"><b>sì</b><i>四</i><small>quatro</small></span><span class="tk"><b>xì</b><i>细</i><small>fino (i de verdade)</small></span></div></div>
+      <div class="trap"><h3><span class="n">5</span>A letra e tem três caras</h3><p class="rule">Sozinha ou em er: "ô" com lábios frouxos. Em en, eng: e neutro e frouxo. Em ie, üe, ei: perto do "é" de "pé".</p><div class="tks"><span class="tk"><b>hē</b><i>喝</i><small>ô solto</small></span><span class="tk"><b>mén</b><i>门</i><small>e frouxo</small></span><span class="tk"><b>xiè</b><i>谢</i><small>é</small></span></div></div>
+      <div class="trap"><h3><span class="n">6</span>bo po mo fo escondem um u</h3><p class="rule">Depois de b p m f, a final uo se escreve só o. A final o pura só existe em o, lo e yo.</p><div class="tks"><span class="tk"><b>bō</b><i>波</i><small>≈ "buô"</small></span><span class="tk"><b>duō</b><i>多</i><small>uo escrito</small></span><span class="tk"><b>ó</b><i>哦</i><small>o puro</small></span></div></div>
+      <div class="trap"><h3><span class="n">7</span>Pinyin se escreve por palavra</h3><p class="rule">As sílabas de uma palavra ficam juntas. Se a leitura ficar ambígua, entra um apóstrofo.</p><div class="tks"><span class="tk"><b>Běijīng</b><i>北京</i></span><span class="tk"><b>Xī'ān</b><i>西安</i><small>2 sílabas</small></span><span class="tk"><b>xiān</b><i>先</i><small>1 sílaba</small></span></div></div>
+      <div class="trap"><h3><span class="n">8</span>O r pendurado (érhuà)</h3><p class="rule">Um r se pendura na sílaba anterior sem virar sílaba nova. Comum no falar de Pequim.</p><div class="tks"><span class="tk"><b>huār</b><i>花儿</i><small>flor</small></span><span class="tk"><b>nǎr</b><i>哪儿</i><small>onde</small></span><span class="tk"><b>yìdiǎnr</b><i>一点儿</i><small>um pouco</small></span></div></div>
+      <div class="trap"><h3><span class="n">9</span>Como digitar</h3><p class="rule">No teclado de pinyin, digite sem acento e use <b>v</b> para o ü. Para as marcas de tom, teclado com números ou copie daqui.</p><div class="exs"><span>lv → 绿</span><span>ma1 → mā</span></div><div class="exs kbd"><span>ā á ǎ à</span><span>ē é ě è</span><span>ī í ǐ ì</span><span>ō ó ǒ ò</span><span>ū ú ǔ ù</span><span>ǖ ǘ ǚ ǜ</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TREINO ================= -->
+<section id="treino">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="ico green"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3M15 12h.01M18 13h.01"/></svg></div>
+      <p class="eyebrow">treino · passo 6 de 6</p>
+      <h2>Dois jogos rápidos</h2>
+      <p class="lead">Sequências de acertos ficam salvas no navegador. Toque com o dedo, ou use as teclas 1 a 4 no primeiro jogo.</p>
+    </div>
+    <div class="games">
+      <div class="game card">
+        <div class="g-head"><h3>Qual é o tom?</h3><div class="g-score"><span>sequência<b id="g1-streak">0</b></span><span>recorde<b id="g1-best">0</b></span></div></div>
+        <div class="g-syl" id="g1-syl">?</div>
+        <div class="g-opts four" id="g1-opts"></div>
+        <p class="g-fb" id="g1-fb">Ouça a sílaba e escolha o tom que você ouviu.</p>
+        <div class="g-actions"><button class="btn3 info" type="button" id="g1-play" disabled>▶ ouvir de novo</button><button class="btn3" type="button" id="g1-next">Começar</button></div>
+      </div>
+      <div class="game card">
+        <div class="g-head"><h3>Essa sílaba existe?</h3><div class="g-score"><span>sequência<b id="g2-streak">0</b></span><span>recorde<b id="g2-best">0</b></span></div></div>
+        <div class="g-syl" id="g2-syl">?</div>
+        <div class="g-opts" id="g2-opts"><button class="btn3 ghost" type="button" data-v="1" disabled>Existe</button><button class="btn3 ghost" type="button" data-v="0" disabled>Não existe</button></div>
+        <p class="g-fb" id="g2-fb">Metade das sílabas aqui é inventada. Descubra qual.</p>
+        <div class="g-actions"><button class="btn3" type="button" id="g2-next">Começar</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+<footer>
+  <p>Fontes de pronúncia (gravações usadas no tocador):</p>
+  <div class="srcs"><a href="https://chinese.yabla.com/chinese-pinyin-chart.php" target="_blank" rel="noopener">Yabla Chinese · Mandarin Chinese Pinyin Chart with Audio</a><a href="https://yoyochinese.com/chinese-learning-tools/Mandarin-Chinese-pronunciation-lesson/pinyin-chart-table" target="_blank" rel="noopener">Yoyo Chinese · Interactive Pinyin Chart</a></div>
+  <p>Fontes que definem o que existe e como se escreve:</p>
+  <div class="srcs"><span>汉语拼音方案 (1958)</span><span>Unicode Unihan</span><span>CC-CEDICT</span><span>HSK 1 (HSK 3.0, 2021)</span><span>Wikipedia: Pinyin table, Standard Chinese phonology</span></div>
+  <p>Iniciais por ponto de articulação; finais pela letra escrita, com aviso onde a fonologia (四呼) discorda. As aproximações em português são um apoio inicial, não substituem o áudio.</p>
+  <p class="credit">Desenvolvido por <b>Luiz Henrique Couto Carneiro</b> - Bacharelado em IA (INF-UFG)</p>
+</footer>
+</div>
+
+<div class="mini" id="mini" role="dialog" aria-label="Ouvir palavra"></div>
+
+<div class="player" id="player" aria-label="Tocador de sílabas">
+  <div class="in">
+    <div class="row1"><div class="who"><span id="pl-syl">—</span><small id="pl-fam"></small></div><button class="close" type="button" id="pl-close" aria-label="Fechar tocador">×</button></div>
+    <div class="tonebtns" id="pl-tones"></div>
+    <div class="ctrl">
+      <button class="btn3" type="button" id="pl-seq">▶ ouvir os tons</button>
+      <div class="voice" id="pl-voice-wrap"><span>Voz</span><div class="seg" id="pl-voice"></div></div>
+      <label class="pill" id="pl-train-wrap"><input type="checkbox" id="pl-train"><span class="chk"></span><span>treinar os 4 tons</span></label>
+    </div>
+    <p class="hint" id="pl-hint"></p>
+  </div>
+</div>
+
+
+<script>/* TONES:BEGIN */ window.PINYIN_TONES = {"a":{"1":["啊","ā","ah!"],"2":["啊","á","hã?"],"3":["啊","ǎ","hã?!"],"4":["啊","à","ah, sim"],"5":["啊","a","partícula final"]},"ai":{"1":["哎","āi","ei!"],"2":["癌","ái","câncer"],"3":["矮","ǎi","baixo (pessoa)"],"4":["爱","ài","amar",["爱 ài","爱好 àihào"]]},"an":{"1":["安","ān","calmo"],"2":["啽","án","falar (cantonês)"],"3":["俺","ǎn","eu (dialetal)"],"4":["按","àn","pressionar"]},"ang":{"1":["肮","āng","sujo (em 肮脏)"],"2":["昂","áng","erguer"],"4":["盎","àng","abundante"]},"ao":{"1":["凹","āo","côncavo"],"2":["熬","áo","cozinhar lentamente"],"3":["袄","ǎo","casaco"],"4":["傲","ào","orgulhoso"]},"ba":{"1":["八","bā","oito",["八 bā"]],"2":["拔","bá","arrancar"],"3":["把","bǎ","segurar"],"4":["爸","bà","pai",["爸爸 bàba"]],"5":["吧","ba","partícula de sugestão",["吧 ba","爸爸 bàba"]]},"bai":{"1":["掰","bāi","partir com as mãos"],"2":["白","bái","branco",["白 bái","白天 báitiān"]],"3":["百","bǎi","cem",["百 bǎi"]],"4":["败","bài","derrotar"],"5":["白","bai","primos paternos",["明白 míngbai"]]},"ban":{"1":["般","bān","tipo",["班 bān","上班 shàngbān","下班 xiàbān"]],"3":["板","bǎn","tábua"],"4":["办","bàn","cuidar de",["半 bàn","一半 yībàn","半天 bàntiān"]],"5":["扮","ban","enfeitar-se"]},"bang":{"1":["帮","bāng","ajudar",["帮 bāng","帮忙 bāngmáng"]],"3":["膀","bǎng","braço"],"4":["棒","bàng","bastão"]},"bao":{"1":["包","bāo","embrulhar",["包 bāo","书包 shūbāo","包子 bāozi"]],"2":["薄","báo","fino"],"3":["保","bǎo","proteger"],"4":["报","bào","informar"]},"bei":{"1":["悲","bēi","triste",["杯 bēi","杯子 bēizi"]],"3":["北","běi","norte",["北 běi","北京 Běijīng","北边 běibian"]],"4":["备","bèi","preparar",["准备 zhǔnbèi"]],"5":["呗","bei","partícula de resignação"]},"ben":{"1":["奔","bēn","correr"],"3":["本","běn","raiz",["本 běn","本子 běnzi","课本 kèběn"]],"4":["笨","bèn","burro"]},"beng":{"1":["绷","bēng","esticar"],"2":["甭","béng","não precisa"],"3":["绷","běng","fechar a cara"],"4":["蹦","bèng","pular"]},"bi":{"1":["逼","bī","forçar"],"2":["鼻","bí","nariz"],"3":["比","bǐ","comparar",["比 bǐ"]],"4":["必","bì","certamente"]},"bian":{"1":["边","biān","lado",["一边 yībiān","旁边 pángbiān"]],"3":["扁","biǎn","achatado"],"4":["变","biàn","mudar"],"5":["边","bian","sufixo de lugar",["上边 shàngbian","下边 xiàbian","东边 dōngbian"]]},"biao":{"1":["标","biāo","marca"],"2":["嫑","biáo","não (不要)"],"3":["表","biǎo","superfície"],"4":["俵","biào","bexiga natatória"]},"bie":{"1":["憋","biē","sufocar"],"2":["别","bié","partir",["别 bié","别人 biérén","别的 biéde"]],"3":["瘪","biě","murcho"],"4":["别","biè","fazer mudar de ideia"]},"bin":{"1":["滨","bīn","margem"],"4":["髌","bìn","rótula (patela)"]},"bing":{"1":["兵","bīng","soldado"],"3":["饼","bǐng","bolinho achatado"],"4":["并","bìng","e",["病 bìng","生病 shēngbìng","病人 bìngrén"]],"5":["饼","bing","pão assado"]},"bo":{"1":["剥","bō","descascar"],"2":["伯","bó","tio paterno"],"3":["簸","bǒ","peneirar"],"4":["薄","bò","hortelã (薄荷)"],"5":["伯","bo","tio paterno"]},"bu":{"1":["逋","bū","fim da tarde"],"2":["醭","bú","mofo em líquidos"],"3":["补","bǔ","consertar"],"4":["不","bù","não",["不 bù","不大 bùdà","不对 bùduì"]],"5":["不","bu","incrível",["对不起 duìbuqǐ","是不是 shìbushì"]]},"ca":{"1":["擦","cā","esfregar"],"3":["礤","cǎ","ralador"]},"cai":{"1":["猜","cāi","adivinhar"],"2":["才","cái","talento"],"3":["采","cǎi","colher"],"4":["菜","cài","verdura",["菜 cài"]],"5":["才","cai","escravo"]},"can":{"1":["参","cān","participar"],"2":["残","cán","destruir"],"3":["惨","cǎn","miserável"],"4":["灿","càn","glorioso"]},"cang":{"1":["舱","cāng","cabine"],"2":["藏","cáng","esconder"]},"cao":{"1":["操","cāo","segurar"],"2":["槽","cáo","cocho"],"3":["草","cǎo","grama"],"4":["鄵","cào","antigo nome de lugar"]},"ce":{"4":["测","cè","medir"]},"cen":{"1":["参","cēn","usado em 参差"],"2":["涔","cén","colina pequena"]},"ceng":{"1":["噌","cēng","repreender"],"2":["层","céng","empilhar"],"4":["蹭","cèng","esfregar contra"]},"cha":{"1":["插","chā","inserir"],"2":["查","chá","pesquisar",["茶 chá"]],"3":["蹅","chǎ","fenda de roupa"],"4":["差","chà","diferente",["差 chà"]]},"chai":{"1":["拆","chāi","rasgar"],"2":["柴","chái","lenha"],"3":["茝","chǎi","planta aromática"],"4":["瘥","chài","recuperar-se"]},"chan":{"1":["搀","chān","amparar pelo braço"],"2":["蝉","chán","cigarra"],"3":["产","chǎn","dar à luz"],"4":["颤","chàn","tremer"]},"chang":{"1":["伥","chāng","próspero"],"2":["长","cháng","longo",["常 cháng","常常 chángcháng","非常 fēicháng"]],"3":["场","chǎng","local",["商场 shāngchǎng","机场 jīchǎng"]],"4":["唱","chàng","cantar",["唱 chàng","唱歌 chànggē"]],"5":["敞","chang","o fim"]},"chao":{"1":["超","chāo","exceder"],"2":["朝","cháo","corte imperial"],"3":["吵","chǎo","brigar"],"4":["耖","chào","grade agrícola"]},"che":{"1":["车","chē","carro",["车 chē","上车 shàngchē","下车 xiàchē"]],"3":["扯","chě","puxar"],"4":["彻","chè","completo"],"5":["扯","che","arrastar"]},"chen":{"1":["沉","chēn","Aachen (cidade)"],"2":["沉","chén","submergir"],"3":["碜","chěn","arenoso"],"4":["衬","chèn","forro"],"5":["晨","chen","feio"]},"cheng":{"1":["称","chēng","pesar"],"2":["成","chéng","tornar-se"],"3":["骋","chěng","exibir-se"],"4":["秤","chèng","balança"],"5":["撑","cheng","bajular"]},"chi":{"1":["吃","chī","comer",["吃 chī","吃饭 chīfàn","好吃 hǎochī"]],"2":["持","chí","segurar"],"3":["齿","chǐ","dente"],"4":["翅","chì","asa"]},"chong":{"1":["冲","chōng","jorrar contra"],"2":["虫","chóng","inseto"],"3":["宠","chǒng","mimar"],"4":["冲","chòng","forte"]},"chou":{"1":["抽","chōu","puxar para fora"],"2":["仇","chóu","ódio"],"3":["瞅","chǒu","olhar"],"4":["臭","chòu","fedor"],"5":["酬","chou","recompensa"]},"chu":{"1":["出","chū","sair",["出 chū","出去 chūqu","出来 chūlai"]],"2":["除","chú","eliminar"],"3":["础","chǔ","fundação"],"4":["处","chù","lugar"],"5":["处","chu","pouco claro"]},"chua":{"1":["欻","chuā","som de estrondo"]},"chuai":{"1":["揣","chuāi","guardar no bolso"],"2":["膗","chuái","obeso"],"3":["揣","chuǎi","estimar"],"4":["膪","chuài","usado em 囊膪"]},"chuan":{"1":["穿","chuān","perfurar",["穿 chuān"]],"2":["传","chuán","transmitir"],"3":["喘","chuǎn","ofegar"],"4":["串","chuàn","enfileirar"]},"chuang":{"1":["窗","chuāng","janela"],"2":["床","chuáng","cama",["床 chuáng","起床 qǐchuáng"]],"3":["闯","chuǎng","irromper"],"4":["创","chuàng","criar"]},"chui":{"1":["吹","chuī","soprar"],"2":["垂","chuí","pender"],"4":["龡","chuì","soprar flauta"]},"chun":{"1":["春","chūn","primavera"],"2":["纯","chún","puro"],"3":["蠢","chǔn","estúpido"],"5":["鹑","chun",""]},"chuo":{"1":["踔","chuō","espetar"],"4":["绰","chuò","amplo"]},"ci":{"1":["差","cī","defeito"],"2":["词","cí","palavra"],"3":["此","cǐ","este"],"4":["次","cì","seguinte",["次 cì","上次 shàngcì","下次 xiàcì"]]},"cong":{"1":["聪","cōng","inteligente"],"2":["从","cóng","a partir de",["从 cóng"]]},"cou":{"4":["凑","còu","juntar"]},"cu":{"1":["粗","cū","grosso"],"2":["徂","cú","ir"],"3":["皻","cǔ","pele rachada"],"4":["促","cù","apressado"]},"cuan":{"1":["汆","cuān","escaldar"],"2":["攒","cuán","reunir"],"4":["窜","cuàn","fugir"]},"cui":{"1":["摧","cuī","quebrar"],"3":["璀","cuǐ","brilho de gemas"],"4":["脆","cuì","quebradiço"]},"cun":{"1":["村","cūn","aldeia"],"2":["存","cún","existir"],"3":["忖","cǔn","cortar"],"4":["寸","cùn","polegada chinesa"],"5":["寸","cun","senso de medida"]},"cuo":{"1":["搓","cuō","esfregar"],"2":["瘥","cuó","elevado"],"3":["脞","cuǒ","carne picada"],"4":["错","cuò","erro",["错 cuò"]]},"da":{"1":["答","dā","responder"],"2":["达","dá","alcançar",["回答 huídá"]],"3":["打","dǎ","bater",["打 dǎ","打开 dǎkāi","打球 dǎqiú"]],"4":["大","dà","grande",["大 dà","不大 bùdà","大学 dàxué"]],"5":["瘩","da","caroço (em 疙瘩)"]},"dai":{"1":["呆","dāi","bobo"],"3":["逮","dǎi","capturar"],"4":["带","dài","faixa"],"5":["袋","dai","cabeça"]},"dan":{"1":["单","dān","conta"],"3":["胆","dǎn","vesícula biliar"],"4":["但","dàn","mas",["鸡蛋 jīdàn"]],"5":["担","dan","vara de carregar"]},"dang":{"1":["当","dāng","som de sino"],"3":["党","dǎng","partido"],"4":["当","dàng","no mesmo momento"],"5":["当","dang","vale a pena"]},"dao":{"1":["刀","dāo","faca"],"2":["捯","dáo","enrolar (fio)"],"3":["导","dǎo","transmitir"],"4":["到","dào","chegar",["到 dào","听到 tīngdào","回到 huídào"]],"5":["道","dao","justo"]},"de":{"1":["嘚","dē","som de cascos"],"2":["得","dé","obter",["得到 dédào"]],"4":["得","dè","exibir-se (嘚瑟)"],"5":["的","de","partícula possessiva",["地 de","的 de","别的 biéde"]]},"dei":{"1":["嘚","dēi",""],"3":["得","děi","ter que"]},"den":{"4":["㩐","dèn","puxar bruscamente"]},"deng":{"1":["灯","dēng","lâmpada"],"3":["等","děng","esperar",["等 děng"]],"4":["凳","dèng","banco (assento)"]},"di":{"1":["低","dī","baixo"],"2":["敌","dí","inimigo"],"3":["底","dǐ","fundo"],"4":["地","dì","terra",["地 dì","第 dì","地上 dìshang"]],"5":["弟","di","deus local",["弟弟 dìdi"]]},"dia":{"3":["嗲","diǎ","dengoso"]},"dian":{"1":["颠","diān","topo da cabeça"],"3":["点","diǎn","tocar de leve",["点 diǎn","地点 dìdiǎn"]],"4":["电","diàn","relâmpago",["电 diàn","书店 shūdiàn","商店 shāngdiàn"]]},"diao":{"1":["雕","diāo","esculpir"],"3":["鸟","diǎo","pênis (gíria)"],"4":["调","diào","transferir"]},"die":{"1":["爹","diē","papai"],"2":["叠","dié","empilhar"]},"ding":{"1":["钉","dīng","prego"],"3":["顶","dǐng","ápice"],"4":["定","dìng","fixar"]},"diu":{"1":["丢","diū","perder"]},"dong":{"1":["东","dōng","leste",["东 dōng","东西 dōngxi","东边 dōngbian"]],"3":["懂","dǒng","entender"],"4":["动","dòng","mover-se",["动 dòng","动作 dòngzuò"]]},"dou":{"1":["都","dōu","todos",["都 dōu"]],"3":["抖","dǒu","tremer"],"4":["斗","dòu","lutar"]},"du":{"1":["都","dū","capital"],"2":["读","dú","ler em voz alta",["读 dú","读书 dúshū"]],"3":["堵","dǔ","bloquear"],"4":["度","dù","passar (tempo)"],"5":["度","du","peitilho tradicional"]},"duan":{"1":["端","duān","ponta"],"3":["短","duǎn","curto"],"4":["断","duàn","quebrar"]},"dui":{"1":["堆","duī","empilhar"],"3":["怼","duǐ","retrucar"],"4":["对","duì","certo",["对 duì","不对 bùduì","对不起 duìbuqǐ"]]},"dun":{"1":["吨","dūn","tonelada"],"3":["盹","dǔn","cochilo"],"4":["顿","dùn","parar"]},"duo":{"1":["多","duō","muito",["多 duō","多少 duōshao"]],"2":["夺","duó","arrebatar"],"3":["躲","duǒ","esconder-se"],"4":["跺","duò","bater o pé"],"5":["朵","duo","cochichar"]},"e":{"1":["阿","ē","bajular"],"2":["额","é","testa"],"3":["恶","ě","enjoo"],"4":["饿","è","faminto",["饿 è"]],"5":["呃","e",""]},"ei":{"1":["欸","ēi","ei!"],"2":["诶","éi","hein?"],"3":["诶","ěi","ah não"],"4":["诶","èi","sim, certo"]},"en":{"1":["恩","ēn","bondade"],"4":["摁","èn","apertar"],"5":["嗯","en","uhum"]},"eng":{"1":["鞥","ēng","rédeas"]},"er":{"2":["而","ér","e (conjunção)",["儿子 érzi","女儿 nǚér"]],"3":["耳","ěr","orelha"],"4":["二","èr","dois",["二 èr"]]},"fa":{"1":["发","fā","enviar"],"2":["乏","fá","carente de"],"3":["法","fǎ","França"],"4":["发","fà","cabelo"],"5":["发","fa","cortar o cabelo"]},"fan":{"1":["翻","fān","virar"],"2":["凡","fán","comum"],"3":["反","fǎn","contrário"],"4":["饭","fàn","arroz cozido",["饭 fàn","午饭 wǔfàn","吃饭 chīfàn"]],"5":["烦","fan","causar problemas"]},"fang":{"1":["方","fāng","quadrado"],"2":["房","fáng","casa",["房子 fángzi","房间 fángjiān"]],"3":["纺","fǎng","fiar"],"4":["放","fàng","colocar",["放 fàng","放假 fàngjià","放学 fàngxué"]],"5":["方","fang","oficina",["地方 dìfang"]]},"fei":{"1":["飞","fēi","voar",["飞 fēi","非常 fēicháng","飞机 fēijī"]],"2":["肥","féi","gordo"],"3":["匪","fěi","bandido"],"4":["费","fèi","custar"]},"fen":{"1":["分","fēn","dividir",["分 fēn"]],"2":["坟","fén","túmulo"],"3":["粉","fěn","pó"],"4":["奋","fèn","esforçar-se"],"5":["分","fen","parte"]},"feng":{"1":["风","fēng","vento",["风 fēng"]],"2":["缝","féng","costurar"],"3":["讽","fěng","satirizar"],"4":["缝","fèng","costura"]},"fo":{"2":["佛","fó","Buda"]},"fou":{"2":["紑","fóu","brilhante"],"3":["否","fǒu","negar"]},"fu":{"1":["肤","fū","pele"],"2":["服","fú","roupa"],"3":["府","fǔ","sede de governo"],"4":["复","fù","ir e voltar"],"5":["服","fu","marido",["衣服 yīfu"]]},"ga":{"1":["胳","gā","cantinho"],"2":["嘎","gá","sílaba tibetana"],"3":["尕","gǎ","rabugento"],"4":["尬","gà","constrangedor"]},"gai":{"1":["该","gāi","dever"],"3":["改","gǎi","mudar"],"4":["盖","gài","tampa"],"5":["盖","gai","arrumar as malas"]},"gan":{"1":["干","gān","seco",["干 gān","干净 gānjìng"]],"3":["赶","gǎn","alcançar"],"4":["干","gàn","tronco",["干 gàn","干什么 gànshénme"]]},"gang":{"1":["刚","gāng","exatamente"],"3":["岗","gǎng","morro"],"4":["杠","gàng","vara"]},"gao":{"1":["高","gāo","alto",["高 gāo","高兴 gāoxìng"]],"3":["搞","gǎo","fazer"],"4":["告","gào","dizer",["告诉 gàosu"]]},"ge":{"1":["哥","gē","irmão mais velho",["歌 gē","哥哥 gēge","唱歌 chànggē"]],"2":["革","gé","couro"],"3":["个","gě","próprio"],"4":["个","gè","classificador geral",["个 gè"]],"5":["个","ge","um",["哥哥 gēge"]]},"gei":{"1":["假","gēi","afetado"],"3":["给","gěi","para",["给 gěi"]]},"gen":{"1":["跟","gēn","calcanhar",["跟 gēn"]],"2":["哏","gén","engraçado"],"3":["艮","gěn","direto"],"4":["艮","gèn","ranúnculo"]},"geng":{"1":["耕","gēng","arar"],"3":["梗","gěng","galho"],"4":["更","gèng","mais"]},"gong":{"1":["工","gōng","trabalho",["工人 gōngrén","工作 gōngzuò"]],"3":["巩","gǒng","consolidar"],"4":["共","gòng","comum"],"5":["蚣","gong","sogro"]},"gou":{"1":["沟","gōu","vala"],"3":["狗","gǒu","cachorro"],"4":["够","gòu","suficiente"]},"gu":{"1":["姑","gū","tia paterna"],"2":["骨","gú",""],"3":["古","gǔ","antigo"],"4":["顾","gù","cuidar de"],"5":["股","gu","experiente"]},"gua":{"1":["瓜","guā","melão"],"3":["寡","guǎ","poucos"],"4":["挂","guà","pendurar"]},"guai":{"1":["乖","guāi","obediente"],"3":["拐","guǎi","virar"],"4":["怪","guài","estranho"]},"guan":{"1":["关","guān","fechar",["关 guān","关上 guānshàng","没关系 méiguānxi"]],"3":["管","guǎn","cuidar de",["图书馆 túshūguǎn"]],"4":["惯","guàn","acostumado"]},"guang":{"1":["光","guāng","luz"],"3":["广","guǎng","amplo"],"4":["逛","guàng","passear"]},"gui":{"1":["规","guī","compasso"],"3":["鬼","guǐ","fantasma"],"4":["贵","guì","caro",["贵 guì"]]},"gun":{"3":["滚","gǔn","ferver"],"4":["棍","gùn","bastão"]},"guo":{"1":["锅","guō","panela"],"2":["国","guó","país",["国 guó","中国 Zhōngguó","国外 guówài"]],"3":["果","guǒ","fruta",["水果 shuǐguǒ"]],"4":["过","guò","atravessar",["过 guò"]],"5":["过","guo","partícula de experiência"]},"ha":{"1":["哈","hā","ha!"],"2":["蛤","há","sapo (em 蛤蟆)"],"3":["哈","hǎ","pequinês"],"4":["哈","hà","rã-marrom chinesa"]},"hai":{"1":["咳","hāi","som de suspiro"],"2":["还","hái","ainda",["还 hái","孩子 háizi","还是 háishi"]],"3":["海","hǎi","mar"],"4":["害","hài","prejudicar"],"5":["害","hai","formidável"]},"han":{"1":["顸","hān","lerdo"],"2":["含","hán","conter na boca"],"3":["喊","hǎn","gritar"],"4":["汉","hàn","etnia Han",["汉字 hànzì","汉语 Hànyǔ"]]},"hang":{"1":["夯","hāng","socar (terra)"],"2":["行","háng","fileira"],"4":["沆","hàng","balsa"]},"hao":{"1":["好","hāo","direitinho (erhua)"],"2":["毫","háo","pelo fino"],"3":["好","hǎo","bom",["好 hǎo","好吃 hǎochī","好听 hǎotīng"]],"4":["号","hào","corneta",["号 hào","爱好 àihào"]],"5":["号","hao","tamanho da fonte"]},"he":{"1":["喝","hē","beber",["喝 hē"]],"2":["和","hé","e",["和 hé"]],"4":["贺","hè","felicitar"],"5":["喝","he","gritar"]},"hei":{"1":["黑","hēi","preto"]},"hen":{"2":["痕","hén","cicatriz"],"3":["很","hěn","muito",["很 hěn"]],"4":["恨","hèn","odiar"]},"heng":{"1":["哼","hēng","gemer"],"2":["横","héng","horizontal"],"4":["横","hèng","grosseiro"]},"hong":{"1":["轰","hōng","explosão"],"2":["红","hóng","vermelho"],"3":["哄","hǒng","enganar"],"4":["哄","hòng","tumulto"]},"hou":{"1":["齁","hōu","roncar"],"2":["猴","hóu","macaco"],"3":["吼","hǒu","rugir"],"4":["后","hòu","atrás",["后 hòu","后天 hòutiān","后边 hòubian"]],"5":["候","hou","servir",["时候 shíhou","有时候 yǒushíhou"]]},"hu":{"1":["忽","hū","negligenciar"],"2":["湖","hú","lago"],"3":["虎","hǔ","tigre"],"4":["护","hù","proteger"],"5":["乎","hu","inequívoco"]},"hua":{"1":["花","huā","flor",["花 huā"]],"2":["滑","huá","escorregar"],"4":["话","huà","fala",["话 huà","电话 diànhuà","说话 shuōhuà"]],"5":["花","hua","piada sem graça"]},"huai":{"2":["怀","huái","peito"],"4":["坏","huài","ruim",["坏 huài"]],"5":["划","huai",""]},"huan":{"1":["欢","huān","alegre"],"2":["环","huán","anel",["还 huán"]],"3":["缓","huǎn","lento"],"4":["换","huàn","trocar"],"5":["欢","huan","criada",["喜欢 xǐhuan"]]},"huang":{"1":["慌","huāng","entrar em pânico"],"2":["黄","huáng","amarelo"],"3":["谎","huǎng","mentira"],"4":["晃","huàng","balançar"],"5":["晃","huang",""]},"hui":{"1":["挥","huī","acenar"],"2":["回","huí","voltar",["回 huí","回到 huídào","回去 huíqu"]],"3":["毁","huǐ","destruir"],"4":["会","huì","saber fazer",["会 huì","开会 kāihuì"]]},"hun":{"1":["昏","hūn","confuso"],"2":["浑","hún","turvo"],"4":["混","hùn","misturar"]},"huo":{"1":["豁","huō","abertura"],"2":["活","huó","viver"],"3":["火","huǒ","fogo",["火车 huǒchē"]],"4":["或","huò","talvez"],"5":["伙","huo","sujeito"]},"ji":{"1":["机","jī","máquina",["手机 shǒujī","机场 jīchǎng","机票 jīpiào"]],"2":["级","jí","nível"],"3":["几","jǐ","quantos",["几 jǐ"]],"4":["计","jì","calcular",["记 jì","忘记 wàngjì","记住 jìzhu"]],"5":["记","ji","parceiro"]},"jia":{"1":["家","jiā","casa",["家 jiā","回家 huíjiā","国家 guójiā"]],"2":["夹","jiá","forrado"],"3":["假","jiǎ","falso"],"4":["价","jià","preço",["放假 fàngjià","请假 qǐngjià"]],"5":["家","jia","outras pessoas"]},"jian":{"1":["间","jiān","entre",["间 jiān","中间 zhōngjiān","房间 fángjiān"]],"3":["简","jiǎn","simples"],"4":["见","jiàn","ver",["见 jiàn","再见 zàijiàn","见面 jiànmiàn"]],"5":["见","jian","gostar de",["听见 tīngjian","看见 kànjian"]]},"jiang":{"1":["将","jiāng","irá"],"3":["讲","jiǎng","falar"],"4":["降","jiàng","cair"],"5":["匠","jiang","pedreiro"]},"jiao":{"1":["交","jiāo","entregar"],"2":["矫","jiáo","mastigar"],"3":["脚","jiǎo","pé"],"4":["叫","jiào","gritar",["叫 jiào","教 jiào","睡觉 shuìjiào"]]},"jie":{"1":["阶","jiē","degrau"],"2":["结","jié","nó"],"3":["解","jiě","dividir",["姐姐 jiějie","小姐 xiǎojiě"]],"4":["界","jiè","fronteira",["介绍 jièshào"]],"5":["姐","jie","filha mais velha",["姐姐 jiějie"]]},"jin":{"1":["今","jīn","agora",["今天 jīntiān","今年 jīnnián"]],"3":["紧","jǐn","apertado"],"4":["进","jìn","avançar",["进 jìn","请进 qǐngjìn","进去 jìnqu"]]},"jing":{"1":["经","jīng","clássicos",["北京 Běijīng"]],"3":["景","jǐng","paisagem"],"4":["静","jìng","quieto",["干净 gānjìng"]],"5":["经","jing","espírito maligno"]},"jiong":{"1":["𬳶","jiōng","porta"],"3":["炯","jiǒng","brilhante"]},"jiu":{"1":["究","jiū","afinal"],"3":["九","jiǔ","nove",["九 jiǔ"]],"4":["就","jiù","então",["就 jiù"]],"5":["究","jiu","aceitar a contragosto"]},"ju":{"1":["居","jū","ocupar"],"2":["局","jú","estreito"],"3":["举","jǔ","levantar"],"4":["据","jù","segundo"],"5":["具","ju","comportar-se"]},"juan":{"1":["鹃","juān","cuco"],"3":["卷","juǎn","enrolar"],"4":["绢","juàn","seda fina"]},"jue":{"1":["撅","juē","projetar-se"],"2":["决","jué","decidir",["觉得 juéde"]],"3":["蹶","juě","escoicear"],"4":["倔","juè","ríspido"]},"jun":{"1":["军","jūn","exército"],"4":["峻","jùn","alto"]},"ka":{"1":["咖","kā","tipo de pessoa"],"3":["卡","kǎ","travar"]},"kai":{"1":["开","kāi","abrir",["开 kāi","开会 kāihuì","开车 kāichē"]],"3":["慨","kǎi","suspirar"],"4":["忾","kài","desejar"]},"kan":{"1":["看","kān","cuidar de"],"3":["砍","kǎn","cortar"],"4":["看","kàn","ver",["看 kàn","好看 hǎokàn","看到 kàndào"]]},"kang":{"1":["康","kāng","saudável"],"2":["扛","káng","carregar no ombro"],"4":["抗","kàng","resistir"]},"kao":{"1":["尻","kāo","nádegas"],"3":["考","kǎo","bater",["考 kǎo","考试 kǎoshì"]],"4":["靠","kào","encostar"]},"ke":{"1":["科","kē","ramo de estudo"],"2":["壳","ké","casca"],"3":["可","kě","poder",["渴 kě"]],"4":["课","kè","aula",["课 kè","上课 shàngkè","下课 xiàkè"]]},"kei":{"1":["剋","kēi","repreender"]},"ken":{"3":["肯","kěn","concordar"],"4":["裉","kèn","costura lateral"]},"keng":{"1":["坑","kēng","buraco"]},"kong":{"1":["空","kōng","vazio"],"3":["孔","kǒng","orifício"],"4":["控","kòng","controlar"]},"kou":{"1":["抠","kōu","cavucar"],"3":["口","kǒu","boca",["口 kǒu","路口 lùkǒu","门口 ménkǒu"]],"4":["扣","kòu","abotoar"],"5":["口","kou","estado dos dentes"]},"ku":{"1":["哭","kū","chorar"],"3":["苦","kǔ","amargo"],"4":["库","kù","armazém"]},"kua":{"1":["夸","kuā","gabar-se"],"3":["垮","kuǎ","desabar"],"4":["跨","kuà","transpor"]},"kuai":{"3":["㧟","kuǎi","coçar"],"4":["块","kuài","pedaço",["块 kuài","快 kuài"]],"5":["快","kuai","fresco (clima)"]},"kuan":{"1":["宽","kuān","largo"],"3":["款","kuǎn","seção"]},"kuang":{"1":["筐","kuāng","cesto"],"2":["狂","kuáng","louco"],"3":["夼","kuǎng","terreno baixo"],"4":["况","kuàng","além disso"]},"kui":{"1":["亏","kuī","ter prejuízo"],"2":["葵","kuí","malva"],"3":["傀","kuǐ","marionete"],"4":["愧","kuì","envergonhado"]},"kun":{"1":["昆","kūn","usado em 昆虫"],"3":["捆","kǔn","feixe"],"4":["困","kùn","encurralar"]},"kuo":{"4":["扩","kuò","ampliar"]},"la":{"1":["拉","lā","puxar"],"2":["剌","lá","rochedo"],"3":["喇","lǎ","usado em 喇叭"],"4":["蜡","là","vela"],"5":["啦","la","partícula de exclamação"]},"lai":{"2":["来","lái","vir",["来 lái","来到 láidào"]],"4":["赖","lài","depender de"],"5":["𫪁","lai","partícula modal",["出来 chūlai","回来 huílai","起来 qǐlai"]]},"lan":{"2":["蓝","lán","azul"],"3":["览","lǎn","contemplar"],"4":["烂","làn","mole"]},"lang":{"1":["啷","lāng","usado em 啷当"],"2":["狼","láng","lobo"],"3":["朗","lǎng","claro"],"4":["浪","làng","onda"]},"lao":{"1":["捞","lāo","pescar"],"2":["劳","láo","labutar"],"3":["老","lǎo","velho",["老 lǎo","老人 lǎorén","老师 lǎoshī"]],"4":["烙","lào","queijo"]},"le":{"1":["肋","lē",""],"4":["乐","lè","feliz"],"5":["了","le","partícula de ação concluída",["了 le"]]},"lei":{"1":["勒","lēi","apertar"],"2":["雷","léi","trovão"],"3":["垒","lěi","muralha"],"4":["类","lèi","tipo",["累 lèi"]],"5":["嘞","lei","partícula final de aprovação"]},"leng":{"1":["棱","lēng","usado em 刺棱"],"2":["棱","léng","viga quadrada"],"3":["冷","lěng","frio",["冷 lěng"]],"4":["愣","lèng","ficar aturdido"]},"li":{"1":["哩","lī",""],"2":["离","lí","partir"],"3":["里","lǐ","forro",["里 lǐ","哪里 nǎlǐ","家里 jiālǐ"]],"4":["力","lì","força"],"5":["里","li","esnobe"]},"lia":{"3":["俩","liǎ","dois (coloquial)"]},"lian":{"2":["连","lián","ligar"],"3":["脸","liǎn","rosto"],"4":["炼","liàn","refinar"]},"liang":{"2":["粮","liáng","grão"],"3":["两","liǎng","dois",["两 liǎng"]],"4":["量","liàng","capacidade"],"5":["量","liang","peso"]},"liao":{"1":["撩","liāo","erguer"],"2":["疗","liáo","tratar"],"3":["了","liǎo","terminar"],"4":["料","liào","material"]},"lie":{"1":["咧","liē","usado em 咧咧"],"3":["咧","liě","abrir a boca"],"4":["烈","liè","ardente"],"5":["咧","lie","partícula de exclamação"]},"lin":{"1":["拎","līn","carregar na mão"],"2":["临","lín","enfrentar"],"3":["凛","lǐn","severo"],"4":["吝","lìn","avarento"]},"ling":{"1":["昤","līng","luz do sol"],"2":["灵","líng","rápido; esperto",["零 líng"]],"3":["领","lǐng","pescoço; gola"],"4":["另","lìng","outro"],"5":["灵","ling","esperto; vivo"]},"liu":{"1":["溜","liū","escapulir"],"2":["流","liú","fluir"],"3":["柳","liǔ","salgueiro"],"4":["六","liù","seis",["六 liù"]]},"lo":{"5":["咯","lo","partícula final (óbvio)"]},"long":{"1":["隆","lōng","som de tambor"],"2":["龙","lóng","dragão"],"3":["拢","lǒng","juntar; reunir"],"4":["哢","lòng","viela"],"5":["笼","long","buraco"]},"lou":{"1":["䁖","lōu","puxar para si"],"2":["楼","lóu","prédio; andar",["楼 lóu","楼上 lóushàng","楼下 lóuxià"]],"3":["搂","lǒu","abraçar"],"4":["漏","lòu","vazar"],"5":["喽","lou","partícula final (= 了)"]},"lu":{"1":["撸","lū","deslizar a mão"],"2":["炉","lú","fogão; forno"],"3":["虏","lǔ","prisioneiro de guerra"],"4":["路","lù","estrada",["路 lù","走路 zǒulù","路上 lùshang"]],"5":["芦","lu","rolando"]},"luan":{"2":["峦","luán","cadeia de montanhas"],"3":["卵","luǎn","ovo; óvulo"],"4":["乱","luàn","bagunçado; caótico"]},"lun":{"1":["抡","lūn","balançar (braços)"],"2":["轮","lún","roda"],"3":["𫭢","lǔn",""],"4":["论","lùn","opinião; discutir"]},"luo":{"1":["啰","luō","alisar com a mão"],"2":["锣","luó","gongo"],"3":["裸","luǒ","nu; despido"],"4":["落","luò","cair"],"5":["啰","luo","partícula exclamativa final"]},"lü":{"2":["驴","lǘ","burro (animal)"],"3":["旅","lǚ","viagem"],"4":["绿","lǜ","verde"]},"lüe":{"3":["掠","lüě",""],"4":["略","lüè","breve; resumido"]},"ma":{"1":["妈","mā","mãe",["妈妈 māma"]],"2":["麻","má","cânhamo; dormente"],"3":["马","mǎ","cavalo",["马上 mǎshàng","马路 mǎlù"]],"4":["骂","mà","xingar"],"5":["吗","ma","partícula de pergunta",["吗 ma","妈妈 māma"]]},"mai":{"2":["埋","mái","enterrar"],"3":["买","mǎi","comprar",["买 mǎi"]],"4":["卖","mài","vender"],"5":["卖","mai","endívia"]},"man":{"1":["颟","mān","confuso; tolo"],"2":["瞒","mán","esconder; ocultar"],"3":["满","mǎn","cheio; etnia manchu"],"4":["慢","màn","lento",["慢 màn"]]},"mang":{"1":["茫","māng","touro"],"2":["忙","máng","ocupado",["忙 máng","帮忙 bāngmáng"]],"3":["莽","mǎng","mato denso"]},"mao":{"1":["猫","māo","gato"],"2":["毛","máo","pelo; cabelo",["毛 máo"]],"3":["昴","mǎo","plêiades"],"4":["帽","mào","chapéu"],"5":["毛","mao","apelido de criança"]},"me":{"5":["幺","me","não muito",["什么 shénme","怎么 zěnme","干什么 gànshénme"]]},"mei":{"2":["没","méi","não (negação)",["没 méi","没有 méiyǒu","没什么 méishénme"]],"3":["每","měi","cada"],"4":["妹","mèi","irmã mais nova",["妹妹 mèimei"]],"5":["妹","mei","irmã mais nova",["妹妹 mèimei"]]},"men":{"1":["闷","mēn","abafado"],"2":["门","mén","porta",["门 mén","门口 ménkǒu","门票 ménpiào"]],"4":["闷","mèn","entediado"],"5":["们","men","marcador de plural",["们 men","他们 tāmen","你们 nǐmen"]]},"meng":{"1":["蒙","mēng","enganar"],"2":["盟","méng","juramento; aliança"],"3":["猛","měng","feroz"],"4":["梦","mèng","sonho"]},"mi":{"1":["眯","mī","semicerrar os olhos"],"2":["迷","mí","confundir; fã"],"3":["米","mǐ","arroz cru",["米饭 mǐfàn"]],"4":["密","mì","denso; secreto"],"5":["袮","mi","usado em topônimos japoneses"]},"mian":{"2":["棉","mián","algodão"],"3":["免","miǎn","dispensar; evitar"],"4":["面","miàn","rosto; face",["见面 jiànmiàn","面包 miànbāo"]],"5":["面","mian","atrás; parte traseira"]},"miao":{"1":["喵","miāo","miau"],"2":["苗","miáo","broto; etnia miao"],"3":["秒","miǎo","segundo (tempo)"],"4":["庙","miào","templo"]},"mie":{"1":["乜","miē","balido de ovelha"],"4":["灭","miè","apagar; extinguir"]},"min":{"2":["民","mín","povo"],"3":["敏","mǐn","ágil; rápido"]},"ming":{"2":["明","míng","claro; brilhante",["名字 míngzi","明天 míngtiān","明年 míngnián"]],"3":["酩","mǐng","embriagado"],"4":["命","mìng","vida"],"5":["明","ming","esperteza superficial"]},"miu":{"4":["谬","miù","errôneo; absurdo"]},"mo":{"1":["摸","mō","tocar; apalpar"],"2":["模","mó","imitar"],"3":["抹","mǒ","esfregar; passar"],"4":["默","mò","silencioso"],"5":["磨","mo","estimar; calcular"]},"mou":{"1":["哞","mōu","mu (som de vaca)"],"2":["谋","móu","planejar"],"3":["某","mǒu","certo; algum"],"5":["谋","mou",""]},"mu":{"2":["模","mú","molde"],"3":["母","mǔ","mãe"],"4":["目","mù","olho"],"5":["拇","mu","dedo indicador"]},"na":{"1":["南","nā","sobrenome"],"2":["拿","ná","segurar; pegar",["拿 ná"]],"3":["哪","nǎ","qual; como",["哪 nǎ","哪些 nǎxiē","哪里 nǎlǐ"]],"4":["那","nà","aquele; aquilo",["那 nà","那些 nàxiē","那边 nàbian"]],"5":["哪","na","partícula enfática final"]},"nai":{"3":["奶","nǎi","leite; seio",["奶 nǎi","奶奶 nǎinai","牛奶 niúnǎi"]],"4":["耐","nài","suportar; aguentar"],"5":["奶","nai","vovó (paterna)",["奶奶 nǎinai"]]},"nan":{"1":["囡","nān","criança"],"2":["难","nán","difícil",["南 nán","男 nán","难 nán"]],"3":["腩","nǎn","corar de vergonha"],"4":["难","nàn","desastre"],"5":["难","nan","difícil"]},"nang":{"1":["囔","nāng","usado em 囊膪"],"2":["馕","náng","saco; bolsa"],"3":["馕","nǎng","esfaquear"],"4":["齉","nàng","nariz entupido"]},"nao":{"1":["孬","nāo","ruim; covarde"],"2":["猱","náo","nome de montanha"],"3":["脑","nǎo","cérebro",["电脑 diànnǎo"]],"4":["闹","nào","barulhento"],"5":["闹","nao","coçar"]},"ne":{"2":["哪","né","pronúncia de Taiwan"],"4":["讷","nè","falar devagar"],"5":["呐","ne","não se preocupe",["呢 ne"]]},"nei":{"3":["哪","něi","faminto; desanimado"],"4":["内","nèi","dentro; interior"]},"nen":{"4":["嫩","nèn","tenro; macio"]},"neng":{"2":["能","néng","poder; conseguir",["能 néng"]]},"ni":{"1":["妮","nī","menina"],"2":["泥","ní","lama"],"3":["你","nǐ","você",["你 nǐ","你们 nǐmen"]],"4":["睨","nì","rebocar; contido"]},"nian":{"1":["蔫","niān","pegar com dedos"],"2":["年","nián","ano",["年 nián","今年 jīnnián","半年 bànnián"]],"3":["撵","niǎn","expulsar"],"4":["念","niàn","ler; pensar em"]},"niang":{"2":["娘","niáng","mãe"],"4":["酿","niàng","fermentar"],"5":["娘","niang","moça; menina"]},"niao":{"3":["鸟","niǎo","pássaro"],"4":["尿","niào","urinar"]},"nie":{"1":["捏","niē","beliscar; apertar"],"2":["苶","nié","cansado"],"4":["镍","niè","broto de toco"]},"nin":{"2":["您","nín","senhor(a); você formal",["您 nín"]]},"ning":{"2":["凝","níng","congelar; coagular"],"3":["拧","nǐng","torcer; girar"],"4":["宁","nìng","preferir"]},"niu":{"1":["妞","niū","menina"],"2":["牛","niú","boi; vaca",["牛奶 niúnǎi"]],"3":["扭","niǔ","virar; torcer"],"4":["拗","niù","teimoso"],"5":["扭","niu","menininha"]},"nong":{"2":["农","nóng","agricultura"],"4":["弄","nòng","fazer; mexer"]},"nou":{"4":["耨","nòu","enxada"]},"nu":{"2":["奴","nú","escravo"],"3":["努","nǔ","esforçar-se"],"4":["怒","nù","raiva; furioso"]},"nuan":{"3":["暖","nuǎn","quente; morno"]},"nuo":{"2":["娜","nuó","mover; deslocar"],"3":["㛂","nuǒ","gracioso; delicado"],"4":["懦","nuò","covarde"]},"nü":{"3":["女","nǚ","mulher; feminino",["女 nǚ","女人 nǚrén","女儿 nǚér"]],"4":["衄","nǜ","envergonhado"],"5":["女","nü","filha; moça"]},"nüe":{"4":["虐","nüè","cruel; brutal"]},"o":{"1":["噢","ō","oh! (percebendo)"],"2":["哦","ó","oh? (dúvida, surpresa)"],"3":["嚄","ǒ",""],"4":["哦","ò","ah, entendi!"],"5":["哦","o","partícula final amigável"]},"ou":{"1":["欧","ōu","Europa"],"2":["吽","óu","onomatopeia"],"3":["偶","ǒu","acidental"],"4":["怄","òu","irritar"]},"pa":{"1":["啪","pā","bang! (estalo)"],"2":["爬","pá","rastejar"],"4":["怕","pà","ter medo"]},"pai":{"1":["拍","pāi","bater de leve"],"2":["排","pái","enfileirar"],"3":["迫","pǎi","usado em morteiro"],"4":["派","pài","facção"]},"pan":{"1":["攀","pān","escalar"],"2":["盘","pán","bandeja"],"4":["判","pàn","distinguir"],"5":["盘","pan",""]},"pang":{"1":["乓","pāng","bang! (estrondo)"],"2":["旁","páng","lado",["旁边 pángbiān"]],"3":["嗙","pǎng","gabar-se"],"4":["胖","pàng","gordo"]},"pao":{"1":["抛","pāo","lançar"],"2":["袍","páo","túnica"],"3":["跑","pǎo","correr",["跑 pǎo"]],"4":["炮","pào","canhão"]},"pei":{"1":["呸","pēi","argh! (desprezo)"],"2":["培","péi","cultivar"],"4":["配","pèi","combinar"]},"pen":{"1":["喷","pēn","jorrar"],"2":["盆","pén","bacia"],"4":["喷","pèn","cheiro forte"]},"peng":{"1":["怦","pēng","batida do coração"],"2":["朋","péng","amigo",["朋友 péngyou","女朋友 nǚpéngyou","小朋友 xiǎopéngyou"]],"3":["捧","pěng","segurar com as mãos"],"4":["碰","pèng","tocar"],"5":["篷","peng","tenda"]},"pi":{"1":["批","pī","criticar"],"2":["皮","pí","pele"],"3":["匹","pǐ","comparável"],"4":["辟","pì","lei penal"]},"pian":{"1":["篇","piān","folha"],"2":["便","pián","usado em barato"],"3":["谝","piǎn","gabar-se"],"4":["片","piàn","fatia"]},"piao":{"1":["飘","piāo","flutuar"],"2":["瓢","piáo","concha"],"3":["殍","piǎo","morto de fome"],"4":["票","piào","bilhete",["票 piào","机票 jīpiào","车票 chēpiào"]]},"pie":{"1":["瞥","piē","olhar de relance"],"3":["苤","piě","arremessar"],"4":["嫳","piè",""]},"pin":{"1":["拼","pīn","juntar"],"2":["贫","pín","pobre"],"3":["品","pǐn","produto"],"4":["牝","pìn","contratar"]},"ping":{"1":["乒","pīng","ping (som)"],"2":["平","píng","plano"]},"po":{"1":["颇","pō","bastante"],"2":["婆","pó","avó"],"3":["叵","pǒ","não"],"4":["破","pò","quebrado"],"5":["泼","po","sogra"]},"pou":{"1":["剖","pōu","abrir cortando"],"2":["抔","póu","pegar com as mãos"],"3":["掊","pǒu","quebrar"]},"pu":{"1":["扑","pū","lançar-se sobre"],"2":["葡","pú","portugal"],"3":["普","pǔ","geral"],"4":["铺","pù","loja"],"5":["铺","pu",""]},"qi":{"1":["期","qī","período",["七 qī","日期 rìqī","星期 xīngqī"]],"2":["其","qí","seu; dele"],"3":["起","qǐ","levantar",["起 qǐ","一起 yīqǐ","起床 qǐchuáng"]],"4":["气","qì","ar",["天气 tiānqì","汽车 qìchē","生气 shēngqì"]],"5":["气","qi","de nada"]},"qia":{"1":["掐","qiā","beliscar"],"2":["拤","qiá","agarrar com as mãos"],"3":["卡","qiǎ","bloquear"],"4":["恰","qià","exatamente"]},"qian":{"1":["千","qiān","mil"],"2":["前","qián","frente",["前 qián","钱 qián","前天 qiántiān"]],"3":["浅","qiǎn","raso"],"4":["欠","qiàn","dever"],"5":["钱","qian","comissão"]},"qiang":{"1":["枪","qiāng","arma de fogo"],"2":["强","qiáng","forte"],"3":["抢","qiǎng","disputar"],"4":["跄","qiàng","cambalear"]},"qiao":{"1":["敲","qiāo","bater (à porta)"],"2":["桥","qiáo","ponte"],"3":["巧","qiǎo","habilidoso"],"4":["翘","qiào","erguer-se"]},"qie":{"1":["切","qiē","cortar"],"2":["伽","qié","berinjela"],"3":["且","qiě","e; além disso"],"4":["切","qiè","absolutamente"]},"qin":{"1":["亲","qīn","parente; pai/mãe"],"2":["勤","qín","diligente"],"3":["寝","qǐn","dormir"],"4":["沁","qìn","infiltrar-se"],"5":["亲","qin","huqin (instrumento)"]},"qing":{"1":["轻","qīng","leve"],"2":["情","qíng","sentimento"],"3":["请","qǐng","pedir",["请 qǐng","请假 qǐngjià","请坐 qǐngzuò"]],"4":["庆","qìng","celebrar"],"5":["情","qing","assunto"]},"qiong":{"1":["銎","qiōng","olho do machado"],"2":["穷","qióng","pobre"]},"qiu":{"1":["秋","qiū","outono"],"2":["求","qiú","buscar",["球 qiú","打球 dǎqiú"]],"3":["糗","qiǔ","ração seca"]},"qu":{"1":["区","qū","área"],"2":["渠","qú","canal"],"3":["取","qǔ","pegar"],"4":["去","qù","ir",["去 qù","去年 qùnián"]],"5":["屈","qu","voltar",["出去 chūqu","回去 huíqu","进去 jìnqu"]]},"quan":{"1":["圈","quān","círculo"],"2":["全","quán","todo"],"3":["犬","quǎn","cão"],"4":["劝","quàn","aconselhar"]},"que":{"1":["缺","quē","falta"],"2":["瘸","qué","manco"],"4":["却","què","mas"],"5":["鹊","que",""]},"qun":{"1":["逡","qūn","celeiro"],"2":["群","qún","grupo"]},"ran":{"2":["然","rán","correto"],"3":["染","rǎn","tingir"],"5":["然","ran",""]},"rang":{"1":["嚷","rāng","discutir aos gritos"],"2":["蘘","ráng","orvalhado"],"3":["嚷","rǎng","gritar"],"4":["让","ràng","ceder"]},"rao":{"2":["饶","ráo","rico"],"3":["扰","rǎo","perturbar"],"4":["绕","rào","enrolar"]},"re":{"3":["惹","rě","provocar"],"4":["热","rè","aquecer",["热 rè"]]},"ren":{"2":["人","rén","pessoa",["人 rén","别人 biérén","女人 nǚrén"]],"3":["忍","rěn","suportar"],"4":["认","rèn","reconhecer",["认真 rènzhēn","认识 rènshi"]],"5":["人","ren","outras pessoas"]},"reng":{"1":["扔","rēng","jogar"],"2":["仍","réng","ainda"],"4":["芿","rèng","ervas rebrotadas"]},"ri":{"4":["日","rì","sol",["日 rì","日期 rìqī","生日 shēngrì"]]},"rong":{"1":["茸","rōng",""],"2":["容","róng","conter"],"3":["氄","rǒng","supérfluo"]},"rou":{"2":["柔","róu","macio"],"4":["肉","ròu","carne",["肉 ròu"]]},"ru":{"2":["如","rú","como"],"3":["乳","rǔ","seio"],"4":["入","rù","entrar"]},"rua":{"2":["挼","ruá","amassado"]},"ruan":{"2":["壖","ruán","adjacente"],"3":["软","ruǎn","macio"]},"rui":{"2":["蕤","ruí","franja"],"3":["蕊","ruǐ","estame"],"4":["锐","ruì","agudo"]},"run":{"2":["𥆧","rún","tique nervoso"],"4":["润","rùn","úmido"]},"ruo":{"2":["挼","ruó","esfregar"],"4":["弱","ruò","fraco"]},"sa":{"1":["撒","sā","soltar"],"3":["洒","sǎ","borrifar"],"4":["萨","sà","sobrenome"]},"sai":{"1":["塞","sāi","tampar"],"4":["赛","sài","competir"]},"san":{"1":["三","sān","três",["三 sān"]],"3":["伞","sǎn","guarda-chuva"],"4":["散","sàn","espalhar"]},"sang":{"1":["桑","sāng","amoreira"],"3":["嗓","sǎng","garganta"],"4":["丧","sàng","perder"]},"sao":{"1":["搔","sāo","coçar"],"3":["嫂","sǎo","cunhada"],"4":["扫","sào","vassoura"],"5":["嫂","sao","cunhada"]},"se":{"4":["色","sè","cor"]},"sen":{"1":["森","sēn","floresta densa"]},"seng":{"1":["僧","sēng","monge budista"]},"sha":{"1":["杀","shā","matar"],"2":["啥","shá","o quê (dialeto)"],"3":["傻","shǎ","bobo"],"4":["啥","shà","num instante"]},"shai":{"1":["筛","shāi","peneira"],"3":["色","shǎi","cor"],"4":["晒","shài","secar ao sol"]},"shan":{"1":["山","shān","montanha",["山 shān"]],"3":["闪","shǎn","desviar"],"4":["善","shàn","bom"]},"shang":{"1":["伤","shāng","ferir",["商场 shāngchǎng","商店 shāngdiàn"]],"3":["赏","shǎng","recompensar"],"4":["上","shàng","em cima",["上 shàng","上午 shàngwǔ","上学 shàngxué"]],"5":["上","shang","em princípio",["地上 dìshang","早上 zǎoshang","晚上 wǎnshang"]]},"shao":{"1":["烧","shāo","queimar"],"2":["勺","sháo","colher"],"3":["少","shǎo","pouco",["少 shǎo"]],"4":["少","shào","jovem",["介绍 jièshào"]],"5":["少","shao","quanto",["多少 duōshao"]]},"she":{"1":["奢","shē","luxuoso"],"2":["蛇","shé","cobra"],"3":["舍","shě","abandonar"],"4":["社","shè","sociedade"]},"shei":{"2":["谁","shéi","quem",["谁 shéi"]]},"shen":{"1":["身","shēn","corpo",["身上 shēnshang","身体 shēntǐ"]],"2":["什","shén","o quê",["什么 shénme","干什么 gànshénme","没什么 méishénme"]],"3":["婶","shěn","tia"],"4":["甚","shèn","excessivo"],"5":["婶","shen","tia"]},"sheng":{"1":["生","shēng","nascer",["医生 yīshēng","女生 nǚshēng","生日 shēngrì"]],"2":["绳","shéng","corda"],"3":["省","shěng","economizar"],"4":["胜","shèng","vitória"],"5":["生","sheng","senhor",["先生 xiānsheng","学生 xuésheng"]]},"shi":{"1":["师","shī","professor",["老师 lǎoshī"]],"2":["时","shí","hora",["十 shí","小时 xiǎoshí","时候 shíhou"]],"3":["使","shǐ","fazer"],"4":["是","shì","ser",["事 shì","是 shì","试 shì"]],"5":["识","shi","culpa",["知识 zhīshi","认识 rènshi","还是 háishi"]]},"shou":{"1":["收","shōu","receber"],"2":["熟","shóu","familiarizar-se"],"3":["手","shǒu","mão",["手 shǒu","手机 shǒujī","洗手间 xǐshǒujiān"]],"4":["受","shòu","receber"],"5":["手","shou","cadáver"]},"shu":{"1":["书","shū","livro",["书 shū","书包 shūbāo","书店 shūdiàn"]],"2":["熟","shú","maduro"],"3":["属","shǔ","categoria"],"4":["数","shù","número",["树 shù"]],"5":["叔","shu","tio"]},"shua":{"1":["刷","shuā","escova"],"3":["耍","shuǎ","brincar com"],"4":["刷","shuà","selecionar"]},"shuai":{"1":["摔","shuāi","cair"],"3":["甩","shuǎi","arremessar"],"4":["率","shuài","liderar"]},"shuan":{"1":["拴","shuān","amarrar"],"4":["涮","shuàn","enxaguar"]},"shuang":{"1":["双","shuāng","par"],"3":["爽","shuǎng","claro"]},"shui":{"2":["谁","shuí","quem"],"3":["水","shuǐ","água",["水 shuǐ","水果 shuǐguǒ"]],"4":["睡","shuì","dormir",["睡 shuì","睡觉 shuìjiào"]]},"shun":{"3":["楯","shǔn","chupar"],"4":["顺","shùn","obedecer"]},"shuo":{"1":["说","shuō","falar",["说 shuō","说话 shuōhuà"]],"4":["烁","shuò","brilhante"]},"si":{"1":["思","sī","pensar"],"3":["死","sǐ","morrer"],"4":["四","sì","quatro",["四 sì"]],"5":["思","si","chefe"]},"song":{"1":["松","sōng","pinheiro"],"2":["𪨊","sóng","sêmen"],"3":["耸","sǒng","erguer"],"4":["送","sòng","enviar",["送 sòng"]]},"sou":{"1":["搜","sōu","procurar"],"3":["擞","sǒu","senhor idoso"],"4":["擞","sòu","tossir"],"5":["嗽","sou","tossir"]},"su":{"1":["苏","sū","reviver"],"2":["俗","sú","costume"],"4":["速","sù","rápido"],"5":["诉","su","contar",["告诉 gàosu"]]},"suan":{"1":["酸","suān","azedo"],"3":["匴","suǎn","cesto de bambu"],"4":["算","suàn","calcular"],"5":["算","suan",""]},"sui":{"1":["虽","suī","embora"],"2":["随","suí","seguir"],"3":["髓","suǐ","medula"],"4":["岁","suì","anos de idade",["岁 suì"]]},"sun":{"1":["孙","sūn","neto"],"3":["损","sǔn","diminuir"]},"suo":{"1":["缩","suō","encolher"],"3":["所","suǒ","lugar"],"5":["嗦","suo","ágil"]},"ta":{"1":["他","tā","ele",["他 tā","她 tā","他们 tāmen"]],"3":["塔","tǎ","torre"],"4":["踏","tà","pisar"]},"tai":{"1":["胎","tāi","feto"],"2":["抬","tái","levantar"],"3":["呔","tǎi","sotaque de fora"],"4":["太","tài","demais; muito",["太 tài"]],"5":["太","tai","sujo (dialeto)"]},"tan":{"1":["摊","tān","espalhar"],"2":["谈","tán","conversar"],"3":["坦","tǎn","plano"],"4":["叹","tàn","suspirar"],"5":["弹","tan","mover-se"]},"tang":{"1":["汤","tāng","sopa"],"2":["堂","táng","salão"],"3":["躺","tǎng","deitar-se"],"4":["趟","tàng","classificador de viagens"],"5":["汤","tang","item de programa"]},"tao":{"1":["掏","tāo","tirar do bolso"],"2":["逃","táo","fugir"],"3":["讨","tǎo","convidar"],"4":["套","tào","cobrir"]},"te":{"4":["特","tè","especial"],"5":["脦","te",""]},"tei":{"1":["忒","tēi","demais"]},"teng":{"1":["熥","tēng","reaquecer"],"2":["腾","téng","galopar"],"5":["腾","teng","mover"]},"ti":{"1":["踢","tī","chutar"],"2":["题","tí","tópico"],"3":["体","tǐ","corpo",["身体 shēntǐ"]],"4":["替","tì","substituir"],"5":["屉","ti","gaveta"]},"tian":{"1":["天","tiān","dia",["天 tiān","今天 jīntiān","前天 qiántiān"]],"2":["田","tián","campo"],"3":["舔","tiǎn","lamber"],"4":["掭","tiàn","alisar pincel"],"5":["天","tian",""]},"tiao":{"1":["挑","tiāo","carregar no ombro"],"2":["条","tiáo","tira"],"3":["挑","tiǎo","erguer"],"4":["跳","tiào","pular"]},"tie":{"1":["贴","tiē","colar"],"3":["铁","tiě","ferro"],"4":["帖","tiè","cópia de caligrafia"]},"ting":{"1":["听","tīng","ouvir",["听 tīng","听写 tīngxiě","听到 tīngdào"]],"2":["停","tíng","parar"],"3":["挺","tǐng","reto"],"4":["梃","tìng",""],"5":["听","ting","perguntar sobre"]},"tong":{"1":["通","tōng","atravessar"],"2":["同","tóng","igual",["同学 tóngxué"]],"3":["统","tǒng","reunir"],"4":["痛","tòng","dor"],"5":["同","tong","contrato"]},"tou":{"1":["偷","tōu","roubar"],"2":["头","tóu","cabeça"],"3":["钭","tǒu","jarra de vinho"],"4":["透","tòu","penetrar"],"5":["头","tou","sufixo de substantivo"]},"tu":{"1":["突","tū","irromper"],"2":["图","tú","diagrama",["地图 dìtú","图书馆 túshūguǎn"]],"3":["吐","tǔ","cuspir"],"4":["兔","tù","coelho"],"5":["涂","tu","confuso"]},"tuan":{"1":["湍","tuān","correr (água)"],"2":["团","tuán","redondo"],"3":["疃","tuǎn","aldeia"],"4":["彖","tuàn","prever por trigramas"]},"tui":{"1":["推","tuī","empurrar"],"2":["𬯎","tuí","desmoronar"],"3":["腿","tuǐ","perna"],"4":["退","tuì","recuar"]},"tun":{"1":["吞","tūn","engolir"],"2":["屯","tún","aquartelar"],"3":["氽","tǔn","flutuar"],"4":["褪","tùn","escorregar de"]},"tuo":{"1":["脱","tuō","tirar; despir"],"2":["驮","tuó","carregar nas costas"],"3":["妥","tuǒ","adequado"],"4":["唾","tuò","saliva"],"5":["驼","tuo","xilitol (cantonês)"]},"wa":{"1":["挖","wā","cavar"],"2":["娃","wá","bebê"],"3":["瓦","wǎ","telha"],"4":["袜","wà","meias"],"5":["哇","wa","partícula final (após u/ao)"]},"wai":{"1":["歪","wāi","torto"],"3":["崴","wǎi","torcer (tornozelo)"],"4":["外","wài","fora",["外 wài","国外 guówài","外国 wàiguó"]]},"wan":{"1":["弯","wān","curvar"],"2":["完","wán","terminar",["开玩笑 kāiwánxiào"]],"3":["晚","wǎn","noite",["晚 wǎn","晚上 wǎnshang","晚饭 wǎnfàn"]],"4":["万","wàn","dez mil"]},"wang":{"1":["汪","wāng","extensão de água"],"2":["王","wáng","rei"],"3":["往","wǎng","ir (para)",["上网 shàngwǎng","网上 wǎngshàng","网友 wǎngyǒu"]],"4":["望","wàng","lua cheia",["忘 wàng","忘记 wàngjì"]],"5":["望","wang","acusar injustamente"]},"wei":{"1":["微","wēi","minúsculo"],"2":["为","wéi","como; ser"],"3":["伟","wěi","grande; grandioso"],"4":["为","wèi","por causa de"],"5":["猬","wei","ouriço"]},"wen":{"1":["温","wēn","morno"],"2":["文","wén","língua; escrita",["中文 Zhōngwén","课文 kèwén"]],"3":["稳","wěn","estável"],"4":["问","wèn","perguntar",["问 wèn","请问 qǐngwèn"]],"5":["问","wen",""]},"weng":{"1":["嗡","wēng","zumbido"],"3":["蓊","wěng","subir (nuvens)"],"4":["蕹","wèng","jarro de barro"]},"wo":{"1":["窝","wō","ninho"],"3":["我","wǒ","eu",["我 wǒ","我们 wǒmen"]],"4":["握","wò","segurar"]},"wu":{"1":["屋","wū","casa"],"2":["无","wú","não ter"],"3":["五","wǔ","cinco",["五 wǔ","上午 shàngwǔ","下午 xiàwǔ"]],"4":["物","wù","coisa"],"5":["务","wu","tarefa; missão"]},"xi":{"1":["西","xī","oeste",["西 xī","西边 xībian"]],"2":["习","xí","praticar",["学习 xuéxí"]],"3":["喜","xǐ","gostar de",["洗 xǐ","喜欢 xǐhuan","洗手间 xǐshǒujiān"]],"4":["细","xì","fino"],"5":["西","xi","descanso",["东西 dōngxi","休息 xiūxi","没关系 méiguānxi"]]},"xia":{"1":["虾","xiā","camarão"],"2":["峡","xiá","desfiladeiro"],"4":["下","xià","baixo; descer",["下 xià","下午 xiàwǔ","下次 xiàcì"]],"5":["下","xia","sentar-se"]},"xian":{"1":["先","xiān","primeiro; antes",["先 xiān","先生 xiānsheng"]],"2":["闲","xián","ocioso; livre"],"3":["显","xiǎn","mostrar"],"4":["现","xiàn","aparecer",["现在 xiànzài"]],"5":["鲜","xian","saliva"]},"xiang":{"1":["相","xiāng","mutuamente"],"2":["详","xiáng","detalhado"],"3":["想","xiǎng","pensar",["想 xiǎng"]],"4":["象","xiàng","elefante"]},"xiao":{"1":["消","xiāo","diminuir"],"2":["淆","xiáo","confundir"],"3":["小","xiǎo","pequeno",["小 xiǎo","小姐 xiǎojiě","小学 xiǎoxué"]],"4":["笑","xiào","rir; sorrir",["笑 xiào","学校 xuéxiào","开玩笑 kāiwánxiào"]]},"xie":{"1":["些","xiē","alguns",["一些 yīxiē","哪些 nǎxiē","有些 yǒuxiē"]],"2":["协","xié","cooperar"],"3":["写","xiě","escrever",["写 xiě","听写 tīngxiě"]],"4":["谢","xiè","agradecer",["谢谢 xièxie"]],"5":["谢","xie","olhar de esguelha",["谢谢 xièxie"]]},"xin":{"1":["心","xīn","coração",["新 xīn","新年 xīnnián"]],"2":["寻","xín",""],"3":["伈","xǐn","nervoso"],"4":["信","xìn","carta"],"5":["心","xin","lanche"]},"xing":{"1":["星","xīng","estrela",["星期 xīngqī","星期天 xīngqītiān","星期日 xīngqīrì"]],"2":["行","xíng","andar; ir",["行 xíng"]],"3":["醒","xǐng","acordar"],"4":["性","xìng","natureza",["高兴 gāoxìng"]],"5":["形","xing","gorila"]},"xiong":{"1":["胸","xiōng","peito"],"2":["雄","xióng","macho"],"4":["诇","xiòng","bisbilhotar"],"5":["兄","xiong","irmãos"]},"xiu":{"1":["修","xiū","consertar; decorar",["休息 xiūxi"]],"3":["朽","xiǔ","podre"],"4":["袖","xiù","manga (roupa)"]},"xu":{"1":["须","xū","dever; precisar"],"2":["徐","xú","lentamente"],"3":["许","xǔ","permitir"],"4":["续","xù","continuar"],"5":["蓿","xu","genro"]},"xuan":{"1":["宣","xuān","declarar"],"2":["旋","xuán","girar"],"3":["选","xuǎn","escolher"],"4":["绚","xuàn","adornado"]},"xue":{"1":["削","xuē","descascar; aparar"],"2":["学","xué","aprender",["学 xué","上学 shàngxué","中学 zhōngxué"]],"3":["雪","xuě","neve"],"4":["血","xuè","sangue"]},"xun":{"1":["熏","xūn","defumar"],"2":["寻","xún","procurar"],"4":["讯","xùn","perguntar; notícia"],"5":["训","xun","lição; repreender"]},"ya":{"1":["压","yā","pressionar"],"2":["牙","yá","dente"],"3":["哑","yǎ","mudo"],"4":["讶","yà","espantado"],"5":["呀","ya","partícula de exclamação"]},"yan":{"1":["烟","yān","fumaça; cigarro"],"2":["严","yán","rigoroso"],"3":["眼","yǎn","olho"],"4":["验","yàn","examinar"]},"yang":{"1":["央","yāng","centro"],"2":["阳","yáng","positivo (yang)"],"3":["养","yǎng","criar (animais)"],"4":["样","yàng","maneira",["一样 yīyàng"]]},"yao":{"1":["要","yāo","exigir"],"2":["摇","yáo","sacudir"],"3":["咬","yǎo","morder"],"4":["要","yào","querer",["要 yào","重要 zhòngyào"]]},"ye":{"1":["椰","yē","engasgar"],"2":["爷","yé","vovô",["爷爷 yéye"]],"3":["也","yě","também",["也 yě"]],"4":["业","yè","ramo de atividade",["页 yè"]],"5":["爷","ye","buda (respeitoso)",["爷爷 yéye"]]},"yi":{"1":["一","yī","um",["一 yī","一些 yīxiē","一半 yībàn"]],"2":["仪","yí","aparelho"],"3":["以","yǐ","usar"],"4":["义","yì","justiça"],"5":["意","yi","plano"]},"yin":{"1":["因","yīn","causa"],"2":["银","yín","prata"],"3":["引","yǐn","puxar (arco)"],"4":["印","yìn","imprimir"]},"ying":{"1":["应","yīng","dever"],"2":["营","yíng","acampamento"],"3":["影","yǐng","imagem",["电影 diànyǐng","电影院 diànyǐngyuàn"]],"4":["应","yìng","responder"],"5":["应","ying","cuidar de"]},"yo":{"1":["哟","yō","ó! (surpresa)"],"5":["哟","yo","partícula final afetiva"]},"yong":{"1":["拥","yōng","abraçar"],"2":["喁","yóng","peixe boquejando"],"3":["永","yǒng","para sempre"],"4":["用","yòng","usar",["用 yòng","不用 bùyòng","有用 yǒuyòng"]],"5":["用","yong","confortável"]},"you":{"1":["优","yōu","excelente"],"2":["由","yóu","seguir"],"3":["有","yǒu","ter",["有 yǒu","有些 yǒuxiē","有名 yǒumíng"]],"4":["又","yòu","de novo",["右 yòu","右边 yòubian"]],"5":["友","you","fazer amigos",["朋友 péngyou","女朋友 nǚpéngyou","小朋友 xiǎopéngyou"]]},"yu":{"1":["纡","yū","hematoma"],"2":["于","yú","ir"],"3":["与","yǔ","e (formal)",["雨 yǔ","下雨 xiàyǔ","外语 wàiyǔ"]],"4":["育","yù","ter filhos"]},"yuan":{"1":["冤","yuān","injustiça"],"2":["员","yuán","membro",["元 yuán"]],"3":["远","yuǎn","longe",["远 yuǎn"]],"4":["院","yuàn","pátio",["医院 yīyuàn","学院 xuéyuàn","电影院 diànyǐngyuàn"]],"5":["怨","yuan",""]},"yue":{"1":["约","yuē","marcar encontro"],"3":["哕","yuě","vomitar"],"4":["月","yuè","lua",["月 yuè"]],"5":["月","yue","ter ânsia de vômito"]},"yun":{"1":["晕","yūn","confuso"],"2":["云","yún","dizer (clássico)"],"3":["允","yǔn","justo"],"4":["运","yùn","mover"]},"za":{"1":["咂","zā","sorver"],"2":["杂","zá","misturado"],"3":["咋","zǎ","como? (dialeto)"]},"zai":{"1":["灾","zāi","desastre"],"3":["载","zǎi","registrar"],"4":["在","zài","existir",["再 zài","在 zài","再见 zàijiàn"]]},"zan":{"1":["糌","zān","grampo de cabelo"],"2":["咱","zán","eu"],"3":["攒","zǎn","juntar"],"4":["赞","zàn","apoiar"],"5":["咱","zan","quando? (dialeto)"]},"zang":{"1":["脏","zāng","sujo"],"3":["驵","zǎng","cavalo forte"],"4":["脏","zàng","vísceras"]},"zao":{"1":["遭","zāo","sofrer"],"2":["凿","záo","cinzel"],"3":["早","zǎo","cedo",["早 zǎo","早上 zǎoshang","早饭 zǎofàn"]],"4":["造","zào","fazer"]},"ze":{"2":["则","zé","norma"],"4":["仄","zè","inclinar"]},"zei":{"2":["贼","zéi","ladrão"]},"zen":{"3":["怎","zěn","como",["怎么 zěnme"]],"4":["谮","zèn","caluniar"]},"zeng":{"1":["增","zēng","aumentar"],"4":["锃","zèng","presentear"]},"zha":{"1":["扎","zhā","espetar"],"2":["闸","zhá","comporta"],"3":["眨","zhǎ","piscar"],"4":["炸","zhà","explodir"],"5":["馇","zha","parte de 饹馇"]},"zhai":{"1":["摘","zhāi","colher"],"2":["宅","zhái","residência"],"3":["窄","zhǎi","estreito"],"4":["债","zhài","dívida"]},"zhan":{"1":["毡","zhān","feltro"],"3":["展","zhǎn","estender"],"4":["战","zhàn","lutar",["站 zhàn","车站 chēzhàn"]],"5":["展","zhan","calafrio"]},"zhang":{"1":["张","zhāng","abrir"],"3":["长","zhǎng","chefe"],"4":["帐","zhàng","cortina"],"5":["掌","zhang","palma da mão"]},"zhao":{"1":["招","zhāo","recrutar"],"2":["着","zháo","tocar"],"3":["找","zhǎo","procurar",["找 zhǎo","找到 zhǎodào"]],"4":["照","zhào","iluminar"]},"zhe":{"1":["遮","zhē","encobrir"],"2":["哲","zhé","sábio"],"3":["者","zhě","aquele que"],"4":["这","zhè","este",["这 zhè","这些 zhèxiē","这边 zhèbian"]],"5":["着","zhe","partícula de ação contínua",["着 zhe"]]},"zhei":{"4":["这","zhèi","este"]},"zhen":{"1":["真","zhēn","realmente",["真 zhēn","真的 zhēnde","认真 rènzhēn"]],"3":["诊","zhěn","examinar (médico)"],"4":["阵","zhèn","formação de tropas"]},"zheng":{"1":["争","zhēng","disputar"],"3":["整","zhěng","inteiro"],"4":["正","zhèng","reto",["正 zhèng","正在 zhèngzài"]],"5":["正","zheng","falar dormindo"]},"zhi":{"1":["知","zhī","saber",["知识 zhīshi","知道 zhīdào"]],"2":["直","zhí","reto"],"3":["只","zhǐ","somente"],"4":["志","zhì","aspiração"],"5":["置","zhi","posição"]},"zhong":{"1":["中","zhōng","china",["中 zhōng","中午 zhōngwǔ","中国 Zhōngguó"]],"3":["种","zhǒng","semente"],"4":["众","zhòng","multidão",["重 zhòng","重要 zhòngyào"]]},"zhou":{"1":["周","zhōu","dinastia zhou"],"2":["轴","zhóu","eixo"],"3":["帚","zhǒu","cotovelo"],"4":["皱","zhòu","enrugar"],"5":["帚","zhou","vassoura"]},"zhu":{"1":["猪","zhū","porco"],"2":["逐","zhú","perseguir"],"3":["主","zhǔ","dono"],"4":["住","zhù","morar",["住 zhù"]]},"zhua":{"1":["抓","zhuā","agarrar"],"3":["爪","zhuǎ","pata"]},"zhuai":{"1":["拽","zhuāi","arremessar"],"3":["跩","zhuǎi","falar rebuscado"],"4":["拽","zhuài","puxar"]},"zhuan":{"1":["专","zhuān","especializado"],"3":["转","zhuǎn","virar"],"4":["转","zhuàn","girar"]},"zhuang":{"1":["装","zhuāng","adorno"],"3":["奘","zhuǎng","gordo"],"4":["状","zhuàng","forma"]},"zhui":{"1":["追","zhuī","perseguir"],"4":["坠","zhuì","cair"],"5":["缀","zhui",""]},"zhun":{"1":["屯","zhūn","dificuldade"],"3":["准","zhǔn","permitir",["准备 zhǔnbèi"]]},"zhuo":{"1":["桌","zhuō","mesa",["桌子 zhuōzi"]],"2":["着","zhuó","vestir"]},"zi":{"1":["资","zī","recursos"],"3":["子","zǐ","filho"],"4":["自","zì","si mesmo",["字 zì","汉字 hànzì"]],"5":["子","zi","sufixo nominal",["子 zi","儿子 érzi","包子 bāozi"]]},"zong":{"1":["综","zōng","sintetizar"],"3":["总","zǒng","geral"],"4":["纵","zòng","vertical"],"5":["宗","zong",""]},"zou":{"1":["诹","zōu","cocheiro"],"3":["走","zǒu","andar",["走 zǒu","走路 zǒulù"]],"4":["奏","zòu","tocar música"]},"zu":{"1":["租","zū","alugar"],"2":["族","zú","etnia"],"3":["组","zǔ","formar"]},"zuan":{"1":["钻","zuān","perfurar"],"3":["缵","zuǎn","coque (cabelo)"],"4":["攥","zuàn","segurar firme"]},"zui":{"1":["朘","zuī","pênis de menino"],"3":["嘴","zuǐ","boca"],"4":["最","zuì","o mais",["最 zuì","最后 zuìhòu","最好 zuìhǎo"]],"5":["罪","zui","ofender"]},"zun":{"1":["尊","zūn","respeitar"],"3":["撙","zǔn","reduzir"],"4":["捘","zùn","empurrar"]},"zuo":{"1":["作","zuō","chupar"],"2":["昨","zuó","ontem",["昨天 zuótiān"]],"3":["左","zuǒ","esquerda",["左 zuǒ","左边 zuǒbian"]],"4":["作","zuò","fazer",["做 zuò","坐 zuò","动作 dòngzuò"]]}}; /* TONES:END */</script>
+<script src="audio/manifest.js"></script>
+<script>
+(function(){
+  /* ---------- dados ---------- */
+  const GROUPS = {
+    A:{key:'A',cls:'g-A',name:'Grupo A',hz:'开口呼',pin:'kāikǒuhū',how:'começa direto pela vogal: a, o, e (boca aberta)',
+       tip:'Finais sem i, u nem ü na frente. Atenção: ong soa "ung" e, pela fonologia, é do grupo U; está aqui só pela letra escrita.'},
+    I:{key:'I',cls:'g-I',name:'Grupo I',hz:'齐齿呼',pin:'qíchǐhū',how:'começa com i (dentes alinhados, boca esticada)',
+       tip:'Sem inicial, o i vira y. Atenção: iong soa "üng" e, pela fonologia, é do grupo Ü; está aqui só pela letra escrita.'},
+    U:{key:'U',cls:'g-U',name:'Grupo U',hz:'合口呼',pin:'hékǒuhū',how:'começa com u (lábios arredondados, projetados)',
+       tip:'Sem inicial, o u vira w. Depois de b p m f, a final uo se escreve só o (bo po mo fo).'},
+    V:{key:'V',cls:'g-V',name:'Grupo Ü',hz:'撮口呼',pin:'cuōkǒuhū',how:'começa com ü (lábios em bico fechado, língua na posição do i)',
+       tip:'Diga "i" e faça bico. Só n, l, j, q, x e y usam; depois de j q x y o trema some.'}
+  };
+  // finais canônicas (como escritas depois de uma consoante), na ordem da tabela
+  const FINALS = [
+    {f:'a',  g:'A',t:'simples', tip:'"a" aberto de "pá"', ex:['mā','妈','mãe']},
+    {f:'o',  g:'A',t:'simples', tip:'só se escreve o depois de b p m f; soa "uô"', ex:['bō','波','onda']},
+    {f:'e',  g:'A',t:'simples', tip:'"ô" sem arredondar os lábios, língua atrás', ex:['hē','喝','beber']},
+    {f:'er', g:'A',t:'simples', tip:'entre "ár" e "âr", com o r caipira no fim', ex:['èr','二','dois']},
+    {f:'-i', g:'A',t:'especial',tip:'zumbido da consoante: fino em zi ci si, grosso em zhi chi shi ri', ex:['shì','是','ser']},
+    {f:'ai', g:'A',t:'composta',tip:'"ai" de "pai"', ex:['ài','爱','amar']},
+    {f:'ei', g:'A',t:'composta',tip:'"ei" de "lei"', ex:['měi','美','bonito']},
+    {f:'ao', g:'A',t:'composta',tip:'"au" de "pau"', ex:['hǎo','好','bom']},
+    {f:'ou', g:'A',t:'composta',tip:'"ôu", com o fechado', ex:['dōu','都','todos']},
+    {f:'an', g:'A',t:'nasal',   tip:'"á" aberto + n de verdade, língua nos dentes', ex:['sān','三','três']},
+    {f:'en', g:'A',t:'nasal',   tip:'e frouxo (o e átono de "de") + n de verdade', ex:['mén','门','porta']},
+    {f:'ang',g:'A',t:'nasal',   tip:'"á" + ng do fundo ("manga" sem o g)', ex:['máng','忙','ocupado']},
+    {f:'eng',g:'A',t:'nasal',   tip:'e frouxo + ng do fundo', ex:['lěng','冷','frio']},
+    {f:'ong',g:'A',t:'nasal',   tip:'"ung", lábios arredondados; pela fonologia é do grupo U', ex:['dōng','东','leste']},
+    {f:'i',  g:'I',t:'simples', tip:'"i" de "vi"', ex:['yī','一','um']},
+    {f:'ia', g:'I',t:'composta',tip:'"iá"', ex:['jiā','家','casa']},
+    {f:'ie', g:'I',t:'composta',tip:'"ié", com e aberto', ex:['xiè','谢','agradecer']},
+    {f:'iao',g:'I',t:'composta',tip:'"iau"', ex:['xiǎo','小','pequeno']},
+    {f:'iu', g:'I',t:'composta',tip:'"iôu"; é iou encolhido', ex:['liù','六','seis']},
+    {f:'io', g:'I',t:'composta',tip:'só sem inicial, na interjeição yo', ex:['yō','哟','ó!'], rare:true},
+    {f:'ian',g:'I',t:'nasal',   tip:'"ién", não "ian"', ex:['tiān','天','dia, céu']},
+    {f:'in', g:'I',t:'nasal',   tip:'"i" + n de verdade; não é o "im" de "fim"', ex:['nín','您','o senhor']},
+    {f:'iang',g:'I',t:'nasal',  tip:'"iáng"', ex:['xiǎng','想','pensar, querer']},
+    {f:'ing',g:'I',t:'nasal',   tip:'"i" + ng do fundo, ponta da língua solta', ex:['míng','名','nome']},
+    {f:'iong',g:'I',t:'nasal',  tip:'"iung"; pela fonologia é üng, do grupo Ü', ex:['xióng','熊','urso']},
+    {f:'u',  g:'U',t:'simples', tip:'"u" de "tu", lábios bem arredondados', ex:['wǔ','五','cinco']},
+    {f:'ua', g:'U',t:'composta',tip:'"uá"', ex:['huā','花','flor']},
+    {f:'uo', g:'U',t:'composta',tip:'"uô"', ex:['guó','国','país']},
+    {f:'uai',g:'U',t:'composta',tip:'"uai"', ex:['kuài','快','rápido']},
+    {f:'ui', g:'U',t:'composta',tip:'"uei"; é uei encolhido', ex:['duì','对','certo']},
+    {f:'uan',g:'U',t:'nasal',   tip:'"uan" + n de verdade', ex:['guān','关','fechar']},
+    {f:'un', g:'U',t:'nasal',   tip:'"uen"; é uen encolhido', ex:['chūn','春','primavera']},
+    {f:'uang',g:'U',t:'nasal',  tip:'"uáng"', ex:['huáng','黄','amarelo']},
+    {f:'ueng',g:'U',t:'nasal',  tip:'"uâng"; só sem inicial', ex:['wēng','翁','velho senhor']},
+    {f:'ü',  g:'V',t:'simples', tip:'"i" com lábios em bico', ex:['nǚ','女','mulher']},
+    {f:'üe', g:'V',t:'composta',tip:'"üé", com e aberto', ex:['yuè','月','lua, mês']},
+    {f:'üan',g:'V',t:'nasal',   tip:'"üén"', ex:['yuán','元','yuan']},
+    {f:'ün', g:'V',t:'nasal',   tip:'i de bico + n de verdade', ex:['yún','云','nuvem']}
+  ];
+  const FINAL_BY = Object.fromEntries(FINALS.map(x=>[x.f,x]));
+  const TYPE_LABEL = {simples:'final simples', composta:'final composta (ditongo)', nasal:'final nasal', especial:'final especial'};
+
+  const FAMILIES = [
+    {id:'bpmf', letters:['b','p','m','f'], name:'Labiais', where:'os lábios fazem o som',
+     tips:{b:['é o p de "espada": surdo, seco, sem soltar ar','nunca o b de "bola", que vibra a garganta'], p:['p com sopro forte','o papel balança'], m:['m normal','não nasaliza a vogal: mā é "ma", não "mã"'], f:['f normal','nunca combina com i: fi, fian não existem']},
+     accepts:{A:'ok',I:'part',U:'part',V:'no'}, notes:{I:'só b p m (bi, pian, ming…); f nunca', U:'só u sozinho: bu pu mu fu', A:'o que se escreve o aqui é uo (bo po mo fo); nunca ong'}},
+    {id:'dtnl', letters:['d','t','n','l'], name:'Ponta da língua', where:'atrás dos dentes de cima',
+     tips:{d:['é o t de "estar": surdo e sem sopro','di, ding, diu, dian não são "dji": t puro antes do i'], t:['t com sopro forte','ti, tian, ting não são "tchi"'], n:['n normal','não nasaliza a vogal: nà é "na", não "nã"'], l:['l de "lá", nunca o l final de "sal"']},
+     accepts:{A:'ok',I:'ok',U:'ok',V:'part'}, notes:{V:'só n e l, com trema: nü lü nüe lüe'}},
+    {id:'gkh', letters:['g','k','h'], name:'Fundo da língua', where:'o dorso da língua sobe até o céu da boca, atrás (velares)',
+     tips:{g:['como o c de "escola": surdo, sem sopro','sempre duro, como em "gato": gē não é "jê"'], k:['c/k com sopro forte','o papel balança'], h:['ar raspando no fundo da boca, entre o rr carioca e o j espanhol']},
+     accepts:{A:'ok',I:'no',U:'ok',V:'no'}, notes:{I:'nunca: não existe gi, ki, hi'}},
+    {id:'jqx', letters:['j','q','x'], name:'Palatais', where:'a língua espalhada, ponta atrás dos dentes de baixo, sorrindo',
+     tips:{j:['"tch" bem fino e sorrindo, sem sopro nenhum','ao ouvido brasileiro parece "dj", mas é surdo'], q:['"tch" de "tchau" com sopro forte, bem fino','nunca [k]: qī não é "ki"'], x:['entre "s" e "ch", fino, língua espalhada','mais fino que o x de "xarope"']},
+     accepts:{A:'no',I:'ok',U:'no',V:'ok'}, notes:{V:'escrito sem trema: ju qu xu (= jü qü xü)', A:'nunca: não existe ja, qe, xo'}},
+    {id:'zhchshr', letters:['zh','ch','sh','r'], name:'Retroflexas', where:'a ponta da língua levantada para trás dos alvéolos',
+     tips:{zh:['"tch" com a língua para trás, sem sopro','surdo, mesmo que soe "dj"'], ch:['"tch" com a língua para trás e sopro forte','o ch do português (chá) é o sh do pinyin, não este'], sh:['"ch" de "chá" com a língua para trás'], r:['o r caipira de "porta": língua para trás sem tocar, com leve zumbido','nunca o rr de "carro"']},
+     accepts:{A:'ok',I:'no',U:'ok',V:'no'}, notes:{A:'inclui o -i zumbido grosso: zhi chi shi ri'}},
+    {id:'zcs', letters:['z','c','s'], name:'Dentais', where:'a ponta da língua encostada nos dentes de cima',
+     tips:{z:['"ts" de "pizza", surdo e sem sopro','ao ouvido lembra "dz", mas não vibra'], c:['"ts" com sopro forte','nunca [k]: cā não é "ka"'], s:['s normal, nunca z']},
+     accepts:{A:'ok',I:'no',U:'ok',V:'no'}, notes:{A:'inclui o -i zumbido fino: zi ci si'}},
+    {id:'zero', letters:[''], name:'Sem inicial', where:'a sílaba começa pela final; y e w são só grafia',
+     tips:{'':['grupo A: escreve-se cru, sem letra de apoio (a, ai, an, er)','grupo I: yi, ya, ye, you, yan… (i sozinho ganha y; i com vogal atrás vira y)','grupo U: wu, wa, wo, wei, wan… (mesma lógica com w)','grupo Ü: yu, yue, yuan, yun (y na frente e sem trema)']},
+     accepts:{A:'ok',I:'ok',U:'ok',V:'ok'}, notes:{A:'cru, sem y nem w', I:'com y', U:'com w', V:'com y, sem trema'}}
+  ];
+  const FAM_OF = {}; FAMILIES.forEach(f=>f.letters.forEach(l=>FAM_OF[l]=f));
+
+  const SYL_SRC = {
+    '':'a o e er ai ei ao ou an en ang eng yi ya ye yao you yan yin yang ying yong yo wu wa wo wai wei wan wen wang weng yu yue yuan yun',
+    b:'ba bo bai bei bao ban ben bang beng bi bie biao bian bin bing bu',
+    p:'pa po pai pei pao pou pan pen pang peng pi pie piao pian pin ping pu',
+    m:'ma mo me mai mei mao mou man men mang meng mi mie miao miu mian min ming mu',
+    f:'fa fo fei fou fan fen fang feng fu',
+    d:'da de dai dei dao dou dan den dang deng dong di dia die diao diu dian ding du duo dui duan dun',
+    t:'ta te tai tei tao tou tan tang teng tong ti tie tiao tian ting tu tuo tui tuan tun',
+    n:'na ne nai nei nao nou nan nen nang neng nong ni nie niao niu nian nin niang ning nu nuo nuan nü nüe',
+    l:'la lo le lai lei lao lou lan lang leng long li lia lie liao liu lian lin liang ling lu luo luan lun lü lüe',
+    g:'ga ge gai gei gao gou gan gen gang geng gong gu gua guo guai gui guan gun guang',
+    k:'ka ke kai kei kao kou kan ken kang keng kong ku kua kuo kuai kui kuan kun kuang',
+    h:'ha he hai hei hao hou han hen hang heng hong hu hua huo huai hui huan hun huang',
+    j:'ji jia jie jiao jiu jian jin jiang jing jiong ju jue juan jun',
+    q:'qi qia qie qiao qiu qian qin qiang qing qiong qu que quan qun',
+    x:'xi xia xie xiao xiu xian xin xiang xing xiong xu xue xuan xun',
+    zh:'zha zhe zhi zhai zhei zhao zhou zhan zhen zhang zheng zhong zhu zhua zhuo zhuai zhui zhuan zhun zhuang',
+    ch:'cha che chi chai chao chou chan chen chang cheng chong chu chua chuo chuai chui chuan chun chuang',
+    sh:'sha she shi shai shei shao shou shan shen shang sheng shu shua shuo shuai shui shuan shun shuang',
+    r:'re ri rao rou ran ren rang reng rong ru rua ruo rui ruan run',
+    z:'za ze zi zai zei zao zou zan zen zang zeng zong zu zuo zui zuan zun',
+    c:'ca ce ci cai cao cou can cen cang ceng cong cu cuo cui cuan cun',
+    s:'sa se si sai sao sou san sen sang seng song su suo sui suan sun'
+  };
+  const SYL = {}; let total=0;
+  for(const k in SYL_SRC){ SYL[k]=new Set(SYL_SRC[k].split(/\s+/)); total+=SYL[k].size; }
+  const SYLSET = new Set(Object.values(SYL_SRC).join(' ').split(/\s+/));
+  const RARE = new Set(['lo','yo','tei','nou','kei','zhei','chua','rua','dia','den','ei']);
+
+  const ZERO_WRITTEN = {a:'a',o:'o',e:'e',er:'er',ai:'ai',ei:'ei',ao:'ao',ou:'ou',an:'an',en:'en',ang:'ang',eng:'eng',
+    i:'yi',ia:'ya',ie:'ye',iao:'yao',iu:'you',ian:'yan',in:'yin',iang:'yang',ing:'ying',iong:'yong',io:'yo',
+    u:'wu',ua:'wa',uo:'wo',uai:'wai',ui:'wei',uan:'wan',un:'wen',uang:'wang',ueng:'weng',
+    'ü':'yu','üe':'yue','üan':'yuan','ün':'yun'};
+  const ZERO_CANON = Object.fromEntries(Object.entries(ZERO_WRITTEN).map(([c,w])=>[w,c]));
+  const RETRO = new Set(['zh','ch','sh','r','z','c','s']);
+  const JQX = new Set(['j','q','x']);
+
+  function written(init, fin){
+    if(init==='') return ZERO_WRITTEN[fin] || null;
+    if(fin==='-i') return RETRO.has(init) ? init+'i' : null;
+    if(fin==='i' && RETRO.has(init)) return null;            // o i de zhi/zi é a final especial -i, não a vogal i
+    if(JQX.has(init)){
+      if(fin[0]==='ü') return init + 'u' + fin.slice(1);       // ü escrito como u depois de j q x
+      if(fin[0]==='u') return null;                            // j q x nunca combinam com o grupo U de verdade
+    }
+    return init + fin;
+  }
+  let showRare=true, showDots=true;
+  try{ const v=localStorage.getItem('pinyin-rare'); if(v!==null) showRare = v==='1'; const d=localStorage.getItem('pinyin-dots'); if(d!==null) showDots = d==='1'; }catch(e){}
+  function has(init, fin){ const w=written(init,fin); return !!w && SYL[init].has(w) && (showRare || !RARE.has(w)); }
+  function cellId(init, fin){ return 'c-'+(init||'zero')+'-'+fin.replace('ü','v').replace('-i','ii').replace('ê','eh'); }
+
+  document.getElementById('stat-syl').textContent = total;
+
+  /* ---------- iniciais ---------- */
+  const famGrid = document.getElementById('fam-grid');
+  const ZERO_LT = [['A','g-A'],['I','g-I'],['U','g-U'],['Ü','g-V']];
+  FAMILIES.forEach(f=>{
+    const card=document.createElement('article'); card.className='fam'+(f.id==='zero'?' zero':'');
+    const letters = f.id==='zero' ? 'y / w' : f.letters.join(' ');
+    let rows='';
+    if(f.id==='zero'){
+      (f.tips['']||[]).forEach((t,i)=>{ const [lt,cls]=ZERO_LT[i]||['',''];
+        rows+=`<div class="row"><div class="lt ${cls}" style="background:var(--g-bg);color:var(--g-fg)">${lt}</div><div class="tip">${t}</div></div>`; });
+    } else {
+      f.letters.forEach(l=>{ const tips=f.tips[l]||[];
+        rows+=`<div class="row"><div class="lt">${l}</div><div class="tip">${tips[0]||''}${tips[1]?`<span class="warn">${tips[1]}</span>`:''}</div></div>`; });
+    }
+    const chips = ['A','I','U','V'].map(g=>{
+      const st=f.accepts[g]; if(st==='no') return '';
+      const G=GROUPS[g]; const note=f.notes[g]?`<span class="why">${f.notes[g]}</span>`:'';
+      return `<div class="acc"><span class="chip ${G.cls}${st==='part'?' rare':''}"><span class="dot"></span>${G.name}</span>${note}</div>`;
+    }).join('');
+    card.innerHTML = `<div class="head"><div class="letters">${letters}</div><div><h3>${f.name}</h3><span>${f.where}</span></div></div>
+      <div class="rows">${rows}</div>
+      <div class="accepts"><span class="lab">Aceita</span>${chips}</div>`;
+    famGrid.appendChild(card);
+  });
+
+  /* ---------- finais ---------- */
+  const grpGrid=document.getElementById('grp-grid');
+  ['A','I','U','V'].forEach(g=>{
+    const G=GROUPS[g];
+    const el=document.createElement('article'); el.className='grp '+G.cls;
+    const subs=['simples','composta','nasal','especial'].map(t=>{
+      const items=FINALS.filter(x=>x.g===g && x.t===t);
+      if(!items.length) return '';
+      const lab = t==='simples'?'Simples':t==='composta'?'Compostas (ditongos)':t==='nasal'?'Nasais (-n, -ng)':'Especial';
+      return `<div class="sub"><div class="lab">${lab}</div><ul class="fl">${items.map(x=>`<li><span class="py${x.rare?' rare':''}">${x.f}</span><div class="ex">${x.ex?`<span class="tk"><b>${x.ex[0]}</b><i>${x.ex[1]}</i><small>${x.ex[2]}</small></span>`:''}<span class="tip">${x.tip}</span></div></li>`).join('')}</ul></div>`;
+    }).join('');
+    el.innerHTML=`<header><div class="name">${G.name}</div><div><span class="hz">${G.hz}</span> <span class="small">${G.pin}</span></div><div class="how">${G.how}</div></header><div class="body">${subs}<p class="foot">${G.tip}</p></div>`;
+    grpGrid.appendChild(el);
+  });
+  (function(){ const col4=document.querySelector('.fin-grid .col4'); const v=grpGrid.querySelector('.grp.g-V'); if(col4 && v) col4.insertBefore(v, col4.firstChild); })();
+
+  /* ---------- compatibilidade ---------- */
+  const cb=document.getElementById('compat-body');
+  FAMILIES.forEach(f=>{
+    const tr=document.createElement('tr');
+    const label = f.id==='zero' ? 'y / w' : f.letters.join(' ');
+    let cells='';
+    ['A','I','U','V'].forEach(g=>{
+      const st=f.accepts[g];
+      const txt = st==='ok'?'sim':st==='part'?'parcial':'não';
+      const sym = st==='ok'?'✓':st==='part'?'◐':'✗';
+      cells += `<td data-g="${GROUPS[g].name}"><span class="mark ${st}">${sym} ${txt}</span>${f.notes[g]?`<span class="why">${f.notes[g]}</span>`:''}</td>`;
+    });
+    tr.innerHTML=`<th>${label}<small>${f.name}</small></th>${cells}`;
+    cb.appendChild(tr);
+  });
+
+  /* ---------- tabelas por família ---------- */
+  const tabs=document.getElementById('tabs'), tables=document.getElementById('tables');
+  FAMILIES.forEach((f,i)=>{
+    const btn=document.createElement('button'); btn.className='tab'; btn.type='button'; btn.role='tab';
+    btn.textContent = f.id==='zero' ? 'sem inicial' : f.letters.join(' ');
+    btn.dataset.fam=f.id; btn.setAttribute('aria-selected', i===0?'true':'false');
+    btn.addEventListener('click',()=>showFam(f.id));
+    tabs.appendChild(btn);
+  });
+  const optsBox=document.getElementById('opts');
+  function mkPill(id,text){ const l=document.createElement('label'); l.className='pill'; l.innerHTML=`<input type="checkbox" id="${id}"><span class="chk"></span><span class="pt-label">${text}</span>`; optsBox.appendChild(l); return l; }
+  mkPill('rare-toggle','mostrar sílabas raras'); mkPill('dots-toggle','tons em cada célula'); mkPill('all-toggle','ver todas de uma vez');
+  const allToggle=document.getElementById('all-toggle'), rareToggle=document.getElementById('rare-toggle'), dotsToggle=document.getElementById('dots-toggle');
+  dotsToggle.checked=showDots;
+  const nRare=[...RARE].filter(r=>SYLSET.has(r)).length;
+  rareToggle.checked=showRare;
+  rareToggle.parentElement.querySelector('.pt-label').textContent='mostrar as '+nRare+' sílabas raras';
+  function currentFam(){ const sel=document.querySelector('.tab[aria-selected="true"]'); return sel?sel.dataset.fam:'bpmf'; }
+  const mobileMQ = window.matchMedia('(max-width: 999px)');
+  function calcCols(){ return Math.max(10, Math.floor((tables.clientWidth-52)/46)); }
+  let lastCols=0;
+  function buildTables(){
+    tables.innerHTML='';
+    const cur=currentFam();
+    const chips = mobileMQ.matches;
+    const maxCols = calcCols(); lastCols=maxCols;
+    const dots = w => showDots?'<span class="tdots" aria-hidden="true">'+[1,2,3,4].map(t=>'<i class="'+(realTones(w).includes(t)?'on':'')+'"></i>').join('')+'</span>':'';
+    FAMILIES.forEach(f=>{
+      const cols=FINALS.filter(fn=>f.letters.some(l=>{ const w=written(l,fn.f); return !!w && SYL[l].has(w); }));
+      let html=`<div class="fthead"><h3>${f.name} · ${f.id==='zero'?'sílabas sem inicial':f.letters.join(' ')}</h3><p>${f.where}</p></div>`;
+      if(chips){
+        html+='<div class="chips-wrap card">';
+        f.letters.forEach(l=>{
+          html+=`<div class="rowline"><div class="ini">${l||'—'}</div><div class="list">`;
+          cols.forEach(c=>{
+            const w=written(l,c.f); if(!w || !SYL[l].has(w)) return;
+            const gcls=GROUPS[c.g].cls;
+            if(!has(l,c.f)) html+=`<span class="chip-s rare-hidden ${gcls}" title="${w}: existe, mas é rara. Marque 'mostrar as sílabas raras' para ver.">◦</span>`;
+            else html+=`<button type="button" class="chip-s ${gcls}${RARE.has(w)?' rare':''}" id="${cellId(l,c.f)}" data-init="${l}" data-fin="${c.f}"><span>${w}</span>${dots(w)}</button>`;
+          });
+          html+='</div></div>';
+        });
+        html+='</div>';
+      } else {
+        // divide em tabelas de no máximo 19 colunas, sem separar um grupo de finais
+        const byGroup=[]; cols.forEach(c=>{ const last=byGroup[byGroup.length-1]; if(last&&last.g===c.g) last.cols.push(c); else byGroup.push({g:c.g,cols:[c]}); });
+        const chunks=[]; byGroup.forEach(gr=>{ const last=chunks[chunks.length-1]; if(last && last.reduce((n,x)=>n+x.cols.length,0)+gr.cols.length<=maxCols) last.push(gr); else chunks.push([gr]); });
+        chunks.forEach(chunk=>{
+          const ccols=chunk.flatMap(x=>x.cols);
+          html+=`<div class="tscroll"><table class="syl"><thead>`;
+          html+=`<tr class="grow"><th class="corner" rowspan="2">${f.id==='zero'?'':'inicial ↓ / final →'}</th>${chunk.map(x=>`<th class="${GROUPS[x.g].cls}" colspan="${x.cols.length}">${GROUPS[x.g].name}</th>`).join('')}</tr>`;
+          html+=`<tr class="frow">${ccols.map(c=>`<th class="${GROUPS[c.g].cls}">${c.f}</th>`).join('')}</tr></thead><tbody>`;
+          f.letters.forEach(l=>{
+            html+=`<tr><th>${l||'—'}</th>`;
+            ccols.forEach(c=>{
+              const w=written(l,c.f);
+              const gcls=GROUPS[c.g].cls;
+              if(w && SYL[l].has(w) && !has(l,c.f)) html+=`<td class="empty rare-hidden" title="${w}: existe, mas é rara. Marque 'mostrar as sílabas raras' para ver.">◦</td>`;
+              else if(w && has(l,c.f)) html+=`<td id="${cellId(l,c.f)}" data-init="${l}" data-fin="${c.f}" class="${gcls}${RARE.has(w)?' rare':''}">${w}${dots(w)}</td>`;
+              else html+=`<td class="empty">·</td>`;
+            });
+            html+='</tr>';
+          });
+          html+='</tbody></table></div>';
+        });
+      }
+      const box=document.createElement('div'); box.className='famtable'+((allToggle.checked||f.id===cur)?' on':''); box.id='ft-'+f.id; box.innerHTML=html;
+      tables.appendChild(box);
+    });
+  }
+  function showFam(id){
+    if(allToggle.checked){ return; }
+    document.querySelectorAll('.famtable').forEach(t=>t.classList.toggle('on', t.id==='ft-'+id));
+    document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected', b.dataset.fam===id?'true':'false'));
+  }
+  allToggle.addEventListener('change',()=>{
+    if(allToggle.checked){ document.querySelectorAll('.famtable').forEach(t=>t.classList.add('on')); }
+    else showFam(currentFam());
+  });
+
+  /* ---------- áudio e tons ---------- */
+  const AUD = (window.PINYIN_AUDIO && window.PINYIN_AUDIO.sources) ? window.PINYIN_AUDIO : null;
+  const TONES = window.PINYIN_TONES || {};
+  const MARKS={a:'āáǎà',o:'ōóǒò',e:'ēéěè',i:'īíǐì',u:'ūúǔù','ü':'ǖǘǚǜ'};
+  function toneMark(syl,t){
+    let idx=-1;
+    for(const v of ['a','o','e']){ idx=syl.indexOf(v); if(idx>=0) break; }
+    if(idx<0) idx=Math.max(syl.lastIndexOf('i'),syl.lastIndexOf('u'),syl.lastIndexOf('ü'));
+    if(idx<0||!MARKS[syl[idx]]) return syl;
+    return syl.slice(0,idx)+MARKS[syl[idx]][t-1]+syl.slice(idx+1);
+  }
+  function realTones(syl){ const d=TONES[syl]||{}; return [1,2,3,4].filter(t=>d[t]); }
+  function toneInfo(syl,t){ const d=TONES[syl]; return (d && d[t]) ? d[t] : null; }
+  function tonesSummary(syl){
+    const r=realTones(syl);
+    if(!r.length) return 'nenhum dos 4 tons tem caractere';
+    return r.map(t=>{ const i=toneInfo(syl,t); return i[1]+' '+i[0]+(i[2]?' ('+i[2]+')':''); }).join(' · ');
+  }
+  const player=document.getElementById('player'), plSyl=document.getElementById('pl-syl'), plFam=document.getElementById('pl-fam'),
+        plTones=document.getElementById('pl-tones'), plSeq=document.getElementById('pl-seq'), plVoice=document.getElementById('pl-voice'),
+        plClose=document.getElementById('pl-close'), plHint=document.getElementById('pl-hint'), plTrain=document.getElementById('pl-train'),
+        plTrainWrap=document.getElementById('pl-train-wrap'), audioNote=document.getElementById('audio-note');
+  const SRCS = AUD ? Object.keys(AUD.sources) : [];
+  const LABEL = s => (AUD && AUD.labels && AUD.labels[s]) || s;
+  let voice = SRCS[0] || '';
+  let train = false;
+  try{ const v=localStorage.getItem('pinyin-voice'); if(v && AUD && AUD.sources[v]) voice=v; train = localStorage.getItem('pinyin-train')==='1'; }catch(e){}
+  let cur=null, token=0, curSyl=null, curInit='', curFin='';
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  function avail(src,syl,t){ const m=AUD && AUD.sources[src] && AUD.sources[src][syl]; return !!(m && m.includes(t)); }
+  function otherVoice(syl,t){ return SRCS.find(s=>s!==voice && avail(s,syl,t)) || null; }
+  function audioUrl(src,syl,t){ return 'audio/'+src+'/'+syl.replace('ü','v')+t+'.mp3'; }
+  function playable(syl,t){ return avail(voice,syl,t) && (!!toneInfo(syl,t) || train); }
+  function curCell(){ return curSyl ? document.getElementById(cellId(curInit,curFin)) : null; }
+  function stopAudio(){
+    token++;
+    if(cur){ cur.pause(); cur=null; }
+    document.querySelectorAll('.tonebtn.playing').forEach(b=>b.classList.remove('playing'));
+    document.querySelectorAll('#tables .playing').forEach(c=>c.classList.remove('playing'));
+  }
+  function playOne(syl,t){
+    return new Promise(res=>{
+      if(!avail(voice,syl,t)){ res(false); return; }
+      const a=new Audio(audioUrl(voice,syl,t)); cur=a;
+      const btn=plTones.querySelector('[data-t="'+t+'"]'); if(btn) btn.classList.add('playing');
+      const cell=curCell(); if(cell) cell.classList.add('playing');
+      let settled=false;
+      const done=ok=>{ if(settled) return; settled=true; if(btn) btn.classList.remove('playing'); if(cur===a) cur=null; res(ok); };
+      a.addEventListener('ended',()=>done(true));
+      a.addEventListener('error',()=>done(false));
+      a.play().catch(()=>done(false));
+    });
+  }
+  function unmarkCell(){ const c=curCell(); if(c) c.classList.remove('playing'); }
+  async function playSeq(){
+    if(!curSyl) return;
+    stopAudio(); const my=token;
+    const list = train ? [1,2,3,4] : realTones(curSyl);
+    for(const t of list){
+      if(my!==token) return;
+      if(!playable(curSyl,t)) continue;
+      await playOne(curSyl,t);
+      if(my!==token) return;
+      await sleep(220);
+    }
+    if(my===token) unmarkCell();
+  }
+  async function playTone(t){
+    if(!curSyl || !playable(curSyl,t)) return;
+    stopAudio(); const my=token;
+    await playOne(curSyl,t);
+    if(my===token) unmarkCell();
+  }
+  function renderPlayer(){
+    const w=curSyl; if(!w) return;
+    const d=TONES[w]||{}; const real=realTones(w);
+    plSyl.textContent=w;
+    plFam.textContent=(curInit===''?'sem inicial':FAM_OF[curInit].name)+' · '+GROUPS[FINAL_BY[curFin].g].name;
+    plTones.innerHTML='';
+    const noAudio=[]; let otherHas=null;
+    for(let t=1;t<=4;t++){
+      const info=d[t]||null, hasA=avail(voice,w,t), other=otherVoice(w,t);
+      const b=document.createElement('button'); b.type='button'; b.dataset.t=t;
+      b.className='tonebtn'+(info?'':' ghost')+(hasA||!AUD?'':' noaudio');
+      b.innerHTML=`<span class="tb-py">${toneMark(w,t)}</span>`+(info?`<span class="tb-ex"><span class="hz">${info[0]}</span><span class="gl">${info[2]||''}</span></span>`:`<span class="tb-ex none">não existe</span>`)+`<small>${t}º tom</small>`;
+      if(!AUD){ b.disabled=true; b.title='o áudio fica na cópia local (pasta audio/)'; }
+      else if(!playable(w,t)){
+        b.disabled=true;
+        if(!hasA){ noAudio.push(t); if(other) otherHas=other; b.title = other ? 'sem gravação na voz '+LABEL(voice)+'; existe na voz '+LABEL(other) : 'sem gravação nas duas vozes'; }
+        else b.title='este tom não tem caractere; marque "treinar os 4 tons" para ouvir';
+      } else {
+        b.title = info ? 'ouvir '+toneMark(w,t)+' ('+info[0]+')' : 'ouvir '+toneMark(w,t)+' (tom sem caractere)';
+        b.addEventListener('click',()=>playTone(t));
+      }
+      plTones.appendChild(b);
+    }
+    plSeq.textContent = train ? '▶ ouvir os 4 tons' : '▶ ouvir os tons';
+    plTrainWrap.hidden = !AUD || real.length===4;
+    plSeq.disabled = !AUD || !(train?[1,2,3,4]:real).some(t=>playable(w,t));
+    const chips=[];
+    if(real.length===4) chips.push('<span class="hchip ok">os 4 tons existem</span>');
+    else if(real.length===0) chips.push('<span class="hchip warn">nenhum tom com caractere</span>');
+    else chips.push('<span class="hchip ok">'+real.length+' de 4 tons: '+real.map(t=>toneMark(w,t)).join(' ')+'</span>');
+    if(d[5]) chips.push('<span class="hchip">tom neutro <span class="hz">'+d[5][0]+'</span>'+(d[5][2]?' '+d[5][2]:'')+'</span>');
+    if(RARE.has(w)) chips.push('<span class="hchip opt">sílaba rara</span>');
+    const hs=[]; for(let t=1;t<=5;t++){ const i=d[t]; if(i && i[3]) hs.push(i[3][0]); }
+    hs.slice(0,2).forEach(x=>chips.push('<span class="hchip opt">HSK 1 · '+x+'</span>'));
+    if(!AUD) chips.push('<span class="hchip">áudio só na cópia local</span>');
+    else if(noAudio.length===4) chips.push(otherHas ? '<span class="hchip warn">sem gravação nesta voz: troque para '+LABEL(otherHas)+'</span>' : '<span class="hchip warn">sem gravação nas duas vozes</span>');
+    else if(noAudio.length) chips.push('<span class="hchip warn">sem gravação do '+noAudio.map(t=>t+'º').join(', ')+' tom nesta voz</span>');
+    if(AUD) chips.push('<span class="hchip opt">teclas 1 a 4 · Esc fecha</span>');
+    const h=chips.join('');
+    plHint.innerHTML=h;
+  }
+  function openPlayer(init,fin,autoplay){
+    const w=written(init,fin); if(!w) return;
+    stopAudio();
+    curSyl=w; curInit=init; curFin=fin;
+    renderPlayer();
+    player.classList.add('on'); document.body.classList.add('has-player');
+    if(mobileMQ.matches){ const c=curCell(); if(c) setTimeout(()=>c.scrollIntoView({block:'center'}),280); }
+    if(autoplay && AUD) playSeq();
+  }
+  function closePlayer(){ stopAudio(); player.classList.remove('on'); document.body.classList.remove('has-player'); }
+
+  // células: tooltip com os tons reais e clique abre o tocador
+  function bindCells(){
+    document.querySelectorAll('#tables [data-fin]').forEach(td=>{
+      const w=td.firstChild.textContent;
+      if(td.tagName==='TD'){ td.classList.add('can'); td.tabIndex=0; td.setAttribute('role','button'); }
+      td.title=w+' · '+tonesSummary(w)+(RARE.has(w)?' · sílaba rara':'');
+      const go=()=>openPlayer(td.dataset.init, td.dataset.fin, true);
+      td.addEventListener('click',go);
+      td.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
+    });
+  }
+  function rebuildTables(){ buildTables(); bindCells(); }
+  rebuildTables();
+  let lastChips=mobileMQ.matches, resizeTimer=null;
+  function onViewportChange(){ if(mobileMQ.matches!==lastChips || calcCols()!==lastCols){ lastChips=mobileMQ.matches; rebuildTables(); } }
+  mobileMQ.addEventListener('change',onViewportChange);
+  window.addEventListener('resize',()=>{ clearTimeout(resizeTimer); resizeTimer=setTimeout(onViewportChange,120); });
+  rareToggle.addEventListener('change',()=>{ showRare=rareToggle.checked; try{ localStorage.setItem('pinyin-rare',showRare?'1':'0'); }catch(e){} rebuildTables(); });
+  dotsToggle.addEventListener('change',()=>{ showDots=dotsToggle.checked; try{ localStorage.setItem('pinyin-dots',showDots?'1':'0'); }catch(e){} rebuildTables(); });
+  plClose.addEventListener('click',closePlayer);
+  document.addEventListener('keydown',e=>{
+    if(!player.classList.contains('on') || e.target.matches('input,textarea')) return;
+    if(e.key==='Escape') closePlayer();
+    else if(AUD && /^[1-4]$/.test(e.key)) playTone(+e.key);
+  });
+  if(AUD){
+    SRCS.forEach(s=>{
+      const lab=document.createElement('label');
+      lab.innerHTML=`<input type="radio" name="voice" value="${s}"${s===voice?' checked':''}>${LABEL(s)}`;
+      lab.querySelector('input').addEventListener('change',()=>{ voice=s; try{ localStorage.setItem('pinyin-voice',s); }catch(e){} if(curSyl){ stopAudio(); renderPlayer(); } });
+      plVoice.appendChild(lab);
+    });
+    plTrain.checked=train;
+    plTrain.addEventListener('change',()=>{ train=plTrain.checked; try{ localStorage.setItem('pinyin-train',train?'1':'0'); }catch(e){} if(curSyl){ stopAudio(); renderPlayer(); } });
+    plSeq.addEventListener('click',playSeq);
+    const all=new Set(); for(const s of SRCS) for(const k in AUD.sources[s]) all.add(k);
+    const nReal=Object.keys(TONES).filter(k=>SYLSET.has(k)&&realTones(k).length).length;
+    const nPairs=Object.keys(TONES).filter(k=>SYLSET.has(k)).reduce((n,k)=>n+realTones(k).length,0);
+    audioNote.innerHTML='<b>Toque numa sílaba para ouvir os tons que existem.</b> Só <b>'+nPairs+'</b> das '+(4*total)+' combinações de sílaba e tom têm caractere. Vozes: '+SRCS.map(LABEL).join(' e ')+' ('+all.size+' de '+total+' sílabas).';
+  } else {
+    document.getElementById('pl-voice-wrap').hidden=true; plTrainWrap.hidden=true;
+    audioNote.innerHTML='<b>Toque numa sílaba para ver quais tons existem</b>, com um caractere de exemplo em cada um. O áudio fica na cópia local (pasta audio/).';
+  }
+
+  /* ---------- treino ---------- */
+  const g1={streak:0,best:0,syl:null,tone:0,busy:false}, g2={streak:0,best:0,cur:null,busy:false};
+  try{ g1.best=+localStorage.getItem('pinyin-g1-best')||0; g2.best=+localStorage.getItem('pinyin-g2-best')||0; }catch(e){}
+  const $=id=>document.getElementById(id);
+  function setScore(g,id){ $(id+'-streak').textContent=g.streak; $(id+'-best').textContent=g.best; }
+  function bump(g,id,ok){
+    if(ok){ g.streak++; if(g.streak>g.best){ g.best=g.streak; try{ localStorage.setItem('pinyin-'+id+'-best',String(g.best)); }catch(e){} } }
+    else g.streak=0;
+    setScore(g,id);
+  }
+  function g1Pool(){ return AUD ? [...SYLSET].filter(w=>realTones(w).filter(t=>avail(voice,w,t)).length>=2) : []; }
+  function g1Next(){
+    const pool=g1Pool();
+    if(!pool.length){ $('g1-fb').textContent='Sem gravações disponíveis nesta voz.'; return; }
+    const w=pool[Math.floor(Math.random()*pool.length)];
+    const ts=realTones(w).filter(t=>avail(voice,w,t));
+    const t=ts[Math.floor(Math.random()*ts.length)];
+    g1.syl=w; g1.tone=t; g1.busy=false;
+    $('g1-syl').innerHTML=w+'<span class="hz"> ?</span>';
+    $('g1-fb').textContent='Qual tom você ouviu?'; $('g1-fb').className='g-fb';
+    const box=$('g1-opts'); box.innerHTML='';
+    for(let k=1;k<=4;k++){ const b=document.createElement('button'); b.type='button'; b.className='btn3 ghost'; b.textContent=toneMark(w,k); b.dataset.t=k; b.addEventListener('click',()=>g1Answer(k)); box.appendChild(b); }
+    $('g1-next').textContent='Pular'; $('g1-play').disabled=false;
+    g1Play();
+  }
+  function g1Play(){ if(!g1.syl) return; stopAudio(); const a=new Audio(audioUrl(voice,g1.syl,g1.tone)); cur=a; a.play().catch(()=>{}); }
+  function g1Answer(k){
+    if(g1.busy||!g1.syl) return; g1.busy=true;
+    const ok=k===g1.tone, info=toneInfo(g1.syl,g1.tone);
+    [...$('g1-opts').children].forEach(b=>{ const t=+b.dataset.t; if(t===g1.tone) b.classList.add('ok'); else if(t===k) b.classList.add('bad'); b.disabled=true; });
+    $('g1-fb').className='g-fb '+(ok?'ok':'bad');
+    $('g1-fb').innerHTML=(ok?'Isso! ':'Era ')+'<b>'+toneMark(g1.syl,g1.tone)+'</b>'+(info?' '+info[0]+(info[2]?' ('+info[2]+')':''):'')+'.';
+    bump(g1,'g1',ok); $('g1-next').textContent='Próxima';
+  }
+  function g2Make(){
+    const fams=FAMILIES.filter(f=>f.id!=='zero');
+    if(Math.random()<0.5){ const arr=[...SYLSET].filter(w=>!RARE.has(w)); const w=arr[Math.floor(Math.random()*arr.length)]; return {w,exists:true,why:'Existe: '+tonesSummary(w)+'.'}; }
+    for(let i=0;i<300;i++){
+      const f=fams[Math.floor(Math.random()*fams.length)]; const l=f.letters[Math.floor(Math.random()*f.letters.length)];
+      const fin=FINALS[Math.floor(Math.random()*FINALS.length)];
+      if(fin.f==='-i'||fin.f==='io'||fin.f==='ueng') continue;
+      const st=f.accepts[fin.g];
+      if(st==='no'){ if(JQX.has(l)&&fin.f[0]==='ü') continue; return {w:l+fin.f,exists:false,why:'Não existe, e nunca vai existir: a família '+f.name+' ('+f.letters.join(' ')+') não combina com o '+GROUPS[fin.g].name+'. É um buraco de sistema.'}; }
+      const w=written(l,fin.f); if(!w||SYL[l].has(w)) continue;
+      return {w,exists:false,why:'Não existe, mas seria pronunciável: nenhuma palavra do mandarim usa essa sílaba. É um buraco de acaso.'};
+    }
+    return null;
+  }
+  function g2Next(){
+    const c=g2Make(); if(!c) return; g2.cur=c; g2.busy=false;
+    $('g2-syl').textContent=c.w; $('g2-fb').textContent='Existe ou não?'; $('g2-fb').className='g-fb';
+    [...$('g2-opts').children].forEach(b=>{ b.disabled=false; b.classList.remove('ok','bad'); });
+    $('g2-next').textContent='Pular';
+  }
+  function g2Answer(yes){
+    if(g2.busy||!g2.cur) return; g2.busy=true;
+    const ok=yes===g2.cur.exists;
+    [...$('g2-opts').children].forEach(b=>{ const v=b.dataset.v==='1'; if(v===g2.cur.exists) b.classList.add('ok'); else if(v===yes) b.classList.add('bad'); b.disabled=true; });
+    $('g2-fb').className='g-fb '+(ok?'ok':'bad'); $('g2-fb').textContent=(ok?'Certo. ':'Não. ')+g2.cur.why;
+    bump(g2,'g2',ok); $('g2-next').textContent='Próxima';
+  }
+  if($('g1-next')){
+    setScore(g1,'g1'); setScore(g2,'g2');
+    if(!AUD){ $('g1-next').disabled=true; $('g1-fb').textContent='Este jogo usa o áudio da cópia local (pasta audio/).'; }
+    else { $('g1-next').addEventListener('click',g1Next); $('g1-play').addEventListener('click',g1Play); }
+    $('g2-next').addEventListener('click',g2Next);
+    [...$('g2-opts').children].forEach(b=>b.addEventListener('click',()=>g2Answer(b.dataset.v==='1')));
+    document.addEventListener('keydown',e=>{ if(g1.syl && !g1.busy && !player.classList.contains('on') && /^[1-4]$/.test(e.key) && !e.target.matches('input,textarea')) g1Answer(+e.key); });
+  }
+
+  /* ---------- navegação: seção atual ---------- */
+  (function(){
+    const links=[...document.querySelectorAll('.topnav a[href^="#"]')];
+    const secs=links.map(a=>document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+    if(!secs.length) return;
+    let ticking=false, last=null;
+    function update(){
+      ticking=false;
+      const y=window.scrollY + window.innerHeight*0.35;
+      let cur=secs[0];
+      for(const s of secs){ if(s.offsetTop<=y) cur=s; }
+      if(cur===last) return; last=cur;
+      links.forEach(a=>a.classList.toggle('on', a.getAttribute('href')==='#'+cur.id));
+      const on=document.querySelector('.topnav a.on'); const ul=on&&on.closest('ul');
+      if(on&&ul&&ul.scrollWidth>ul.clientWidth){ const x=on.offsetLeft-(ul.clientWidth-on.offsetWidth)/2; ul.scrollTo({left:Math.max(0,x),behavior:'smooth'}); }
+    }
+    window.addEventListener('scroll',()=>{ if(!ticking){ ticking=true; requestAnimationFrame(update); } },{passive:true});
+    let lastY=-1; setInterval(()=>{ if(window.scrollY!==lastY){ lastY=window.scrollY; update(); } },400);
+    update();
+  })();
+
+  /* ---------- tema ---------- */
+  const themeBtn=document.getElementById('theme-btn');
+  function applyTheme(t){
+    const dark = t==='dark';
+    document.documentElement.setAttribute('data-theme', dark?'dark':'light');
+    themeBtn.setAttribute('aria-checked', dark?'true':'false');
+    themeBtn.title = dark ? 'Tema escuro (toque para claro)' : 'Tema claro (toque para escuro)';
+    try{ localStorage.setItem('pinyin-theme', dark?'dark':'light'); }catch(e){}
+  }
+  let theme='light'; try{ if(localStorage.getItem('pinyin-theme')==='dark') theme='dark'; }catch(e){}
+  applyTheme(theme);
+  themeBtn.addEventListener('click',()=>{ theme = theme==='dark' ? 'light' : 'dark'; applyTheme(theme); });
+
+  /* ---------- mini tocador nas fichas ---------- */
+  const mini=document.getElementById('mini');
+  const TONEMARKS={'\u0304':1,'\u0301':2,'\u030c':3,'\u0300':4};
+  function segmentPinyin(raw){
+    let t=raw.toLowerCase().replace(/u:/g,'ü').replace(/[’'`´]/g,' ');
+    const base=[], tones=[];
+    for(const ch of t.normalize('NFD')){
+      if(TONEMARKS[ch]){ if(tones.length) tones[tones.length-1]=TONEMARKS[ch]; continue; }
+      if(ch==='\u0308'){ if(base.length && base[base.length-1]==='u'){ base[base.length-1]='ü'; } continue; }
+      if(/[\u0300-\u036f]/.test(ch)) continue;
+      base.push(ch); tones.push(0);
+    }
+    const out=[]; let i=0; const str=base.join('');
+    while(i<str.length){
+      if(!/[a-zü]/.test(str[i])){ i++; continue; }
+      let found=null;
+      for(let L=Math.min(6,str.length-i); L>=1; L--){ const cand=str.slice(i,i+L); if(SYLSET.has(cand)){ found=cand; break; } }
+      if(!found){ if(str[i]==='r'){ i++; continue; } return null; }
+      let tone=5; for(let k=i;k<i+found.length;k++) if(tones[k]) tone=tones[k];
+      out.push({syl:found,tone}); i+=found.length;
+    }
+    return out.length?out:null;
+  }
+  function miniPlayFile(syl,t,btn){
+    return new Promise(res=>{
+      if(!avail(voice,syl,t)){ res(false); return; }
+      const a=new Audio(audioUrl(voice,syl,t)); cur=a;
+      if(btn) btn.classList.add('playing');
+      let settled=false; const done=ok=>{ if(settled) return; settled=true; if(btn) btn.classList.remove('playing'); if(cur===a) cur=null; res(ok); };
+      a.addEventListener('ended',()=>done(true)); a.addEventListener('error',()=>done(false)); a.play().catch(()=>done(false));
+    });
+  }
+  let miniSegs=[];
+  async function miniPlayAll(){
+    stopAudio(); const my=token;
+    const btns=[...mini.querySelectorAll('.m-syl')];
+    for(let k=0;k<miniSegs.length;k++){ const sg=miniSegs[k]; if(my!==token) return; if(sg.tone===5 || !avail(voice,sg.syl,sg.tone)) continue; await miniPlayFile(sg.syl,sg.tone,btns[k]); if(my!==token) return; await sleep(160); }
+  }
+  function miniRender(word,hz,gloss){
+    const anyAudio=miniSegs.some(sg=>sg.tone!==5 && avail(voice,sg.syl,sg.tone));
+    mini.innerHTML=`<div class="m-head"><div class="m-word"><span>${word}</span>${hz?`<span class="hz">${hz}</span>`:''}${gloss?`<small>${gloss}</small>`:''}</div><button class="m-close" type="button" aria-label="Fechar">×</button></div>
+      <div class="m-body"><div class="m-syls">${miniSegs.map((sg,k)=>{ const ok=sg.tone!==5 && avail(voice,sg.syl,sg.tone); const other=sg.tone!==5 && !ok && SRCS.some(s=>avail(s,sg.syl,sg.tone)); return `<button type="button" class="m-syl" data-k="${k}" ${ok?'':'disabled'} title="${ok?'ouvir de novo':(sg.tone===5?'tom neutro: sem gravação':(other?'sem gravação nesta voz':'sem gravação'))}">${sg.tone===5?sg.syl:toneMark(sg.syl,sg.tone)}</button>`; }).join('')}</div><div class="seg" id="mini-voice" title="${anyAudio?'voz':'sem gravação nesta voz'}">${SRCS.map(s=>`<label><input type="radio" name="mini-voice" value="${s}"${s===voice?' checked':''}>${LABEL(s).replace(' (voz alicia)','')}</label>`).join('')}</div></div>`;
+    mini.querySelector('.m-close').addEventListener('click',miniClose);
+    mini.querySelectorAll('.m-syl').forEach(bt=>bt.addEventListener('click',async()=>{ const sg=miniSegs[+bt.dataset.k]; stopAudio(); await miniPlayFile(sg.syl,sg.tone,bt); }));
+    mini.querySelectorAll('#mini-voice input').forEach(inp=>inp.addEventListener('change',()=>{ voice=inp.value; try{ localStorage.setItem('pinyin-voice',voice); }catch(e){} document.querySelectorAll('#pl-voice input').forEach(r=>{ r.checked = r.value===voice; }); if(curSyl){ stopAudio(); renderPlayer(); } miniRender(word,hz,gloss); miniPlayAll(); }));
+  }
+  function miniOpen(tk){
+    const bs=tk.querySelectorAll('b'); if(!bs.length) return;
+    let txt=bs[bs.length-1].textContent;
+    if(txt.includes('→')) txt=txt.split('→').pop();
+    if(txt.includes('/')) txt=txt.split('/').pop();
+    txt=txt.replace(/[=≈()]/g,' ').trim();
+    const segs=segmentPinyin(txt); if(!segs) return;
+    miniSegs=segs;
+    const hzEl=tk.querySelector('i'); const smEl=tk.querySelector('small');
+    miniRender(txt, hzEl?hzEl.textContent:'', smEl?smEl.textContent:'');
+    mini.classList.add('on');
+    const r=tk.getBoundingClientRect(); const w=mini.offsetWidth;
+    let left=r.left+window.scrollX; const maxLeft=window.scrollX+document.documentElement.clientWidth-w-8; if(left>maxLeft) left=Math.max(window.scrollX+8,maxLeft);
+    mini.style.left=left+'px'; mini.style.top=(r.bottom+window.scrollY+8)+'px';
+    miniPlayAll();
+  }
+  function miniClose(){ if(!mini.classList.contains('on')) return; mini.classList.remove('on'); stopAudio(); }
+  if(AUD){
+    document.body.classList.add('has-audio');
+    document.addEventListener('click',e=>{
+      if(mini.contains(e.target)) return;
+      const tk=e.target.closest('.tk');
+      if(tk){ e.preventDefault(); miniOpen(tk); return; }
+      miniClose();
+    });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') miniClose(); });
+    document.querySelectorAll('.tk').forEach(tk=>{ tk.tabIndex=0; tk.setAttribute('role','button'); tk.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); miniOpen(tk); } }); });
+  }
+
+  /* ---------- localizador ---------- */
+  const input=document.getElementById('loc'), out=document.getElementById('loc-result');
+  document.querySelectorAll('[data-ex]').forEach(b=>b.addEventListener('click',()=>{ input.value=b.dataset.ex; input.dispatchEvent(new Event('input')); input.focus(); }));
+
+  function normalize(s){
+    s=s.toLowerCase().trim().replace(/u:/g,'ü').replace(/v/g,'ü');
+    s=s.normalize('NFD').replace(/[\u0300-\u0301\u0303-\u0307\u0309-\u036f]/g,'').normalize('NFC');
+    return s.replace(/[^a-zêü]/g,'');
+  }
+  function parse(raw){
+    let s=normalize(raw);
+    if(!s) return null;
+    if(s==='ê') s='ei';                                   // a interjeição 欸 (ê) está nas tabelas como ei
+    let init='';
+    if(/^(zh|ch|sh)/.test(s)) init=s.slice(0,2);
+    else if('bpmfdtnlgkhjqxzcsr'.includes(s[0])) init=s[0];
+    else if(!/^[aoeêiuüyw]/.test(s)) return {s,bad:'init',init:s[0]};
+    let rest=s.slice(init.length);
+    if(!rest) return {s,init,bad:'nofinal'};
+    let fin=null;
+    if(init===''){ fin=ZERO_CANON[rest]||null; if(!fin) return {s,init,rest,bad:'final'}; }
+    else {
+      rest=rest.replace(/^iou$/,'iu').replace(/^uei$/,'ui').replace(/^uen$/,'un');
+      if(JQX.has(init)){ rest=rest.replace(/^u/,'ü'); }
+      if(RETRO.has(init) && rest==='i') rest='-i';
+      if(!FINAL_BY[rest]) return {s,init,rest,bad:'final'};
+      fin=rest;
+    }
+    return {s,init,fin};
+  }
+  function render(raw){
+    const p=parse(raw);
+    if(!p){ out.innerHTML=''; return; }
+    if(p.bad==='init'){ out.innerHTML=`<div class="notfound"><b>${p.s}</b> não começa com uma inicial do pinyin. As 21 iniciais são b p m f · d t n l · g k h · j q x · zh ch sh r · z c s, ou a sílaba começa pela vogal (com y ou w).</div>`; return; }
+    if(p.bad==='nofinal'){ out.innerHTML=`<div class="loc-empty">Continue digitando: <b>${p.init}</b> é a inicial, falta a final.</div>`; return; }
+    if(p.bad==='final'){ out.innerHTML=`<div class="notfound"><b>${p.rest}</b> não é uma final do pinyin. Veja a lista das 38 finais na seção <a href="#finais">Finais</a>.</div>`; return; }
+    const F=FINAL_BY[p.fin], G=GROUPS[F.g], fam=FAM_OF[p.init];
+    const w=written(p.init,p.fin);
+    const exists = !!w && SYL[p.init].has(w);
+    const initLabel = p.init===''? '<span class="piece zero">sem inicial</span>' : `<span class="piece">${p.init}</span>`;
+    let html=`<div class="parse ${G.cls}">${initLabel}<span class="op">+</span><span class="piece fin">${p.fin}</span><span class="op">=</span><span class="piece">${exists?w:'∅'}</span></div>`;
+    html+=`<div class="loc-grid ${G.cls}">
+      <div class="loc-card"><div class="lab">inicial</div><div class="val">${p.init||'nenhuma'} · ${fam.name}</div><div>${p.init===''?'y e w são só grafia':fam.where}</div></div>
+      <div class="loc-card fin"><div class="lab">final</div><div class="val">${p.fin} · ${G.name} <span class="hz small">${G.hz}</span></div><div>${TYPE_LABEL[F.t]} · ${F.tip}</div>${F.ex?`<div class="tks"><span class="tk"><b>${F.ex[0]}</b><i>${F.ex[1]}</i><small>${F.ex[2]}</small></span></div>`:''}</div>`;
+    if(exists){
+      html+=`<div class="loc-card"><div class="lab">onde está</div><div class="val">tabela "${fam.name}"</div><div>linha <b>${p.init||'—'}</b>, coluna <b>${p.fin}</b>${RARE.has(w)?' · sílaba rara':''}</div></div>`;
+      const rt=realTones(w);
+      const hsk=[]; for(let t=1;t<=5;t++){ const i=toneInfo(w,t); if(i && i[3]) hsk.push(i[3][0]); }
+      html+=`<div class="loc-card"><div class="lab">tons que existem</div><div class="val">${rt.length?rt.map(t=>toneMark(w,t)).join(' · '):'nenhum dos 4'}</div><div>${rt.length?rt.map(t=>{const i=toneInfo(w,t);return '<span class="hz">'+i[0]+'</span> '+(i[2]||'');}).join(' · '):(toneInfo(w,5)?'só em tom neutro':'')}${hsk.length?'<br><b>HSK 1:</b> '+hsk.slice(0,3).join(' · '):''}</div></div>`;
+      html+=`</div>`;
+      html+=`<div class="loc-actions"><button class="playbtn" type="button" id="loc-play"><span class="tri"></span> ${AUD?'ouvir os tons':'ver os tons'}</button><button class="btn3 sm info" type="button" id="goto">Mostrar na tabela</button><span class="small muted">A célula fica marcada em azul.</span></div>`;
+    } else {
+      const st=fam.accepts[F.g];
+      let why;
+      if(st==='no') why=`a família <b>${fam.name}</b> (${fam.letters.join(' ')}) nunca combina com o <b>${G.name}</b>.${fam.notes[F.g]?' '+fam.notes[F.g]+'.':''}`;
+      else if(st==='part') why=`a família <b>${fam.name}</b> só aceita parte do ${G.name}: ${fam.notes[F.g]}.`;
+      else why=`a combinação é possível na teoria, mas nenhuma palavra do mandarim usa essa sílaba. Na tabela ela aparece como um ponto.`;
+      html+=`</div><div class="notfound"><b>${p.s}</b> não existe em mandarim: ${why} Veja <a href="#compatibilidade">Quem combina com quem</a>.</div>`;
+    }
+    out.innerHTML=html;
+    const go=document.getElementById('goto');
+    if(go) go.addEventListener('click',()=>{
+      document.querySelectorAll('#tables .hit').forEach(c=>c.classList.remove('hit','flash'));
+      if(!allToggle.checked) showFam(fam.id);
+      let cell=document.getElementById(cellId(p.init,p.fin));
+      if(!cell && RARE.has(w) && !showRare){ showRare=true; rareToggle.checked=true; try{ localStorage.setItem('pinyin-rare','1'); }catch(e){} rebuildTables(); cell=document.getElementById(cellId(p.init,p.fin)); }
+      if(cell){ cell.classList.add('hit','flash'); cell.scrollIntoView({block:'center',inline:'center'}); }
+    });
+    const pb=document.getElementById('loc-play');
+    if(pb) pb.addEventListener('click',()=>openPlayer(p.init,p.fin,true));
+  }
+  input.addEventListener('input',()=>render(input.value));
+})();
+</script>
+</body>
+</html>
