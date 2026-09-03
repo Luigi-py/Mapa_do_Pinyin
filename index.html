@@ -467,6 +467,10 @@ table{border-collapse:collapse;font-variant-numeric:tabular-nums}
 .trap>.tks:last-child,.trap>.exs:last-child{margin-top:auto}
 .exs.kbd{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .exs.kbd span{font-family:'Noto Sans',monospace;text-align:center;background:var(--surface-2)}
+.exs.hz span{display:inline-flex;align-items:center;gap:6px}
+.exs.hz span i{font-family:var(--hanzi);font-size:17px;font-weight:400;color:var(--ink-2);padding:0}
+.exs.hz span small{font-size:12px;color:var(--muted);font-weight:700}
+.note.tint .exs span{background:var(--surface)}
 .trap h3{font-size:15.5px;display:flex;gap:10px;align-items:center}
 .trap h3 .n{width:30px;height:30px;border-radius:50%;background:var(--gold);color:#3C3C3C;font:900 14px var(--font);display:grid;place-items:center;flex:none}
 .trap .rule{font-size:14px;color:var(--ink-2)}
@@ -500,6 +504,8 @@ footer .srcs a{color:var(--info-ink);text-decoration:none;border:2px solid var(-
 footer .srcs a:hover{border-color:var(--info)}
 footer .credit{margin-top:10px;padding-top:12px;border-top:2px solid var(--line);color:var(--ink-2);font-size:14px}
 footer .credit b{color:var(--ink)}
+footer .report{color:var(--ink-2);font-size:14px}
+footer .report a{color:var(--info-ink);font-weight:700;text-decoration:underline;text-underline-offset:2px}
 
 /* ---- tocador ---- */
 .player{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:2px solid var(--line);box-shadow:0 -8px 28px rgba(0,0,0,.12);transform:translateY(110%);transition:transform .25s ease;max-height:70vh;overflow-y:auto}
@@ -777,9 +783,9 @@ body.has-player{padding-bottom:440px}
       </div>
       <div class="note tint note-f"><h3>Fora das tabelas</h3>
         <ul>
-          <li>Interjeições sem vogal, e sílabas não padrão ou raríssimas. O áudio decide; o português é só ponto de partida.</li>
+          <li>Interjeições sem vogal, e sílabas não padrão ou raríssimas. Não há gravação delas aqui; o português é só ponto de partida.</li>
         </ul>
-        <div class="tks"><span class="tk"><b>m</b><i>呣</i></span><span class="tk"><b>ng</b><i>嗯</i></span><span class="tk"><b>hm</b><i>噷</i></span><span class="tk"><b>hng</b><i>哼</i></span><span class="tk"><b>cei</b><i>𤭢</i><small>Pequim</small></span><span class="tk"><b>nun</b><i>黁</i></span><span class="tk"><b>fiao</b><i>覅</i><small>xangainês</small></span><span class="tk"><b>biang</b><small>macarrão de Shaanxi</small></span></div>
+        <div class="exs hz"><span>m<i>呣</i></span><span>ng<i>嗯</i></span><span>hm<i>噷</i></span><span>hng<i>哼</i></span><span>cei<i>𤭢</i><small>Pequim</small></span><span>nun<i>黁</i></span><span>fiao<i>覅</i><small>xangainês</small></span><span>biang<small>macarrão de Shaanxi</small></span></div>
       </div>
       </div>
     </div>
@@ -906,7 +912,7 @@ body.has-player{padding-bottom:440px}
       <div class="trap"><h3><span class="n">5</span>A letra e tem três caras</h3><p class="rule">Sozinha ou em er: "ô" com lábios frouxos. Em en, eng: e neutro e frouxo. Em ie, üe, ei: perto do "é" de "pé".</p><div class="tks"><span class="tk"><b>hē</b><i>喝</i><small>ô solto</small></span><span class="tk"><b>mén</b><i>门</i><small>e frouxo</small></span><span class="tk"><b>xiè</b><i>谢</i><small>é</small></span></div></div>
       <div class="trap"><h3><span class="n">6</span>bo po mo fo escondem um u</h3><p class="rule">Depois de b p m f, a final uo se escreve só o. A final o pura só existe em o, lo e yo.</p><div class="tks"><span class="tk"><b>bō</b><i>波</i><small>≈ "buô"</small></span><span class="tk"><b>duō</b><i>多</i><small>uo escrito</small></span><span class="tk"><b>ó</b><i>哦</i><small>o puro</small></span></div></div>
       <div class="trap"><h3><span class="n">7</span>Pinyin se escreve por palavra</h3><p class="rule">As sílabas de uma palavra ficam juntas. Se a leitura ficar ambígua, entra um apóstrofo.</p><div class="tks"><span class="tk"><b>Běijīng</b><i>北京</i></span><span class="tk"><b>Xī'ān</b><i>西安</i><small>2 sílabas</small></span><span class="tk"><b>xiān</b><i>先</i><small>1 sílaba</small></span></div></div>
-      <div class="trap"><h3><span class="n">8</span>O r pendurado (érhuà)</h3><p class="rule">Um r se pendura na sílaba anterior sem virar sílaba nova. Comum no falar de Pequim.</p><div class="tks"><span class="tk"><b>huār</b><i>花儿</i><small>flor</small></span><span class="tk"><b>nǎr</b><i>哪儿</i><small>onde</small></span><span class="tk"><b>yìdiǎnr</b><i>一点儿</i><small>um pouco</small></span></div></div>
+      <div class="trap"><h3><span class="n">8</span>O r pendurado (érhuà)</h3><p class="rule">Um r se pendura na sílaba anterior sem virar sílaba nova. Comum no falar de Pequim. As gravações do site não têm esse r, por isso estes exemplos ficam sem áudio.</p><div class="exs hz"><span>huār<i>花儿</i><small>flor</small></span><span>nǎr<i>哪儿</i><small>onde</small></span><span>yìdiǎnr<i>一点儿</i><small>um pouco</small></span></div></div>
       <div class="trap"><h3><span class="n">9</span>Como digitar</h3><p class="rule">No teclado de pinyin, digite sem acento e use <b>v</b> para o ü. Para as marcas de tom, teclado com números ou copie daqui.</p><div class="exs"><span>lv → 绿</span><span>ma1 → mā</span></div><div class="exs kbd"><span>ā á ǎ à</span><span>ē é ě è</span><span>ī í ǐ ì</span><span>ō ó ǒ ò</span><span>ū ú ǔ ù</span><span>ǖ ǘ ǚ ǜ</span></div></div>
     </div>
   </div>
@@ -945,9 +951,10 @@ body.has-player{padding-bottom:440px}
   <p>Fontes de pronúncia (gravações usadas no tocador):</p>
   <div class="srcs"><a href="https://chinese.yabla.com/chinese-pinyin-chart.php" target="_blank" rel="noopener">Yabla Chinese · Mandarin Chinese Pinyin Chart with Audio</a><a href="https://yoyochinese.com/chinese-learning-tools/Mandarin-Chinese-pronunciation-lesson/pinyin-chart-table" target="_blank" rel="noopener">Yoyo Chinese · Interactive Pinyin Chart</a></div>
   <p>Fontes que definem o que existe e como se escreve:</p>
-  <div class="srcs"><span>汉语拼音方案 (1958)</span><span>Unicode Unihan</span><span>CC-CEDICT</span><span>HSK 1 (HSK 3.0, 2021)</span><span>Wikipedia: Pinyin table, Standard Chinese phonology</span></div>
+  <div class="srcs"><a href="http://www.moe.gov.cn/jyb_sjzl/ziliao/A19/195802/t19580201_186000.html" target="_blank" rel="noopener">汉语拼音方案 (1958) · 教育部</a><a href="https://www.unicode.org/charts/unihan.html" target="_blank" rel="noopener">Unicode Unihan</a><a href="https://cc-cedict.org/wiki/" target="_blank" rel="noopener">CC-CEDICT</a><a href="http://www.moe.gov.cn/jyb_xwfb/gzdt_gzdt/s5987/202103/t20210329_523304.html" target="_blank" rel="noopener">HSK 1 (HSK 3.0, 2021) · 教育部</a><a href="https://en.wikipedia.org/wiki/Pinyin_table" target="_blank" rel="noopener">Wikipedia · Pinyin table</a><a href="https://en.wikipedia.org/wiki/Standard_Chinese_phonology" target="_blank" rel="noopener">Wikipedia · Standard Chinese phonology</a></div>
   <p>Iniciais por ponto de articulação; finais pela letra escrita, com aviso onde a fonologia (四呼) discorda. As aproximações em português são um apoio inicial, não substituem o áudio.</p>
-  <p class="credit">Desenvolvido por <b>Luiz Henrique Couto Carneiro</b> - Bacharelado em IA (INF-UFG)</p>
+  <p class="credit">Desenvolvido por <b>Luiz Henrique Couto Carneiro</b> - Bacharelado em IA (INF-UFG) - 03/09/2026 v1.0 - MIT License</p>
+  <p class="report">Encontrou algum erro? Por favor, reporte aqui neste e-mail: <a href="mailto:luizcarneiro@discente.ufg.br?subject=Mapa%20do%20Pinyin%3A%20erro%20encontrado">luizcarneiro@discente.ufg.br</a></p>
 </footer>
 </div>
 
