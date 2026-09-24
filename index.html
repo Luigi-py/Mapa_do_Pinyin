@@ -386,15 +386,15 @@ table{border-collapse:collapse;font-variant-numeric:tabular-nums}
 /* ---- tradutor ---- */
 .tr-f{display:grid;gap:8px;min-width:0}
 .tr-f label{font-weight:900;font-size:16px}
-.tr-in{width:100%;field-sizing:content;font:500 20px/1.45 'Noto Sans','Noto Sans SC',sans-serif;padding:12px 14px;border-radius:14px;border:2px solid var(--line);border-bottom-width:4px;border-bottom-color:var(--line-strong);background:var(--bg);color:var(--ink);resize:none}
-.tr-in.hz{font:500 20px/1.45 var(--hanzi)}
+/* um padrão só nos 3 campos: letras (português e pinyin) em Nunito 700 20px, caracteres em Noto Sans SC 500 25px */
+.tr-in{width:100%;field-sizing:content;font:700 20px/1.45 var(--font);padding:12px 14px;border-radius:14px;border:2px solid var(--line);border-bottom-width:4px;border-bottom-color:var(--line-strong);background:var(--bg);color:var(--ink);resize:none}
+.tr-in.hz,.py-h{font:500 25px/1.3 var(--hanzi)}
 .tr-in:focus{outline:none;border-color:var(--info)}
 .tr-in::placeholder{color:var(--muted);opacity:1}
 .tr-in:focus::placeholder{color:transparent}
 /* máscaras dos campos 2 e 3 só aparecem junto com a do português (vazio e sem cursor) */
 #tradutor:has(#tr-pt:focus,#tr-pt:not(:placeholder-shown)) #tr-zh::placeholder,
 #tradutor:has(#tr-pt:focus,#tr-pt:not(:placeholder-shown)) .tr-out.demo{color:transparent}
-#tr-pt{font-family:var(--font);font-weight:400}
 .tr-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .seg ruby rt{font-size:9px}
 .tr-stack{display:grid;gap:14px}
@@ -402,15 +402,15 @@ table{border-collapse:collapse;font-variant-numeric:tabular-nums}
 .tr-out.demo{color:var(--muted)}
 .toast{position:fixed;top:66px;left:50%;transform:translateX(-50%);z-index:50;width:max-content;max-width:calc(100vw - 32px);display:flex;gap:12px;align-items:flex-start;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.18)}
 .toast button{border:0;background:none;color:var(--danger-dk);font:800 22px/1 var(--font);cursor:pointer;padding:0}
-.py-u{display:inline-block;position:relative;vertical-align:top;text-align:center;margin:3px 0;padding:1px 2px;border:1px solid transparent;border-radius:10px;font:inherit;color:inherit;background:none}
-.tr-out.rb .py-u{margin:2px .1em;font-size:25px}
-.tr-out.rb .py-rt{font-size:20px}
-.py-rt{display:block;min-height:1.45em;color:var(--info-ink)}
+.py-u{display:inline-block;position:relative;vertical-align:top;text-align:center;margin:3px 0;padding:4px 2px 5px;border:1px solid transparent;border-radius:10px;font:inherit;line-height:1.3;color:inherit;background:none}
+.tr-out.rb .py-u{margin:3px .1em}
+.tr-out[data-fmt=py] .py-h{font-size:20px}   /* só pinyin: a pontuação acompanha as letras */
+.py-rt{display:block;min-height:1.3em;color:var(--info-ink)}
 .tr-out.demo .py-rt{color:inherit}
-.py-b{cursor:pointer;padding:1px 7px;background:var(--surface);border-color:var(--line-strong);border-bottom-width:3px}
+.py-b{cursor:pointer;padding:4px 7px 5px;background:var(--surface);border-color:var(--line-strong);border-bottom-width:3px}
 .py-b:hover,.py-b:focus-visible{background:var(--info-bg);border-color:var(--info);outline:none}
 .py-b:active{transform:translateY(1px)}
-.py-ic{display:block;height:13px;line-height:13px}
+.py-ic{display:block;height:12px;line-height:12px;margin-top:1px}
 .py-ic::before{content:'▶';font-size:10px;color:var(--primary)}
 .py-ic.mudo::before{color:var(--line-strong)}
 .py-b:hover .py-p,.py-b:focus-visible .py-p{color:var(--info-ink)}
@@ -1780,7 +1780,8 @@ body.has-player{padding-bottom:440px}
   }
   function showPinyin(zh,py){                 // pinyin de cada caractere no formato escolhido; cada sílaba abre o mini tocador do site; vazio mostra a máscara
     shown={zh,py}; const demo=!zh.trim(); if(demo) [zh,py]=EXEMPLO;
-    trPy.classList.toggle('demo',demo); trPy.classList.toggle('rb',pyFmt==='ruby'); trPy.textContent=''; trMuda.hidden=true; grow();
+    trPy.classList.toggle('demo',demo); trPy.classList.toggle('rb',pyFmt==='ruby'); trPy.dataset.fmt=pyFmt; trPy.textContent=''; trMuda.hidden=true; grow();
+    const hzs=c=>{ const s=document.createElement('span'); s.className='py-h'; s.textContent=c; return s; };   // texto chinês com o mesmo tamanho do campo Caracteres
     const ps=pares(zh,py);
     if(!ps){ trPy.textContent=py; return; }   // sem alinhar sílaba com caractere: fica o pinyin por palavra do Google
     const cs=[...zh]; let k=0;
@@ -1790,7 +1791,7 @@ body.has-player{padding-bottom:440px}
       const u=document.createElement(clica?'button':'span'), rt=document.createElement('span'), pp=document.createElement('span');
       u.className='py-u'+(clica?' py-b':''); rt.className='py-rt'; pp.className='py-p'; trPy.append(u);   // coluna: [pinyin em cima] / texto
       if(!han){                               // pontuação: pinyin vazio para alinhar
-        if(pyFmt==='ruby') u.append(rt); u.append(ch);
+        if(pyFmt==='ruby') u.append(rt); u.append(hzs(ch));
         const sp=u.previousSibling, prev=sp && sp.nodeType===3 ? sp.previousSibling : sp;
         if(prev && prev.nodeType===1 && /[，。！？、；：,.!?;:）》」』”’]/.test(ch)){   // pontuação de fechamento não começa linha: cola no cartão anterior
           if(sp!==prev) sp.remove();
@@ -1802,8 +1803,8 @@ body.has-player{padding-bottom:440px}
       // o tom muda na fala, a escrita não: 3º antes de 3º vira 2º; 不 antes de 4º vira bú (一 fica de fora: exceções demais, como 一月 e números)
       const muda=!demo && !!nx && ((tone===3 && nx[3]===3) || (ch==='不' && tone===4 && nx[3]===4));
       const fala=muda ? (pyTone==='num' ? syl+2 : toneMark(syl,2)) : '';
-      if(pyFmt==='ruby'){ rt.classList.add('py-p'); rt.textContent=p; u.append(rt,ch); }
-      else { pp.textContent=p; if(pyFmt==='hz') u.append(ch+'(',pp,')'); else u.append(pp); trPy.append(' '); }
+      if(pyFmt==='ruby'){ rt.classList.add('py-p'); rt.textContent=p; u.append(rt,hzs(ch)); }
+      else { pp.textContent=p; if(pyFmt==='hz') u.append(hzs(ch),'(',pp,')'); else u.append(pp); trPy.append(' '); }
       if(muda){ u.classList.add('muda'); trMuda.hidden=false; }
       if(!clica) return;
       const tem=SRCS.some(s=>avail(s,syl,tone)), ic=document.createElement('span');   // ▶ embaixo; cinza quando não há gravação (tom neutro nunca tem)
