@@ -1790,7 +1790,9 @@ body.has-player{padding-bottom:440px}
   try{ pyTone=localStorage.getItem('pinyin-tr-tone')||pyTone; pyFmt=localStorage.getItem('pinyin-tr-fmt')||pyFmt; }catch(e){}
   const EXEMPLO=['你好，世界！','Nǐ hǎo, shìjiè!'];   // máscara cinza de "Olá, mundo!", salva na página, sem chamar o Google
   function pares(zh,py){                      // [caractere, pinyin no tom escolhido, sílaba, tom, última sílaba da palavra?]; null se as sílabas não alinham
-    const segs=py.split(/\s+/).flatMap(w=>(segmentPinyin(w)||[]).map((s,i,a)=>({...s,fim:i===a.length-1})));   // palavra que não é pinyin (iPhone, 3) fica de fora
+    // o Google cola pinyin e símbolos numa "palavra" só (yóujiàn:Luiz@ufg.Br): corta em tudo que não é letra, e letras latinas que já estavam no chinês (e-mail, iPhone, a, b) não são pinyin
+    const latinas=new Set(zh.toLowerCase().match(/[a-zü]+/g)||[]);
+    const segs=py.split(/[^\p{L}\p{M}']+/u).filter(w=>w && !latinas.has(w.toLowerCase())).flatMap(w=>(segmentPinyin(w)||[]).map((s,i,a)=>({...s,fim:i===a.length-1})));
     const han=[...zh].filter(isHan);
     return segs.length!==han.length ? null : han.map((ch,k)=>{ const {syl,tone,fim}=segs[k]; return [ch, pyTone==='num' ? syl+tone : (tone===5?syl:toneMark(syl,tone)), syl, tone, fim]; });
   }
