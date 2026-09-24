@@ -1909,7 +1909,8 @@ body.has-player{padding-bottom:440px}
     if(!fromPt) trPont.hidden=true;           // chinês escrito à mão: não há o que comparar
     let stage='rede';
     try{
-      const r=await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=rm&sl='+(fromPt?'pt&tl=zh-CN':'zh-CN&tl=pt')+'&q='+encodeURIComponent(q));
+      const r=await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=rm&sl='+(fromPt?'pt&tl=zh-CN':'zh-CN&tl=pt')+'&q='+encodeURIComponent(q),
+        {credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'});   // cada pedido "limpo": sem cookie nem cache guardado do Google (o Firefox os guarda por site e isso travava o tradutor)
       if(!r.ok) throw new Error('HTTP '+r.status);
       stage='formato';
       const rows=(await r.json())[0]||[], rm=rows.find(x=>x[0]==null)||[];   // linha sem tradução = romanização [.., .., pinyin do destino, pinyin da origem]
