@@ -6,7 +6,7 @@ Site: https://luigi-py.github.io/Mapa_do_Pinyin/
 
 ## Como funciona
 
-- `index.html`: a página inteira (sem dependências externas além das fontes do Google Fonts e do Google Tradutor, usado pelo tradutor português → pinyin → caracteres do topo).
+- `index.html`: a página inteira (sem dependências externas além das fontes do Google Fonts e do Google Tradutor, usado pelo tradutor português → caracteres → pinyin do topo).
 - `audio/manifest.js`: lista das gravações disponíveis por sílaba e tom.
 - `audio/yabla/` e `audio/yoyo/`: uma gravação por sílaba e tom, em duas vozes.
 
