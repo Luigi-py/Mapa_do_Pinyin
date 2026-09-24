@@ -394,7 +394,7 @@ table{border-collapse:collapse;font-variant-numeric:tabular-nums}
 .tr-in:focus::placeholder{color:transparent}
 /* máscaras dos campos 2 e 3 só aparecem junto com a do português (vazio e sem cursor) */
 #tradutor:has(#tr-pt:focus,#tr-pt:not(:placeholder-shown)) #tr-zh::placeholder,
-#tradutor:has(#tr-pt:focus,#tr-pt:not(:placeholder-shown)) .tr-out.demo{color:transparent}
+#tradutor:has(#tr-pt:focus,#tr-pt:not(:placeholder-shown)) .tr-out.demo *{visibility:hidden}
 .tr-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .seg ruby rt{font-size:9px}
 .tr-stack{display:grid;gap:14px}
@@ -405,8 +405,8 @@ table{border-collapse:collapse;font-variant-numeric:tabular-nums}
 .py-u{display:inline-block;position:relative;vertical-align:top;text-align:center;margin:3px 0;padding:4px 2px 5px;border:1px solid transparent;border-radius:10px;font:inherit;line-height:1.3;color:inherit;background:none}
 .tr-out.rb .py-u{margin:3px .1em}
 .tr-out[data-fmt=py] .py-h{font-size:20px}   /* só pinyin: a pontuação acompanha as letras */
-.py-rt{display:block;min-height:1.3em;color:var(--info-ink)}
-.tr-out.demo .py-rt{color:inherit}
+.py-rt{display:block;min-height:1.3em}
+.tr-out.demo .py-u{opacity:.75}   /* máscara: cartões mais apagados, mas com ▶ para mostrar que dá para ouvir */
 .py-b{cursor:pointer;padding:4px 7px 5px;background:var(--surface);border-color:var(--line-strong);border-bottom-width:3px}
 .py-b:hover,.py-b:focus-visible{background:var(--info-bg);border-color:var(--info);outline:none}
 .py-b:active{transform:translateY(1px)}
@@ -1787,7 +1787,7 @@ body.has-player{padding-bottom:440px}
     const cs=[...zh]; let k=0;
     cs.forEach((ch,i)=>{
       if(/\s/.test(ch)){ trPy.append(ch); return; }
-      const han=isHan(ch), clica=han && !demo && AUD;
+      const han=isHan(ch), clica=han && AUD;   // a máscara também toca: ouve-se o exemplo com as gravações do site
       const u=document.createElement(clica?'button':'span'), rt=document.createElement('span'), pp=document.createElement('span');
       u.className='py-u'+(clica?' py-b':''); rt.className='py-rt'; pp.className='py-p'; trPy.append(u);   // coluna: [pinyin em cima] / texto
       if(!han){                               // pontuação: pinyin vazio para alinhar
