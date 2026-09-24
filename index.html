@@ -93,10 +93,11 @@ body.has-audio .tk:hover,body.has-audio .tk:focus-visible{border-color:var(--inf
 body.has-audio .tk b::after{content:'▶';font-size:9px;color:var(--primary);margin-left:5px;vertical-align:middle}
 .mini{position:absolute;z-index:35;background:var(--surface);border:2px solid var(--line);border-radius:16px;box-shadow:0 12px 32px rgba(0,0,0,.18);padding:10px 12px;display:none;width:max-content;max-width:min(94vw,560px)}
 .mini.on{display:grid;gap:8px}
-.mini .m-body{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.mini .m-body .seg{margin-left:auto}
+.mini .m-body{display:grid;gap:6px}   /* cada linha ocupa a largura toda: esquerda alinhada com o pinyin, direita com o × */
+.mini .m-body .seg{display:flex}
+.mini .m-body .seg label{flex:1}
 .mini .m-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.mini .m-word{font:900 20px/1.1 var(--font);display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.mini .m-word{font:900 20px/1.1 var(--font);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .mini .m-word .hz{font-size:18px;color:var(--ink-2)}
 .mini .m-word small{font-size:12px;color:var(--muted);font-weight:700}
 .mini .m-close{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);background:var(--surface-2);color:var(--ink);font:800 18px/1 var(--font);cursor:pointer;flex:none}
@@ -387,7 +388,9 @@ table{border-collapse:collapse;font-variant-numeric:tabular-nums}
 /* ---- tradutor ---- */
 .tr-f{display:grid;gap:8px;min-width:0}
 .tr-f label{font-weight:900;font-size:16px}
-.tr-lab{display:flex;align-items:center;gap:10px}
+.tr-lab{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tr-voz{padding:2px;gap:2px;border-width:1px}
+.tr-voz label{min-height:22px;padding:0 10px;font-size:12px}
 .tr-copy{min-height:28px;padding:0 10px;border-radius:999px;border:2px solid var(--line);border-bottom-width:3px;background:var(--surface);color:var(--ink-2);font:800 12px var(--font);cursor:pointer}
 .tr-copy:hover:not([disabled]),.tr-copy:focus-visible{border-color:var(--info);color:var(--info-ink);outline:none}
 .tr-copy[disabled]{opacity:.45;cursor:not-allowed}
@@ -661,7 +664,7 @@ body.has-player{padding-bottom:440px}
     <div class="tr-stack">
       <div class="tr-f"><div class="tr-lab"><label for="tr-pt">Português</label><button class="tr-copy" type="button" data-copia="tr-pt" aria-label="copiar o português" disabled>copiar</button></div><textarea id="tr-pt" class="tr-in" rows="1" autocomplete="off" placeholder="Olá, mundo!"></textarea></div>
       <div class="tr-f"><div class="tr-lab"><label for="tr-zh">Caracteres</label><button class="tr-copy" type="button" data-copia="tr-zh" aria-label="copiar os caracteres" disabled>copiar</button></div><textarea id="tr-zh" class="tr-in hz" rows="1" lang="zh-CN" autocomplete="off" spellcheck="false" placeholder="你好，世界！"></textarea></div>
-      <div class="tr-f"><div class="tr-lab"><label for="tr-py">Pinyin</label><button class="tr-copy" type="button" data-copia="tr-py" aria-label="copiar o pinyin" disabled>copiar</button><button class="tr-copy" type="button" id="tr-ouvir" disabled>▶ ouvir tudo</button></div><output id="tr-py" class="tr-in tr-out" for="tr-pt tr-zh"></output></div>
+      <div class="tr-f"><div class="tr-lab"><label for="tr-py">Pinyin</label><button class="tr-copy" type="button" data-copia="tr-py" aria-label="copiar o pinyin" disabled>copiar</button><button class="tr-copy" type="button" id="tr-ouvir" disabled>▶ ouvir tudo</button><div class="seg tr-voz" id="tr-voz" role="radiogroup" aria-label="Voz das gravações"></div></div><output id="tr-py" class="tr-in tr-out" for="tr-pt tr-zh"></output></div>
     </div>
     <div class="tr-f folha">
       <h3>Folha de treino</h3>
@@ -1493,7 +1496,7 @@ body.has-player{padding-bottom:440px}
     SRCS.forEach(s=>{
       const lab=document.createElement('label');
       lab.innerHTML=`<input type="radio" name="voice" value="${s}"${s===voice?' checked':''}>${LABEL(s)}`;
-      lab.querySelector('input').addEventListener('change',()=>{ voice=s; try{ localStorage.setItem('pinyin-voice',s); }catch(e){} if(curSyl){ stopAudio(); renderPlayer(); } });
+      lab.querySelector('input').addEventListener('change',()=>{ voice=s; try{ localStorage.setItem('pinyin-voice',s); }catch(e){} document.querySelectorAll('#tr-voz input').forEach(r=>{ r.checked = r.value===voice; }); if(curSyl){ stopAudio(); renderPlayer(); } });
       plVoice.appendChild(lab);
     });
     plTrain.checked=train;
@@ -1663,12 +1666,13 @@ body.has-player{padding-bottom:440px}
   }
   function miniRender(word,hz,gloss){
     const anyAudio=miniSegs.some(sg=>sg.tone!==5 && avail(voice,sg.syl,sg.tone));
-    mini.innerHTML=`<div class="m-head"><div class="m-word"><span>${word}</span>${hz?`<span class="hz">${hz}</span>`:''}${gloss?`<small>${gloss}</small>`:''}</div><button class="m-close" type="button" aria-label="Fechar">×</button></div>${miniAlt?`<div class="seg" id="mini-modo">${['fala','escrita'].map(m=>`<label><input type="radio" name="mini-modo" value="${m}"${m===miniAlt.modo?' checked':''}>${m==='fala'?'pronúncia':'escrita'}</label>`).join('')}</div>`:''}
-      <div class="m-body"><div class="m-syls">${miniSegs.map((sg,k)=>{ const ok=sg.tone!==5 && avail(voice,sg.syl,sg.tone); const other=sg.tone!==5 && !ok && SRCS.some(s=>avail(s,sg.syl,sg.tone)); return `<button type="button" class="m-syl" data-k="${k}" ${ok?'':'disabled'} title="${ok?'ouvir de novo':(sg.tone===5?'tom neutro: sem gravação':(other?'sem gravação nesta voz':'sem gravação'))}">${sg.tone===5?sg.syl:toneMark(sg.syl,sg.tone)}</button>`; }).join('')}</div><div class="seg" id="mini-voice" title="${anyAudio?'voz':'sem gravação nesta voz'}">${SRCS.map(s=>`<label><input type="radio" name="mini-voice" value="${s}"${s===voice?' checked':''}>${LABEL(s).replace(' (voz alicia)','').replace(' Chinese','')}</label>`).join('')}</div></div>${miniAlt&&miniAlt.regra?`<p class="m-regra">${miniAlt.regra}</p>`:''}`;
+    // o pinyin do cabeçalho já é o botão de tocar (sem repetir as sílabas numa linha de baixo); abas e voz dividem a mesma linha
+    mini.innerHTML=`<div class="m-head"><div class="m-word"><div class="m-syls">${miniSegs.map((sg,k)=>{ const ok=sg.tone!==5 && avail(voice,sg.syl,sg.tone); const other=sg.tone!==5 && !ok && SRCS.some(s=>avail(s,sg.syl,sg.tone)); return `<button type="button" class="m-syl" data-k="${k}" ${ok?'':'disabled'} title="${ok?'ouvir de novo':(sg.tone===5?'tom neutro: sem gravação':(other?'sem gravação nesta voz':'sem gravação'))}">${sg.tone===5?sg.syl:toneMark(sg.syl,sg.tone)}</button>`; }).join('')}</div>${hz?`<span class="hz">${hz}</span>`:''}${gloss?`<small>${gloss}</small>`:''}</div><button class="m-close" type="button" aria-label="Fechar">×</button></div>
+      <div class="m-body"><div class="seg" id="mini-voice" title="${anyAudio?'voz':'sem gravação nesta voz'}">${SRCS.map(s=>`<label><input type="radio" name="mini-voice" value="${s}"${s===voice?' checked':''}>${LABEL(s).replace(' (voz alicia)','').replace(' Chinese','')}</label>`).join('')}</div>${miniAlt?`<div class="seg" id="mini-modo">${['fala','escrita'].map(m=>`<label><input type="radio" name="mini-modo" value="${m}"${m===miniAlt.modo?' checked':''}>${m==='fala'?'pronúncia':'escrita'}</label>`).join('')}</div>`:''}</div>${miniAlt&&miniAlt.regra?`<p class="m-regra">${miniAlt.regra}</p>`:''}`;
     mini.querySelector('.m-close').addEventListener('click',miniClose);
     mini.querySelectorAll('#mini-modo input').forEach(inp=>inp.addEventListener('change',()=>{ miniAlt.modo=inp.value; const w=miniAlt[inp.value]; miniSegs=segmentPinyin(w); miniRender(w,hz,gloss); miniPlayAll(); }));
     mini.querySelectorAll('.m-syl').forEach(bt=>bt.addEventListener('click',async()=>{ const sg=miniSegs[+bt.dataset.k]; stopAudio(); await miniPlayFile(sg.syl,sg.tone,bt); }));
-    mini.querySelectorAll('#mini-voice input').forEach(inp=>inp.addEventListener('change',()=>{ voice=inp.value; try{ localStorage.setItem('pinyin-voice',voice); }catch(e){} document.querySelectorAll('#pl-voice input').forEach(r=>{ r.checked = r.value===voice; }); if(curSyl){ stopAudio(); renderPlayer(); } miniRender(word,hz,gloss); miniPlayAll(); }));
+    mini.querySelectorAll('#mini-voice input').forEach(inp=>inp.addEventListener('change',()=>{ voice=inp.value; try{ localStorage.setItem('pinyin-voice',voice); }catch(e){} document.querySelectorAll('#pl-voice input, #tr-voz input').forEach(r=>{ r.checked = r.value===voice; }); if(curSyl){ stopAudio(); renderPlayer(); } miniRender(word,hz,gloss); miniPlayAll(); }));
   }
   function miniOpen(tk){
     const bs=tk.querySelectorAll('b'); if(!bs.length) return;
@@ -1846,7 +1850,14 @@ body.has-player{padding-bottom:440px}
     });
     atualizaCopiar();
   }
-  const copiar=[...document.querySelectorAll('.tr-copy[data-copia]')], trOuvir=$('tr-ouvir');
+  const copiar=[...document.querySelectorAll('.tr-copy[data-copia]')], trOuvir=$('tr-ouvir'), trVoz=$('tr-voz');
+  if(AUD) trVoz.innerHTML=SRCS.map(s=>`<label><input type="radio" name="tr-voz" value="${s}"${s===voice?' checked':''}>${LABEL(s).replace(' (voz alicia)','').replace(' Chinese','')}</label>`).join('');
+  else trVoz.hidden=true;
+  trVoz.addEventListener('change',e=>{          // mesma voz do resto do site (tocador de baixo e mini tocador)
+    voice=e.target.value; try{ localStorage.setItem('pinyin-voice',voice); }catch(x){}
+    document.querySelectorAll('#pl-voice input').forEach(r=>{ r.checked = r.value===voice; });
+    if(curSyl){ stopAudio(); renderPlayer(); }
+  });
   function atualizaCopiar(){                  // "copiar" só vale com texto de verdade (vazio ou máscara fica apagado); "ouvir tudo" vale com sílabas, máscara inclusive
     for(const b of copiar){ const id=b.dataset.copia; b.disabled = id==='tr-py' ? trPy.classList.contains('demo') || !trPy.textContent.trim() : !$(id).value.trim(); }
     trOuvir.disabled = !trPy.querySelector('.py-b');
