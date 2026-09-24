@@ -663,7 +663,7 @@ body.has-player{padding-bottom:440px}
     </div>
     <div class="tr-stack">
       <div class="tr-f"><div class="tr-lab"><label for="tr-pt">Português</label><button class="tr-copy" type="button" data-copia="tr-pt" aria-label="copiar o português" disabled>copiar</button></div><textarea id="tr-pt" class="tr-in" rows="1" autocomplete="off" placeholder="Olá, mundo!"></textarea></div>
-      <div class="tr-f"><div class="tr-lab"><label for="tr-zh">Caracteres</label><button class="tr-copy" type="button" data-copia="tr-zh" aria-label="copiar os caracteres" disabled>copiar</button></div><textarea id="tr-zh" class="tr-in hz" rows="1" lang="zh-CN" autocomplete="off" spellcheck="false" placeholder="你好，世界！"></textarea></div>
+      <div class="tr-f"><div class="tr-lab"><label for="tr-zh">Caracteres</label><button class="tr-copy" type="button" data-copia="tr-zh" aria-label="copiar os caracteres" disabled>copiar</button></div><textarea id="tr-zh" class="tr-in hz" rows="1" lang="zh-CN" autocomplete="off" spellcheck="false" placeholder="你好，世界！"></textarea><p class="small muted" id="tr-pont" hidden></p></div>
       <div class="tr-f"><div class="tr-lab"><label for="tr-py">Pinyin</label><button class="tr-copy" type="button" data-copia="tr-py" aria-label="copiar o pinyin" disabled>copiar</button><button class="tr-copy" type="button" id="tr-ouvir" disabled>▶ ouvir tudo</button><div class="seg tr-voz" id="tr-voz" role="radiogroup" aria-label="Voz das gravações"></div></div><output id="tr-py" class="tr-in tr-out" for="tr-pt tr-zh"></output></div>
     </div>
     <div class="tr-f folha">
@@ -1782,7 +1782,14 @@ body.has-player{padding-bottom:440px}
 
   /* ---------- tradutor ---------- */
   // ponytail: endpoint aberto do Google Tradutor (client=gtx, CORS liberado), não é API oficial; se mudar ou limitar, trocar pela Cloud Translation com chave
-  const trPt=$('tr-pt'), trPy=$('tr-py'), trZh=$('tr-zh'), trMsg=$('tr-msg');
+  const trPt=$('tr-pt'), trPy=$('tr-py'), trZh=$('tr-zh'), trMsg=$('tr-msg'), trPont=$('tr-pont');
+  // pontuação do português e o equivalente chinês (largura cheia); avisa quando o Google tira alguma da tradução
+  const PONT=[['vírgula',',',/,/g,/[，、,]/g,'，'],['ponto final','.',/\.(?=\s|$)/g,/[。.]/g,'。'],['exclamação','!',/!/g,/[！!]/g,'！'],['interrogação','?',/\?/g,/[？?]/g,'？'],['dois-pontos',':',/:/g,/[：:]/g,'：'],['ponto e vírgula',';',/;/g,/[；;]/g,'；']];
+  function avisaPontuacao(pt,zh){             // ponytail: conta por tipo, não por posição; o ponto só conta seguido de espaço ou no fim (3.5 e e-mail não contam)
+    const falta=PONT.map(([nome,s,p,c,zhc])=>{ const n=(pt.match(p)||[]).length-(zh.match(c)||[]).length; return n>0 ? nome+' ('+s+')'+(n>1?' ×'+n:'')+' — em chinês seria '+zhc : ''; }).filter(Boolean);
+    trPont.textContent = falta.length ? 'O Google tirou da tradução: '+falta.join('; ')+'.' : '';
+    trPont.hidden = !falta.length;
+  }
   const isHan=c=>/\p{Script=Han}/u.test(c);
   // os campos crescem com o texto por field-sizing:content (CSS); no Firefox, que ainda não tem, o JS acerta a altura
   const grow = CSS.supports('field-sizing','content') ? ()=>{} : ()=>[trPt,trZh].forEach(el=>{ el.style.overflowY='hidden'; el.style.height='auto'; el.style.height=el.scrollHeight+el.offsetHeight-el.clientHeight+'px'; });
@@ -1898,7 +1905,8 @@ body.has-player{padding-bottom:440px}
   trMsg.querySelector('button').addEventListener('click',()=>{ trMsg.hidden=true; });
   async function trRun(fromPt){              // do português: preenche pinyin e caracteres; dos caracteres: só o pinyin
     const q=(fromPt?trPt:trZh).value.trim(), my=++trSeq;
-    if(!q){ if(fromPt) trZh.value=''; showPinyin('',''); return; }
+    if(!q){ if(fromPt) trZh.value=''; trPont.hidden=true; showPinyin('',''); return; }
+    if(!fromPt) trPont.hidden=true;           // chinês escrito à mão: não há o que comparar
     let stage='rede';
     try{
       const r=await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=rm&sl='+(fromPt?'pt&tl=zh-CN':'zh-CN&tl=pt')+'&q='+encodeURIComponent(q));
@@ -1908,12 +1916,15 @@ body.has-player{padding-bottom:440px}
       if(my!==trSeq) return;
       const zh = fromPt ? rows.filter(x=>x[0]!=null).map(x=>x[0]).join('') : q, py=(fromPt?rm[2]:rm[3])||'';
       if(!rows.length || ([...zh].some(isHan) && !py)) throw new Error('resposta sem tradução ou sem pinyin');
-      if(fromPt) trZh.value=zh;
+      if(fromPt){ trZh.value=zh; avisaPontuacao(q,zh); }
+      stage='tela';
       showPinyin(zh,py); trMsg.hidden=true;
     }catch(e){
-      if(my===trSeq) warn(stage==='rede'
+      if(my===trSeq) warn((stage==='rede'
         ? 'O Google Tradutor não respondeu: está fora do ar, limitou o uso ou você está sem internet. Tente de novo em alguns minutos.'
-        : 'O Google Tradutor mudou o formato da resposta e o tradutor pode não funcionar. Enquanto isso, use o Google Tradutor pelo link no fim da página.');
+        : stage==='formato' ? 'O Google Tradutor mudou o formato da resposta e o tradutor pode não funcionar. Enquanto isso, use o Google Tradutor pelo link no fim da página.'
+        : 'Erro ao montar o pinyin neste navegador. Mande este aviso para o e-mail no fim da página.')
+        +' ('+e.message+')');                 // motivo técnico (ex.: HTTP 429, Failed to fetch) para saber a causa
     }
   }
   trPt.addEventListener('input',()=>{ grow(); atualizaCopiar(); clearTimeout(trTimer); trTimer=setTimeout(()=>trRun(true),500); });
