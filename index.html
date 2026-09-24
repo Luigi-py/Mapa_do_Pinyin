@@ -1903,17 +1903,28 @@ body.has-player{padding-bottom:440px}
   let msgTimer=null;
   function warn(t,ms=10000){ trMsg.querySelector('span').textContent=t; trMsg.hidden=false; clearTimeout(msgTimer); msgTimer=setTimeout(()=>{ trMsg.hidden=true; },ms); }
   trMsg.querySelector('button').addEventListener('click',()=>{ trMsg.hidden=true; });
+  const memo=new Map();
   async function trRun(fromPt){              // do português: preenche pinyin e caracteres; dos caracteres: só o pinyin
     const q=(fromPt?trPt:trZh).value.trim(), my=++trSeq;
     if(!q){ if(fromPt) trZh.value=''; trPont.hidden=true; showPinyin('',''); return; }
     if(!fromPt) trPont.hidden=true;           // chinês escrito à mão: não há o que comparar
     let stage='rede';
     try{
-      const r=await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=rm&sl='+(fromPt?'pt&tl=zh-CN':'zh-CN&tl=pt')+'&q='+encodeURIComponent(q),
-        {credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'});   // cada pedido "limpo": sem cookie nem cache guardado do Google (o Firefox os guarda por site e isso travava o tradutor)
-      if(!r.ok) throw new Error('HTTP '+r.status);
+      const url='https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=rm&sl='+(fromPt?'pt&tl=zh-CN':'zh-CN&tl=pt')+'&q='+encodeURIComponent(q);
+      let d=memo.get(url);                    // frase já traduzida nesta visita: não pede de novo
+      for(let t=0; !d; t++){
+        try{
+          const r=await fetch(url,{credentials:'omit', cache:'no-store', referrerPolicy:'no-referrer'});   // pedido "limpo": sem cookie nem cache do Google
+          if(!r.ok) throw new Error('HTTP '+r.status);
+          stage='formato'; d=await r.json(); memo.set(url,d);
+        }catch(e){
+          // o limite do Google (429) chega sem permissão CORS e o navegador só diz "NetworkError"/"Failed to fetch": espera e tenta de novo
+          if(stage!=='rede' || t>=2 || my!==trSeq) throw e;
+          await sleep(1500*(t+1)); if(my!==trSeq) return;
+        }
+      }
       stage='formato';
-      const rows=(await r.json())[0]||[], rm=rows.find(x=>x[0]==null)||[];   // linha sem tradução = romanização [.., .., pinyin do destino, pinyin da origem]
+      const rows=d[0]||[], rm=rows.find(x=>x[0]==null)||[];   // linha sem tradução = romanização [.., .., pinyin do destino, pinyin da origem]
       if(my!==trSeq) return;
       const zh = fromPt ? rows.filter(x=>x[0]!=null).map(x=>x[0]).join('') : q, py=(fromPt?rm[2]:rm[3])||'';
       if(!rows.length || ([...zh].some(isHan) && !py)) throw new Error('resposta sem tradução ou sem pinyin');
@@ -1928,8 +1939,8 @@ body.has-player{padding-bottom:440px}
         +' ('+e.message+')');                 // motivo técnico (ex.: HTTP 429, Failed to fetch) para saber a causa
     }
   }
-  trPt.addEventListener('input',()=>{ grow(); atualizaCopiar(); clearTimeout(trTimer); trTimer=setTimeout(()=>trRun(true),500); });
-  trZh.addEventListener('input',()=>{ grow(); atualizaCopiar(); clearTimeout(trTimer); trTimer=setTimeout(()=>trRun(false),500); });
+  trPt.addEventListener('input',()=>{ grow(); atualizaCopiar(); clearTimeout(trTimer); trTimer=setTimeout(()=>trRun(true),900); });   // 0,9 s: no celular cada pausa ao digitar virava um pedido e estourava o limite do Google
+  trZh.addEventListener('input',()=>{ grow(); atualizaCopiar(); clearTimeout(trTimer); trTimer=setTimeout(()=>trRun(false),900); });
   document.querySelectorAll('#tr-opts input').forEach(inp=>{
     inp.checked = inp.value===(inp.name==='tr-tone'?pyTone:pyFmt);
     inp.addEventListener('change',()=>{
