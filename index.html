@@ -7,6 +7,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500&display=swap">
 <style>
+/* ǐ ǒ ǘ ǚ ǜ não existem na Nunito: vêm da Noto Sans (© Google, SIL Open Font License 1.1) com 100 a menos de peso, que dá a mesma espessura de haste */
+@font-face{font-family:'Pinyin Nunito';font-weight:100 600;src:url(data:font/woff2;base64,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) format('woff2');unicode-range:U+1D0,U+1D2,U+1D8,U+1DA,U+1DC}
+@font-face{font-family:'Pinyin Nunito';font-weight:700;src:url(data:font/woff2;base64,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) format('woff2');unicode-range:U+1D0,U+1D2,U+1D8,U+1DA,U+1DC}
+@font-face{font-family:'Pinyin Nunito';font-weight:800;src:url(data:font/woff2;base64,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) format('woff2');unicode-range:U+1D0,U+1D2,U+1D8,U+1DA,U+1DC}
+@font-face{font-family:'Pinyin Nunito';font-weight:900;src:url(data:font/woff2;base64,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) format('woff2');unicode-range:U+1D0,U+1D2,U+1D8,U+1DA,U+1DC}
 :root{
   --bg:#FFFFFF; --bg-2:#F7F7F7; --surface:#FFFFFF; --surface-2:#F7F7F7; --ink:#3C3C3C; --ink-2:#4B4B4B; --muted:#777777; --line:#E5E5E5; --line-strong:#CFCFCF;
   --primary:#58CC02; --primary-dk:#46A302; --danger:#FF4B4B; --danger-dk:#D33131; --danger-bg:#FFDFE0;
@@ -18,7 +23,7 @@
   --u-fg:#2B70C9; --u-bg:#DCEBFF; --u-line:#9DC4F7; --u-dk:#1F569B;
   --v-fg:#9B4FD1; --v-bg:#F1E3FF; --v-line:#D4B2F5; --v-dk:#7A3AA8;
   --ok:#46A302; --ok-bg:#E3F5D3; --no:#D33131; --no-bg:#FFDFE0; --part:#B37700; --part-bg:#FFF4CC;
-  --font:'Nunito','Noto Sans','Segoe UI',system-ui,sans-serif;
+  --font:'Pinyin Nunito','Nunito','Noto Sans','Segoe UI',system-ui,sans-serif;
   --hanzi:'Noto Sans SC','Microsoft YaHei','PingFang SC','Noto Sans',sans-serif;
   color-scheme:light;
 }
@@ -378,6 +383,27 @@ table{border-collapse:collapse;font-variant-numeric:tabular-nums}
 .notfound{border-left:5px solid var(--danger);padding:10px 14px;background:var(--danger-bg);border-radius:0 14px 14px 0;font-size:14.5px}
 .notfound b{color:var(--danger-dk)}
 
+/* ---- tradutor ---- */
+.tr-f{display:grid;gap:8px;min-width:0}
+.tr-f label{font-weight:900;font-size:16px}
+.tr-in{width:100%;field-sizing:content;font:500 20px/1.45 'Noto Sans','Noto Sans SC',sans-serif;padding:12px 14px;border-radius:14px;border:2px solid var(--line);border-bottom-width:4px;border-bottom-color:var(--line-strong);background:var(--bg);color:var(--ink);resize:none}
+.tr-in.hz{font:500 20px/1.45 var(--hanzi)}
+.tr-in:focus{outline:none;border-color:var(--info)}
+.tr-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.seg ruby rt{font-size:9px}
+.tr-stack{display:grid;gap:14px}
+.tr-out{display:block;background:var(--surface-2);white-space:pre-wrap;overflow-wrap:anywhere}
+.tr-out:empty::before{content:'Nǐ hǎo, shìjiè!';color:var(--muted)}
+.toast{position:fixed;top:66px;left:50%;transform:translateX(-50%);z-index:50;width:max-content;max-width:calc(100vw - 32px);display:flex;gap:12px;align-items:flex-start;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.18)}
+.toast button{border:0;background:none;color:var(--danger-dk);font:800 22px/1 var(--font);cursor:pointer;padding:0}
+.tr-out ruby{display:inline-flex;flex-direction:column-reverse;align-items:center;margin:0 .12em;line-height:1.25;baseline-source:last}
+.tr-out rt{display:block;font:600 13px 'Noto Sans',sans-serif;color:var(--info-ink)}
+.folha{margin-top:18px}
+.folha h3{font-size:16px;font-weight:900}
+.folha-row{display:flex;gap:16px;align-items:center}
+.folha-txt{display:grid;gap:8px;justify-items:start;max-width:60ch}
+#folha-demo{width:92px;height:auto;flex:none;border-radius:6px}
+
 /* ---- tabelas ---- */
 .tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
 .tab{font:800 14px var(--font);min-height:44px;padding:0 16px;border-radius:999px;border:2px solid var(--line);border-bottom-width:4px;border-bottom-color:var(--line-strong);background:var(--surface);color:var(--muted);cursor:pointer}
@@ -551,7 +577,7 @@ body.has-player{padding-bottom:440px}
 }
 @media (max-width:420px){ .tonebtn .tb-ex .gl{display:none} .tonebtn{min-height:66px;padding:6px 4px} .tonebtn .tb-py{font-size:20px} }
 @media (max-width:759px){ .player .ctrl{flex-direction:column;align-items:stretch} .player .ctrl .btn3{order:3;flex:0 0 auto} .player .ctrl .voice{order:1} .player .ctrl .pill{order:2;justify-content:flex-start} }
-@media print{ .topnav,.tabs,.opts,.player,#roteiro,#treino{display:none} .famtable{display:grid;break-inside:avoid} section{padding:20px 0} body{font-size:12px} }
+@media print{ .topnav,.tabs,.opts,.player,#tradutor,#roteiro,#treino{display:none} .famtable{display:grid;break-inside:avoid} section{padding:20px 0} body{font-size:12px} }
 </style>
 
 <script>(function(){var t='light';try{if(localStorage.getItem('pinyin-theme')==='dark')t='dark';}catch(e){}document.documentElement.setAttribute('data-theme',t);})();</script>
@@ -579,6 +605,7 @@ body.has-player{padding-bottom:440px}
 
 <nav class="topnav" aria-label="Seções">
   <ul>
+    <li><a href="#tradutor">Tradutor</a></li>
     <li><a href="#silaba">A sílaba</a></li>
     <li><a href="#roteiro">Roteiro</a></li>
     <li><a href="#tons">Tons</a></li>
@@ -590,6 +617,38 @@ body.has-player{padding-bottom:440px}
     <li><a href="#treino">Treino</a></li>
   </ul>
 </nav>
+
+<!-- ================= TRADUTOR ================= -->
+<section id="tradutor" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 5h9M7.5 3v2M5 5c.5 4 2.5 7 6 8.5M10 5c-.5 4-2.5 7-6.5 9"/><path d="M13 21l4-9 4 9M14.4 18h5.2"/></svg></div>
+      <p class="eyebrow"><span class="hz">翻译</span> fānyì · tradutor</p>
+      <h2>Português → pinyin → caracteres</h2>
+      <p class="lead">Escolha como o pinyin aparece e escreva em português: o pinyin e os caracteres surgem logo abaixo. Também dá para colar caracteres no último campo para ver o pinyin.</p>
+    </div>
+    <div class="tr-opts" id="tr-opts">
+      <div class="seg" role="radiogroup" aria-label="Como marcar o tom"><label><input type="radio" name="tr-tone" value="mark">wǒ</label><label><input type="radio" name="tr-tone" value="num">wo3</label></div>
+      <div class="seg" role="radiogroup" aria-label="Formato do pinyin"><label><input type="radio" name="tr-fmt" value="py">só pinyin</label><label><input type="radio" name="tr-fmt" value="hz">我(wǒ)</label><label><input type="radio" name="tr-fmt" value="ruby"><ruby>我<rt>wǒ</rt></ruby></label></div>
+    </div>
+    <div class="tr-stack">
+      <div class="tr-f"><label for="tr-pt">Português</label><textarea id="tr-pt" class="tr-in" rows="1" autocomplete="off" placeholder="Olá, mundo!">Olá, mundo!</textarea></div>
+      <div class="tr-f"><label for="tr-py">Pinyin</label><output id="tr-py" class="tr-in tr-out" for="tr-pt tr-zh"></output></div>
+      <div class="tr-f"><label for="tr-zh">Caracteres</label><textarea id="tr-zh" class="tr-in hz" rows="1" lang="zh-CN" autocomplete="off" spellcheck="false" placeholder="你好，世界！">你好，世界！</textarea></div>
+    </div>
+    <div class="tr-f folha">
+      <h3>Folha de treino</h3>
+      <div class="folha-row">
+        <canvas id="folha-demo" role="img" aria-label="Exemplo de casa da folha: o pinyin nǐ em cima e o caractere 你 no quadrado"></canvas>
+        <div class="folha-txt">
+          <button class="btn3" type="button" id="folha-pdf">Gerar PDF da folha</button>
+          <p class="small muted">Baixe o seu texto inteiro para treinar a escrita dos caracteres chineses.</p>
+        </div>
+      </div>
+    </div>
+    <div class="notfound toast" id="tr-msg" role="alert" hidden><span></span><button type="button" aria-label="Fechar aviso">×</button></div>
+  </div>
+</section>
 
 <!-- ================= A SÍLABA ================= -->
 <section id="silaba">
@@ -952,6 +1011,8 @@ body.has-player{padding-bottom:440px}
   <div class="srcs"><a href="https://chinese.yabla.com/chinese-pinyin-chart.php" target="_blank" rel="noopener">Yabla Chinese · Mandarin Chinese Pinyin Chart with Audio</a><a href="https://yoyochinese.com/chinese-learning-tools/Mandarin-Chinese-pronunciation-lesson/pinyin-chart-table" target="_blank" rel="noopener">Yoyo Chinese · Interactive Pinyin Chart</a></div>
   <p>Fontes que definem o que existe e como se escreve:</p>
   <div class="srcs"><a href="http://www.moe.gov.cn/jyb_sjzl/ziliao/A19/195802/t19580201_186000.html" target="_blank" rel="noopener">汉语拼音方案 (1958) · 教育部</a><a href="https://www.unicode.org/charts/unihan.html" target="_blank" rel="noopener">Unicode Unihan</a><a href="https://cc-cedict.org/wiki/" target="_blank" rel="noopener">CC-CEDICT</a><a href="http://www.moe.gov.cn/jyb_xwfb/gzdt_gzdt/s5987/202103/t20210329_523304.html" target="_blank" rel="noopener">HSK 1 (HSK 3.0, 2021) · 教育部</a><a href="https://en.wikipedia.org/wiki/Pinyin_table" target="_blank" rel="noopener">Wikipedia · Pinyin table</a><a href="https://en.wikipedia.org/wiki/Standard_Chinese_phonology" target="_blank" rel="noopener">Wikipedia · Standard Chinese phonology</a></div>
+  <p>Tradutor (primeira seção):</p>
+  <div class="srcs"><a href="https://translate.google.com/?hl=pt&amp;sl=pt&amp;tl=zh-CN&amp;op=translate" target="_blank" rel="noopener">Google Tradutor · português → chinês</a><a href="https://www.chineseconverter.com/pt-br/convert/chinese-to-pinyin" target="_blank" rel="noopener">Chinese Converter · chinês para pinyin</a></div>
   <p>Iniciais por ponto de articulação; finais pela letra escrita, com aviso onde a fonologia (四呼) discorda. As aproximações em português são um apoio inicial, não substituem o áudio.</p>
   <p class="credit">Desenvolvido por <b>Luiz Henrique Couto Carneiro</b> - Bacharelado em IA (INF-UFG) - 03/09/2026 v1.0 - MIT License</p>
   <p class="report">Encontrou algum erro? Por favor, reporte aqui neste e-mail: <a href="mailto:luizcarneiro@discente.ufg.br?subject=Mapa%20do%20Pinyin%3A%20erro%20encontrado">luizcarneiro@discente.ufg.br</a></p>
@@ -1534,14 +1595,25 @@ body.has-player{padding-bottom:440px}
       if(/[\u0300-\u036f]/.test(ch)) continue;
       base.push(ch); tones.push(0);
     }
-    const out=[]; let i=0; const str=base.join('');
-    while(i<str.length){
-      if(!/[a-zü]/.test(str[i])){ i++; continue; }
-      let found=null;
-      for(let L=Math.min(6,str.length-i); L>=1; L--){ const cand=str.slice(i,i+L); if(SYLSET.has(cand)){ found=cand; break; } }
-      if(!found){ if(str[i]==='r'){ i++; continue; } return null; }
-      let tone=5; for(let k=i;k<i+found.length;k++) if(tones[k]) tone=tones[k];
-      out.push({syl:found,tone}); i+=found.length;
+    // por palavra, com recuo: sílaba no meio da palavra não começa por a/o/e (levaria apóstrofo), então xīngān = xin+gan, não xing+an
+    function split(w,i){
+      if(i===w.length) return [];
+      for(let L=Math.min(6,w.length-i); L>=1; L--){
+        const cand=w.slice(i,i+L);
+        if(!SYLSET.has(cand) || (i && /^[aoe]/.test(cand))) continue;
+        const rest=split(w,i+L); if(rest) return [cand,...rest];
+      }
+      return w[i]==='r' ? split(w,i+1) : null;              // r do érhuà, sem sílaba própria
+    }
+    const out=[], str=base.join('');
+    for(const m of str.matchAll(/[a-zü]+/g)){
+      const syls=split(m[0],0); if(!syls) return null;
+      let i=m.index;
+      for(const syl of syls){
+        while(str.slice(i,i+syl.length)!==syl) i++;          // pula o r do érhuà
+        let tone=5; for(let k=i;k<i+syl.length;k++) if(tones[k]) tone=tones[k];
+        out.push({syl,tone}); i+=syl.length;
+      }
     }
     return out.length?out:null;
   }
@@ -1669,6 +1741,133 @@ body.has-player{padding-bottom:440px}
     if(pb) pb.addEventListener('click',()=>openPlayer(p.init,p.fin,true));
   }
   input.addEventListener('input',()=>render(input.value));
+
+  /* ---------- tradutor ---------- */
+  // ponytail: endpoint aberto do Google Tradutor (client=gtx, CORS liberado), não é API oficial; se mudar ou limitar, trocar pela Cloud Translation com chave
+  const trPt=$('tr-pt'), trPy=$('tr-py'), trZh=$('tr-zh'), trMsg=$('tr-msg');
+  const isHan=c=>/\p{Script=Han}/u.test(c);
+  // os campos crescem com o texto por field-sizing:content (CSS); no Firefox, que ainda não tem, o JS acerta a altura
+  const grow = CSS.supports('field-sizing','content') ? ()=>{} : ()=>[trPt,trZh].forEach(el=>{ el.style.overflowY='hidden'; el.style.height='auto'; el.style.height=el.scrollHeight+el.offsetHeight-el.clientHeight+'px'; });
+  let trSeq=0, trTimer=null, shown={zh:'',py:''}, pyTone='mark', pyFmt='hz';
+  try{ pyTone=localStorage.getItem('pinyin-tr-tone')||pyTone; pyFmt=localStorage.getItem('pinyin-tr-fmt')||pyFmt; }catch(e){}
+  function pares(zh,py){                      // [caractere, pinyin] de cada caractere, no tom escolhido; null se as sílabas não alinham
+    const segs=py.split(/\s+/).flatMap(w=>segmentPinyin(w)||[]);   // palavra que não é pinyin (iPhone, 3) fica de fora
+    const han=[...zh].filter(isHan);
+    return segs.length!==han.length ? null : han.map((ch,k)=>{ const {syl,tone}=segs[k]; return [ch, pyTone==='num' ? syl+tone : (tone===5?syl:toneMark(syl,tone))]; });
+  }
+  function showPinyin(zh,py){                 // pinyin de cada caractere no formato escolhido
+    shown={zh,py}; trPy.textContent=''; grow();
+    const ps=pares(zh,py);
+    if(!ps){ trPy.textContent=py; return; }   // sem alinhar sílaba com caractere: fica o pinyin por palavra do Google
+    let k=0;
+    for(const ch of zh){
+      if(!isHan(ch)){ trPy.append(ch); continue; }
+      const p=ps[k++][1];
+      if(pyFmt==='ruby'){ const r=document.createElement('ruby'), rt=document.createElement('rt'); rt.textContent=p; r.append(ch,rt); trPy.append(r); }
+      else trPy.append(pyFmt==='hz' ? ch+'('+p+') ' : p+' ');
+    }
+  }
+  let msgTimer=null;
+  function warn(t){ trMsg.querySelector('span').textContent=t; trMsg.hidden=false; clearTimeout(msgTimer); msgTimer=setTimeout(()=>{ trMsg.hidden=true; },10000); }
+  trMsg.querySelector('button').addEventListener('click',()=>{ trMsg.hidden=true; });
+  async function trRun(fromPt){              // do português: preenche pinyin e caracteres; dos caracteres: só o pinyin
+    const q=(fromPt?trPt:trZh).value.trim(), my=++trSeq;
+    if(!q){ if(fromPt) trZh.value=''; showPinyin('',''); return; }
+    let stage='rede';
+    try{
+      const r=await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&dt=rm&sl='+(fromPt?'pt&tl=zh-CN':'zh-CN&tl=pt')+'&q='+encodeURIComponent(q));
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      stage='formato';
+      const rows=(await r.json())[0]||[], rm=rows.find(x=>x[0]==null)||[];   // linha sem tradução = romanização [.., .., pinyin do destino, pinyin da origem]
+      if(my!==trSeq) return;
+      const zh = fromPt ? rows.filter(x=>x[0]!=null).map(x=>x[0]).join('') : q, py=(fromPt?rm[2]:rm[3])||'';
+      if(!rows.length || ([...zh].some(isHan) && !py)) throw new Error('resposta sem tradução ou sem pinyin');
+      if(fromPt) trZh.value=zh;
+      showPinyin(zh,py); trMsg.hidden=true;
+    }catch(e){
+      if(my===trSeq) warn(stage==='rede'
+        ? 'O Google Tradutor não respondeu: está fora do ar, limitou o uso ou você está sem internet. Tente de novo em alguns minutos.'
+        : 'O Google Tradutor mudou o formato da resposta e o tradutor pode não funcionar. Enquanto isso, use o Google Tradutor pelo link no fim da página.');
+    }
+  }
+  trPt.addEventListener('input',()=>{ grow(); clearTimeout(trTimer); trTimer=setTimeout(()=>trRun(true),500); });
+  trZh.addEventListener('input',()=>{ grow(); clearTimeout(trTimer); trTimer=setTimeout(()=>trRun(false),500); });
+  document.querySelectorAll('#tr-opts input').forEach(inp=>{
+    inp.checked = inp.value===(inp.name==='tr-tone'?pyTone:pyFmt);
+    inp.addEventListener('change',()=>{
+      if(inp.name==='tr-tone') pyTone=inp.value; else pyFmt=inp.value;
+      try{ localStorage.setItem('pinyin-'+inp.name,inp.value); }catch(e){}
+      showPinyin(shown.zh,shown.py);
+    });
+  });
+  showPinyin(trZh.value,'Nǐ hǎo, shìjiè!');   // exemplo "Olá, mundo!" já salvo na página, sem chamar o Google
+
+  /* ---------- folha de treino em PDF ---------- */
+  // a grade da folha-rascunho-mandarim.png, em pixels dela (1519×2026): 8 linhas de 11 casas de 134 px, faixa do pinyin com meia casa
+  const FOLHA={w:1519,h:2026,x:21,casa:1473/11,topo:57,passo:248}, folhaBtn=$('folha-pdf');
+  function linhaFolha(g,y,par,n=11){          // uma linha: faixa do pinyin (3 pautas) + n quadrados 米; par = [caractere, pinyin] vai na 1ª casa
+    const {x,casa}=FOLHA, W=casa*n, f=casa/2;
+    g.lineWidth=1; g.strokeStyle='#CFE0E0'; g.setLineDash([6,4]); g.beginPath();
+    for(const d of [f/3,f*2/3]){ g.moveTo(x,y+d); g.lineTo(x+W,y+d); }
+    for(let i=0;i<n;i++){
+      const l=x+i*casa, t=y+f, m=casa/2;
+      g.moveTo(l+m,t); g.lineTo(l+m,t+casa); g.moveTo(l,t+m); g.lineTo(l+casa,t+m);
+      g.moveTo(l,t); g.lineTo(l+casa,t+casa); g.moveTo(l+casa,t); g.lineTo(l,t+casa);
+    }
+    g.stroke(); g.setLineDash([]); g.lineWidth=1.3; g.strokeStyle='#A0A0A0'; g.beginPath();
+    for(const d of [0,f,f+casa]){ g.moveTo(x,y+d); g.lineTo(x+W,y+d); }
+    for(let i=0;i<=n;i++){ g.moveTo(x+i*casa,y); g.lineTo(x+i*casa,y+f+casa); }
+    g.stroke();
+    if(!par) return;
+    const cx=x+casa/2; g.fillStyle='#222'; g.textAlign='center'; g.textBaseline='alphabetic';
+    g.font='500 40px "Noto Sans"'; const k=Math.min(1,(casa-14)/g.measureText(par[1]).width);   // sílaba comprida (zhuāng) encolhe para caber
+    g.font='500 '+(40*k)+'px "Noto Sans"'; g.fillText(par[1],cx,y+f*2/3);                     // linha de base na 3ª pauta, como na escrita à mão
+    g.font='400 100px "Noto Sans SC"'; const m=g.measureText(par[0]);
+    g.fillText(par[0],cx,y+f+casa/2+(m.actualBoundingBoxAscent-m.actualBoundingBoxDescent)/2);
+  }
+  function pdfDeJpegs(jpgs,w,h){              // PDF mínimo: uma página por JPEG, no tamanho da folha modelo (594,39 × 792,78 pt)
+    const enc=new TextEncoder(), partes=[], pos=[], PW=594.39, PH=792.78, total=3+3*jpgs.length; let n=0;
+    const put=x=>{ const b=typeof x==='string'?enc.encode(x):x; partes.push(b); n+=b.length; };
+    const obj=(i,...xs)=>{ pos[i]=n; put(i+' 0 obj\n'); xs.forEach(put); put('\nendobj\n'); };
+    put('%PDF-1.4\n');
+    obj(1,'<</Type/Catalog/Pages 2 0 R>>');
+    obj(2,'<</Type/Pages/Count '+jpgs.length+'/Kids['+jpgs.map((_,i)=>(3+3*i)+' 0 R').join(' ')+']>>');
+    jpgs.forEach((j,i)=>{
+      const p=3+3*i, s='q '+PW+' 0 0 '+PH+' 0 0 cm /Im Do Q';
+      obj(p,'<</Type/Page/Parent 2 0 R/MediaBox[0 0 '+PW+' '+PH+']/Resources<</XObject<</Im '+(p+2)+' 0 R>>>>/Contents '+(p+1)+' 0 R>>');
+      obj(p+1,'<</Length '+s.length+'>>stream\n'+s+'\nendstream');
+      obj(p+2,'<</Type/XObject/Subtype/Image/Width '+w+'/Height '+h+'/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length '+j.length+'>>stream\n',j,'\nendstream');
+    });
+    const xref=n;
+    put('xref\n0 '+total+'\n0000000000 65535 f \n'+pos.slice(1).map(o=>String(o).padStart(10,'0')+' 00000 n \n').join('')+'trailer\n<</Size '+total+'/Root 1 0 R>>\nstartxref\n'+xref+'\n%%EOF\n');
+    return new Blob(partes,{type:'application/pdf'});
+  }
+  async function gerarFolha(){                // só roda no clique: usa os pares que o campo Pinyin já mostra
+    const ps=pares(shown.zh,shown.py), vistos=new Set();
+    let lista=ps || [...shown.zh].filter(isHan).map(ch=>[ch,'']);
+    lista=lista.filter(([c])=>!vistos.has(c) && vistos.add(c));   // cada caractere diferente uma vez, com o pinyin da 1ª vez que aparece; números e pontuação já ficaram de fora
+    if(!lista.length){ warn('Escreva uma frase com caracteres chineses antes de gerar a folha.'); return; }
+    if(!ps) warn('Não deu para separar o pinyin de cada caractere desta frase; a folha sai só com os caracteres.');
+    folhaBtn.disabled=true; folhaBtn.textContent='Gerando…';
+    try{
+      await Promise.all([document.fonts.load('400 100px "Noto Sans SC"',lista.map(x=>x[0]).join('')), document.fonts.load('500 40px "Noto Sans"',lista.map(x=>x[1]).join('')||'a')]);
+      const W=Math.round(FOLHA.w*1.5), H=Math.round(FOLHA.h*1.5), jpgs=[];   // 1,5× o PNG modelo ≈ 276 dpi
+      for(let i=0;i<lista.length;i+=8){                                       // 8 caracteres por página
+        const c=document.createElement('canvas'); c.width=W; c.height=H;
+        const g=c.getContext('2d'); g.fillStyle='#fff'; g.fillRect(0,0,W,H); g.scale(W/FOLHA.w,H/FOLHA.h);
+        for(let r=0;r<8;r++) linhaFolha(g,FOLHA.topo+r*FOLHA.passo,lista[i+r]);
+        jpgs.push(Uint8Array.from(atob(c.toDataURL('image/jpeg',0.92).split(',')[1]),ch=>ch.charCodeAt(0)));
+      }
+      const a=document.createElement('a'); a.href=URL.createObjectURL(pdfDeJpegs(jpgs,W,H)); a.download='folha-de-treino-mandarim.pdf'; a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),10000);
+    }finally{ folhaBtn.disabled=false; folhaBtn.textContent='Gerar PDF da folha'; }
+  }
+  folhaBtn.addEventListener('click',gerarFolha);
+  (async()=>{                                 // exemplo: só a 1ª casa, como ela sai na folha
+    const c=$('folha-demo'); c.width=Math.ceil(FOLHA.casa+2)*2; c.height=Math.ceil(FOLHA.casa*1.5+2)*2;
+    await Promise.all([document.fonts.load('400 100px "Noto Sans SC"','你'), document.fonts.load('500 40px "Noto Sans"','nǐ')]);
+    const g=c.getContext('2d'); g.fillStyle='#fff'; g.fillRect(0,0,c.width,c.height); g.scale(2,2); g.translate(1-FOLHA.x,0); linhaFolha(g,1,['你','nǐ'],1);
+  })();
 })();
 </script>
 </body>
