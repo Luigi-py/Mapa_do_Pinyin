@@ -389,15 +389,26 @@ table{border-collapse:collapse;font-variant-numeric:tabular-nums}
 .tr-in{width:100%;field-sizing:content;font:500 20px/1.45 'Noto Sans','Noto Sans SC',sans-serif;padding:12px 14px;border-radius:14px;border:2px solid var(--line);border-bottom-width:4px;border-bottom-color:var(--line-strong);background:var(--bg);color:var(--ink);resize:none}
 .tr-in.hz{font:500 20px/1.45 var(--hanzi)}
 .tr-in:focus{outline:none;border-color:var(--info)}
+.tr-in::placeholder{color:var(--muted);opacity:1}
+.tr-in:focus::placeholder{color:transparent}
+#tr-pt{font-weight:400}
 .tr-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .seg ruby rt{font-size:9px}
 .tr-stack{display:grid;gap:14px}
 .tr-out{display:block;background:var(--surface-2);white-space:pre-wrap;overflow-wrap:anywhere}
-.tr-out:empty::before{content:'Nǐ hǎo, shìjiè!';color:var(--muted)}
+.tr-out.demo{color:var(--muted)}
 .toast{position:fixed;top:66px;left:50%;transform:translateX(-50%);z-index:50;width:max-content;max-width:calc(100vw - 32px);display:flex;gap:12px;align-items:flex-start;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.18)}
 .toast button{border:0;background:none;color:var(--danger-dk);font:800 22px/1 var(--font);cursor:pointer;padding:0}
-.tr-out ruby{display:inline-flex;flex-direction:column-reverse;align-items:center;margin:0 .12em;line-height:1.25;baseline-source:last}
-.tr-out rt{display:block;font:600 13px 'Noto Sans',sans-serif;color:var(--info-ink)}
+.py-u{display:inline-block;position:relative;padding-bottom:26px;vertical-align:top;text-align:center}
+.tr-out.demo .py-u{padding-bottom:0}
+.tr-out.rb .py-u{margin:0 .15em;font-size:32px}
+.tr-out.rb .py-rt{font-size:20px}
+.py-rt{display:block;min-height:1.45em;color:var(--info-ink)}
+.tr-out.demo .py-rt{color:inherit}
+.py-play{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:28px;height:24px;padding:0;border:0;border-radius:8px;background:none;color:var(--primary);font-size:11px;line-height:24px;cursor:pointer}
+.py-play::before{content:'▶'}
+.py-play:hover,.py-play:focus-visible{background:var(--info-bg);outline:none}
+.py-play.playing{background:var(--primary);color:#fff}
 .folha{margin-top:18px}
 .folha h3{font-size:16px;font-weight:900}
 .folha-row{display:flex;gap:16px;align-items:center}
@@ -632,9 +643,9 @@ body.has-player{padding-bottom:440px}
       <div class="seg" role="radiogroup" aria-label="Formato do pinyin"><label><input type="radio" name="tr-fmt" value="py">só pinyin</label><label><input type="radio" name="tr-fmt" value="hz">我(wǒ)</label><label><input type="radio" name="tr-fmt" value="ruby"><ruby>我<rt>wǒ</rt></ruby></label></div>
     </div>
     <div class="tr-stack">
-      <div class="tr-f"><label for="tr-pt">Português</label><textarea id="tr-pt" class="tr-in" rows="1" autocomplete="off" placeholder="Olá, mundo!">Olá, mundo!</textarea></div>
+      <div class="tr-f"><label for="tr-pt">Português</label><textarea id="tr-pt" class="tr-in" rows="1" autocomplete="off" placeholder="Olá, mundo!"></textarea></div>
       <div class="tr-f"><label for="tr-py">Pinyin</label><output id="tr-py" class="tr-in tr-out" for="tr-pt tr-zh"></output></div>
-      <div class="tr-f"><label for="tr-zh">Caracteres</label><textarea id="tr-zh" class="tr-in hz" rows="1" lang="zh-CN" autocomplete="off" spellcheck="false" placeholder="你好，世界！">你好，世界！</textarea></div>
+      <div class="tr-f"><label for="tr-zh">Caracteres</label><textarea id="tr-zh" class="tr-in hz" rows="1" lang="zh-CN" autocomplete="off" spellcheck="false" placeholder="你好，世界！"></textarea></div>
     </div>
     <div class="tr-f folha">
       <h3>Folha de treino</h3>
@@ -1750,21 +1761,30 @@ body.has-player{padding-bottom:440px}
   const grow = CSS.supports('field-sizing','content') ? ()=>{} : ()=>[trPt,trZh].forEach(el=>{ el.style.overflowY='hidden'; el.style.height='auto'; el.style.height=el.scrollHeight+el.offsetHeight-el.clientHeight+'px'; });
   let trSeq=0, trTimer=null, shown={zh:'',py:''}, pyTone='mark', pyFmt='hz';
   try{ pyTone=localStorage.getItem('pinyin-tr-tone')||pyTone; pyFmt=localStorage.getItem('pinyin-tr-fmt')||pyFmt; }catch(e){}
-  function pares(zh,py){                      // [caractere, pinyin] de cada caractere, no tom escolhido; null se as sílabas não alinham
+  const EXEMPLO=['你好，世界！','Nǐ hǎo, shìjiè!'];   // máscara cinza de "Olá, mundo!", salva na página, sem chamar o Google
+  function pares(zh,py){                      // [caractere, pinyin no tom escolhido, sílaba, tom]; null se as sílabas não alinham
     const segs=py.split(/\s+/).flatMap(w=>segmentPinyin(w)||[]);   // palavra que não é pinyin (iPhone, 3) fica de fora
     const han=[...zh].filter(isHan);
-    return segs.length!==han.length ? null : han.map((ch,k)=>{ const {syl,tone}=segs[k]; return [ch, pyTone==='num' ? syl+tone : (tone===5?syl:toneMark(syl,tone))]; });
+    return segs.length!==han.length ? null : han.map((ch,k)=>{ const {syl,tone}=segs[k]; return [ch, pyTone==='num' ? syl+tone : (tone===5?syl:toneMark(syl,tone)), syl, tone]; });
   }
-  function showPinyin(zh,py){                 // pinyin de cada caractere no formato escolhido
-    shown={zh,py}; trPy.textContent=''; grow();
+  function showPinyin(zh,py){                 // pinyin de cada caractere no formato escolhido, com ▶ para ouvir; vazio mostra a máscara
+    shown={zh,py}; const demo=!zh.trim(); if(demo) [zh,py]=EXEMPLO;
+    trPy.classList.toggle('demo',demo); trPy.classList.toggle('rb',pyFmt==='ruby'); trPy.textContent=''; grow();
     const ps=pares(zh,py);
     if(!ps){ trPy.textContent=py; return; }   // sem alinhar sílaba com caractere: fica o pinyin por palavra do Google
     let k=0;
     for(const ch of zh){
-      if(!isHan(ch)){ trPy.append(ch); continue; }
-      const p=ps[k++][1];
-      if(pyFmt==='ruby'){ const r=document.createElement('ruby'), rt=document.createElement('rt'); rt.textContent=p; r.append(ch,rt); trPy.append(r); }
-      else trPy.append(pyFmt==='hz' ? ch+'('+p+') ' : p+' ');
+      if(/\s/.test(ch)){ trPy.append(ch); continue; }
+      const u=document.createElement('span'), rt=document.createElement('span'); u.className='py-u'; rt.className='py-rt'; trPy.append(u);   // coluna: [pinyin] / texto / ▶
+      if(!isHan(ch)){ if(pyFmt==='ruby') u.append(rt); u.append(ch); continue; }   // pontuação: pinyin vazio para alinhar
+      const [,p,syl,tone]=ps[k++];
+      if(pyFmt==='ruby'){ rt.textContent=p; u.append(rt,ch); }
+      else { u.append(pyFmt==='hz' ? ch+'('+p+')' : p); trPy.append(' '); }
+      const v=!demo && (avail(voice,syl,tone) ? voice : otherVoice(syl,tone));   // gravação do site; tom neutro e sílaba sem gravação ficam sem ▶
+      if(!v) continue;
+      const b=document.createElement('button'); b.type='button'; b.className='py-play'; b.setAttribute('aria-label','ouvir '+p);
+      b.addEventListener('click',()=>{ stopAudio(); const a=new Audio(audioUrl(v,syl,tone)); cur=a; b.classList.add('playing'); a.onended=a.onerror=a.onpause=()=>b.classList.remove('playing'); a.play().catch(a.onended); });
+      u.append(b);
     }
   }
   let msgTimer=null;
@@ -1800,7 +1820,7 @@ body.has-player{padding-bottom:440px}
       showPinyin(shown.zh,shown.py);
     });
   });
-  showPinyin(trZh.value,'Nǐ hǎo, shìjiè!');   // exemplo "Olá, mundo!" já salvo na página, sem chamar o Google
+  showPinyin('','');                          // abre com a máscara de "Olá, mundo!"
 
   /* ---------- folha de treino em PDF ---------- */
   // a grade da folha-rascunho-mandarim.png, em pixels dela (1519×2026): 8 linhas de 11 casas de 134 px, faixa do pinyin com meia casa
@@ -1858,7 +1878,9 @@ body.has-player{padding-bottom:440px}
         for(let r=0;r<8;r++) linhaFolha(g,FOLHA.topo+r*FOLHA.passo,lista[i+r]);
         jpgs.push(Uint8Array.from(atob(c.toDataURL('image/jpeg',0.92).split(',')[1]),ch=>ch.charCodeAt(0)));
       }
-      const a=document.createElement('a'); a.href=URL.createObjectURL(pdfDeJpegs(jpgs,W,H)); a.download='folha-de-treino-mandarim.pdf'; a.click();
+      const d=new Date(), z=n=>String(n).padStart(2,'0');   // rascunho_mandarim_22-01-2026_17h-42min.pdf
+      const a=document.createElement('a'); a.href=URL.createObjectURL(pdfDeJpegs(jpgs,W,H));
+      a.download='rascunho_mandarim_'+z(d.getDate())+'-'+z(d.getMonth()+1)+'-'+d.getFullYear()+'_'+z(d.getHours())+'h-'+z(d.getMinutes())+'min.pdf'; a.click();
       setTimeout(()=>URL.revokeObjectURL(a.href),10000);
     }finally{ folhaBtn.disabled=false; folhaBtn.textContent='Gerar PDF da folha'; }
   }
