@@ -386,6 +386,10 @@ table{border-collapse:collapse;font-variant-numeric:tabular-nums}
 /* ---- tradutor ---- */
 .tr-f{display:grid;gap:8px;min-width:0}
 .tr-f label{font-weight:900;font-size:16px}
+.tr-lab{display:flex;align-items:center;gap:10px}
+.tr-copy{min-height:28px;padding:0 10px;border-radius:999px;border:2px solid var(--line);border-bottom-width:3px;background:var(--surface);color:var(--ink-2);font:800 12px var(--font);cursor:pointer}
+.tr-copy:hover:not([disabled]),.tr-copy:focus-visible{border-color:var(--info);color:var(--info-ink);outline:none}
+.tr-copy[disabled]{opacity:.45;cursor:not-allowed}
 /* um padrão só nos 3 campos: letras (português e pinyin) em Nunito 700 20px, caracteres em Noto Sans SC 500 25px */
 .tr-in{width:100%;field-sizing:content;font:700 20px/1.45 var(--font);padding:12px 14px;border-radius:14px;border:2px solid var(--line);border-bottom-width:4px;border-bottom-color:var(--line-strong);background:var(--bg);color:var(--ink);resize:none}
 .tr-in.hz,.py-h{font:500 25px/1.3 var(--hanzi)}
@@ -415,13 +419,15 @@ table{border-collapse:collapse;font-variant-numeric:tabular-nums}
 .py-ic.mudo::before{color:var(--line-strong)}
 .py-b:hover .py-p,.py-b:focus-visible .py-p{color:var(--info-ink)}
 .py-b:hover::after,.py-b:focus-visible::after{content:attr(data-dica);position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);z-index:5;padding:5px 8px;border-radius:6px;background:var(--ink);color:var(--bg);font:700 12px/1 var(--font);white-space:nowrap;pointer-events:none}
-.muda .py-p{color:var(--danger)}
+.py-p em{font-style:normal;color:var(--danger)}
+.py-b.playing{background:var(--primary);border-color:var(--primary-dk);color:#fff}
+.py-b.playing .py-ic::before,.py-b.playing .py-p{color:#fff}
 .py-g{white-space:nowrap}
 .folha{margin-top:18px}
 .folha h3{font-size:16px;font-weight:900}
 .folha-row{display:flex;gap:16px;align-items:center}
 .folha-txt{display:grid;gap:8px;justify-items:start;max-width:60ch}
-#folha-demo{width:92px;height:auto;flex:none;border-radius:6px}
+#folha-demo{width:64px;height:auto;flex:none;border-radius:6px}
 
 /* ---- tabelas ---- */
 .tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
@@ -651,9 +657,9 @@ body.has-player{padding-bottom:440px}
       <div class="seg" role="radiogroup" aria-label="Formato do pinyin"><label><input type="radio" name="tr-fmt" value="py">só pinyin</label><label><input type="radio" name="tr-fmt" value="hz">我(wǒ)</label><label><input type="radio" name="tr-fmt" value="ruby"><ruby>我<rt>wǒ</rt></ruby></label></div>
     </div>
     <div class="tr-stack">
-      <div class="tr-f"><label for="tr-pt">Português</label><textarea id="tr-pt" class="tr-in" rows="1" autocomplete="off" placeholder="Olá, mundo!"></textarea></div>
-      <div class="tr-f"><label for="tr-zh">Caracteres</label><textarea id="tr-zh" class="tr-in hz" rows="1" lang="zh-CN" autocomplete="off" spellcheck="false" placeholder="你好，世界！"></textarea></div>
-      <div class="tr-f"><label for="tr-py">Pinyin</label><output id="tr-py" class="tr-in tr-out" for="tr-pt tr-zh"></output><p class="small muted" id="tr-muda" hidden>Em <b style="color:var(--danger)">vermelho</b>: o tom muda na fala, mas a escrita continua a mesma. Toque na sílaba para ver como se fala.</p></div>
+      <div class="tr-f"><div class="tr-lab"><label for="tr-pt">Português</label><button class="tr-copy" type="button" data-copia="tr-pt" aria-label="copiar o português" disabled>copiar</button></div><textarea id="tr-pt" class="tr-in" rows="1" autocomplete="off" placeholder="Olá, mundo!"></textarea></div>
+      <div class="tr-f"><div class="tr-lab"><label for="tr-zh">Caracteres</label><button class="tr-copy" type="button" data-copia="tr-zh" aria-label="copiar os caracteres" disabled>copiar</button></div><textarea id="tr-zh" class="tr-in hz" rows="1" lang="zh-CN" autocomplete="off" spellcheck="false" placeholder="你好，世界！"></textarea></div>
+      <div class="tr-f"><div class="tr-lab"><label for="tr-py">Pinyin</label><button class="tr-copy" type="button" data-copia="tr-py" aria-label="copiar o pinyin" disabled>copiar</button><button class="tr-copy" type="button" id="tr-ouvir" disabled>▶ ouvir tudo</button></div><output id="tr-py" class="tr-in tr-out" for="tr-pt tr-zh"></output><p class="small muted" id="tr-muda" hidden>Em <b style="color:var(--danger)">vermelho</b>: o tom muda na fala (3º antes de 3º, <span class="hz">不</span> e <span class="hz">一</span>), mas a escrita continua a mesma. "Ouvir tudo" toca como se fala; na sílaba dá para ouvir a pronúncia ou a escrita.</p></div>
     </div>
     <div class="tr-f folha">
       <h3>Folha de treino</h3>
@@ -1333,10 +1339,12 @@ body.has-player{padding-bottom:440px}
   const AUD = (window.PINYIN_AUDIO && window.PINYIN_AUDIO.sources) ? window.PINYIN_AUDIO : null;
   const TONES = window.PINYIN_TONES || {};
   const MARKS={a:'āáǎà',o:'ōóǒò',e:'ēéěè',i:'īíǐì',u:'ūúǔù','ü':'ǖǘǚǜ'};
+  function vogalDoTom(syl){                   // onde vai a marca: a, o ou e; senão a última entre i, u, ü
+    for(const v of ['a','o','e']){ const i=syl.indexOf(v); if(i>=0) return i; }
+    return Math.max(syl.lastIndexOf('i'),syl.lastIndexOf('u'),syl.lastIndexOf('ü'));
+  }
   function toneMark(syl,t){
-    let idx=-1;
-    for(const v of ['a','o','e']){ idx=syl.indexOf(v); if(idx>=0) break; }
-    if(idx<0) idx=Math.max(syl.lastIndexOf('i'),syl.lastIndexOf('u'),syl.lastIndexOf('ü'));
+    const idx=vogalDoTom(syl);
     if(idx<0||!MARKS[syl[idx]]) return syl;
     return syl.slice(0,idx)+MARKS[syl[idx]][t-1]+syl.slice(idx+1);
   }
@@ -1645,7 +1653,7 @@ body.has-player{padding-bottom:440px}
       a.addEventListener('ended',()=>done(true)); a.addEventListener('error',()=>done(false)); a.play().catch(()=>done(false));
     });
   }
-  let miniSegs=[];
+  let miniSegs=[], miniAlt=null;             // miniAlt: {fala, escrita, modo} quando o tom muda na fala (abas do mini tocador)
   async function miniPlayAll(){
     stopAudio(); const my=token;
     const btns=[...mini.querySelectorAll('.m-syl')];
@@ -1653,9 +1661,10 @@ body.has-player{padding-bottom:440px}
   }
   function miniRender(word,hz,gloss){
     const anyAudio=miniSegs.some(sg=>sg.tone!==5 && avail(voice,sg.syl,sg.tone));
-    mini.innerHTML=`<div class="m-head"><div class="m-word"><span>${word}</span>${hz?`<span class="hz">${hz}</span>`:''}${gloss?`<small>${gloss}</small>`:''}</div><button class="m-close" type="button" aria-label="Fechar">×</button></div>
+    mini.innerHTML=`<div class="m-head"><div class="m-word"><span>${word}</span>${hz?`<span class="hz">${hz}</span>`:''}${gloss?`<small>${gloss}</small>`:''}</div><button class="m-close" type="button" aria-label="Fechar">×</button></div>${miniAlt?`<div class="seg" id="mini-modo">${['fala','escrita'].map(m=>`<label><input type="radio" name="mini-modo" value="${m}"${m===miniAlt.modo?' checked':''}>${m==='fala'?'pronúncia':'escrita'} · ${miniAlt[m]}</label>`).join('')}</div>`:''}
       <div class="m-body"><div class="m-syls">${miniSegs.map((sg,k)=>{ const ok=sg.tone!==5 && avail(voice,sg.syl,sg.tone); const other=sg.tone!==5 && !ok && SRCS.some(s=>avail(s,sg.syl,sg.tone)); return `<button type="button" class="m-syl" data-k="${k}" ${ok?'':'disabled'} title="${ok?'ouvir de novo':(sg.tone===5?'tom neutro: sem gravação':(other?'sem gravação nesta voz':'sem gravação'))}">${sg.tone===5?sg.syl:toneMark(sg.syl,sg.tone)}</button>`; }).join('')}</div><div class="seg" id="mini-voice" title="${anyAudio?'voz':'sem gravação nesta voz'}">${SRCS.map(s=>`<label><input type="radio" name="mini-voice" value="${s}"${s===voice?' checked':''}>${LABEL(s).replace(' (voz alicia)','')}</label>`).join('')}</div></div>`;
     mini.querySelector('.m-close').addEventListener('click',miniClose);
+    mini.querySelectorAll('#mini-modo input').forEach(inp=>inp.addEventListener('change',()=>{ miniAlt.modo=inp.value; const w=miniAlt[inp.value]; miniSegs=segmentPinyin(w); miniRender(w,hz,gloss); miniPlayAll(); }));
     mini.querySelectorAll('.m-syl').forEach(bt=>bt.addEventListener('click',async()=>{ const sg=miniSegs[+bt.dataset.k]; stopAudio(); await miniPlayFile(sg.syl,sg.tone,bt); }));
     mini.querySelectorAll('#mini-voice input').forEach(inp=>inp.addEventListener('change',()=>{ voice=inp.value; try{ localStorage.setItem('pinyin-voice',voice); }catch(e){} document.querySelectorAll('#pl-voice input').forEach(r=>{ r.checked = r.value===voice; }); if(curSyl){ stopAudio(); renderPlayer(); } miniRender(word,hz,gloss); miniPlayAll(); }));
   }
@@ -1668,7 +1677,8 @@ body.has-player{padding-bottom:440px}
     const hzEl=tk.querySelector('i'); const smEl=tk.querySelector('small');
     miniShow(txt, hzEl?hzEl.textContent:'', smEl?smEl.textContent:'', tk);
   }
-  function miniShow(txt,hz,gloss,tk){         // abre o mini tocador embaixo de tk (fichas da página e sílabas do tradutor)
+  function miniShow(txt,hz,gloss,tk,alt){     // abre o mini tocador embaixo de tk (fichas da página e sílabas do tradutor); alt = abas pronúncia/escrita
+    miniAlt=alt||null; if(miniAlt) txt=miniAlt[miniAlt.modo];
     const segs=segmentPinyin(txt); if(!segs) return;
     miniSegs=segs;
     miniRender(txt, hz, gloss);
@@ -1773,17 +1783,17 @@ body.has-player{padding-bottom:440px}
   let trSeq=0, trTimer=null, shown={zh:'',py:''}, pyTone='mark', pyFmt='hz';
   try{ pyTone=localStorage.getItem('pinyin-tr-tone')||pyTone; pyFmt=localStorage.getItem('pinyin-tr-fmt')||pyFmt; }catch(e){}
   const EXEMPLO=['你好，世界！','Nǐ hǎo, shìjiè!'];   // máscara cinza de "Olá, mundo!", salva na página, sem chamar o Google
-  function pares(zh,py){                      // [caractere, pinyin no tom escolhido, sílaba, tom]; null se as sílabas não alinham
-    const segs=py.split(/\s+/).flatMap(w=>segmentPinyin(w)||[]);   // palavra que não é pinyin (iPhone, 3) fica de fora
+  function pares(zh,py){                      // [caractere, pinyin no tom escolhido, sílaba, tom, última sílaba da palavra?]; null se as sílabas não alinham
+    const segs=py.split(/\s+/).flatMap(w=>(segmentPinyin(w)||[]).map((s,i,a)=>({...s,fim:i===a.length-1})));   // palavra que não é pinyin (iPhone, 3) fica de fora
     const han=[...zh].filter(isHan);
-    return segs.length!==han.length ? null : han.map((ch,k)=>{ const {syl,tone}=segs[k]; return [ch, pyTone==='num' ? syl+tone : (tone===5?syl:toneMark(syl,tone)), syl, tone]; });
+    return segs.length!==han.length ? null : han.map((ch,k)=>{ const {syl,tone,fim}=segs[k]; return [ch, pyTone==='num' ? syl+tone : (tone===5?syl:toneMark(syl,tone)), syl, tone, fim]; });
   }
   function showPinyin(zh,py){                 // pinyin de cada caractere no formato escolhido; cada sílaba abre o mini tocador do site; vazio mostra a máscara
     shown={zh,py}; const demo=!zh.trim(); if(demo) [zh,py]=EXEMPLO;
     trPy.classList.toggle('demo',demo); trPy.classList.toggle('rb',pyFmt==='ruby'); trPy.dataset.fmt=pyFmt; trPy.textContent=''; trMuda.hidden=true; grow();
     const hzs=c=>{ const s=document.createElement('span'); s.className='py-h'; s.textContent=c; return s; };   // texto chinês com o mesmo tamanho do campo Caracteres
     const ps=pares(zh,py);
-    if(!ps){ trPy.textContent=py; return; }   // sem alinhar sílaba com caractere: fica o pinyin por palavra do Google
+    if(!ps){ trPy.textContent=py; atualizaCopiar(); return; }   // sem alinhar sílaba com caractere: fica o pinyin por palavra do Google
     const cs=[...zh]; let k=0;
     cs.forEach((ch,i)=>{
       if(/\s/.test(ch)){ trPy.append(ch); return; }
@@ -1799,23 +1809,73 @@ body.has-player{padding-bottom:440px}
         }
         return;
       }
-      const [,p,syl,tone]=ps[k], nx=isHan(cs[i+1]||'') ? ps[k+1] : null; k++;
-      // o tom muda na fala, a escrita não: 3º antes de 3º vira 2º; 不 antes de 4º vira bú (一 fica de fora: exceções demais, como 一月 e números)
-      const muda=!demo && !!nx && ((tone===3 && nx[3]===3) || (ch==='不' && tone===4 && nx[3]===4));
-      const fala=muda ? (pyTone==='num' ? syl+2 : toneMark(syl,2)) : '';
-      if(pyFmt==='ruby'){ rt.classList.add('py-p'); rt.textContent=p; u.append(rt,hzs(ch)); }
-      else { pp.textContent=p; if(pyFmt==='hz') u.append(hzs(ch),'(',pp,')'); else u.append(pp); trPy.append(' '); }
+      const [,p,syl,tone,fim]=ps[k], nx=isHan(cs[i+1]||'') ? ps[k+1] : null; k++;
+      // o tom muda na fala, a escrita não (regras da seção Tons): 3º antes de 3º vira 2º; 不 antes de 4º vira bú;
+      // 一 dentro da palavra vira yí antes de 4º e yì antes de 1º/2º/3º (no fim da palavra fica yī: 第一, 十一, 统一, 一月)
+      let tf=tone, regra='';
+      if(nx && !demo){
+        if(tone===3 && nx[3]===3){ tf=2; regra='3º antes de 3º vira 2º na fala'; }
+        else if(ch==='不' && tone===4 && nx[3]===4){ tf=2; regra='不 antes de 4º tom vira bú'; }
+        else if(ch==='一' && tone===1 && !fim && nx[3]<5){ tf=nx[3]===4?2:4; regra=nx[3]===4?'一 antes de 4º tom vira yí':'一 antes de 1º, 2º e 3º tom vira yì'; }
+      }
+      const muda=tf!==tone, fala=pyTone==='num' ? syl+tf : toneMark(syl,tf);
+      const marca=el=>{                        // se o tom muda na fala, só a vogal do tom (e o número) fica em destaque, como na seção Tons
+        if(!muda){ el.textContent=p; return; }
+        const iv=vogalDoTom(syl), em=t=>{ const e=document.createElement('em'); e.textContent=t; return e; };
+        if(pyTone==='num') el.append(syl.slice(0,iv), em(syl[iv]), syl.slice(iv+1), em(String(tone)));
+        else el.append(p.slice(0,iv), em(p[iv]), p.slice(iv+1));
+      };
+      if(pyFmt==='ruby'){ rt.classList.add('py-p'); marca(rt); u.append(rt,hzs(ch)); }
+      else { marca(pp); if(pyFmt==='hz') u.append(hzs(ch),'(',pp,')'); else u.append(pp); trPy.append(' '); }
       if(muda){ u.classList.add('muda'); trMuda.hidden=false; }
       if(!clica) return;
-      const tem=SRCS.some(s=>avail(s,syl,tone)), ic=document.createElement('span');   // ▶ embaixo; cinza quando não há gravação (tom neutro nunca tem)
+      const tem=SRCS.some(s=>avail(s,syl,tf)), ic=document.createElement('span');   // ▶ embaixo; cinza quando não há gravação (tom neutro nunca tem)
       ic.className='py-ic'+(tem?'':' mudo'); u.append(ic);
-      u.type='button'; u.dataset.dica=tem ? 'ouvir'+(muda?' · na fala: '+fala:'') : (tone===5?'tom neutro: sem gravação':'sem gravação');
-      u.setAttribute('aria-label',(tem?'ouvir ':'')+p+(muda?', na fala '+fala:'')+(tem?'':', '+u.dataset.dica));
-      u.addEventListener('click',e=>{ e.stopPropagation(); miniShow(tone===5?syl:toneMark(syl,tone), ch, muda?'na fala: '+fala:'', u); });
+      const sem=(tone===5?'tom neutro, ':'')+'sem gravação no Yabla nem no Yoyo';
+      u.type='button'; u._py={syl,tf,p}; u.dataset.dica=tem ? 'ouvir'+(muda?' · na fala: '+fala:'') : sem;
+      u.setAttribute('aria-label',(tem?'ouvir ':'')+p+(muda?', na fala '+fala:'')+(tem?'':', '+sem));
+      const esc=tone===5?syl:toneMark(syl,tone);
+      u.addEventListener('click',e=>{
+        e.stopPropagation();
+        if(!tem){ warn(p+' ('+ch+'): '+sem+'.',4000); return; }
+        miniShow(esc, ch, regra, u, muda ? {fala:toneMark(syl,tf), escrita:esc, modo:'fala'} : null);
+      });
     });
+    atualizaCopiar();
   }
+  const copiar=[...document.querySelectorAll('.tr-copy[data-copia]')], trOuvir=$('tr-ouvir');
+  function atualizaCopiar(){                  // "copiar" só vale com texto de verdade (vazio ou máscara fica apagado); "ouvir tudo" vale com sílabas, máscara inclusive
+    for(const b of copiar){ const id=b.dataset.copia; b.disabled = id==='tr-py' ? trPy.classList.contains('demo') || !trPy.textContent.trim() : !$(id).value.trim(); }
+    trOuvir.disabled = !trPy.querySelector('.py-b');
+  }
+  trOuvir.addEventListener('click',async()=>{   // toca a frase como se fala (tom que muda já trocado), sílaba por sílaba
+    stopAudio(); const my=token, bs=[...trPy.querySelectorAll('.py-b')];
+    const faltam=[...new Set(bs.filter(b=>b._py.tf===5 || !SRCS.some(s=>avail(s,b._py.syl,b._py.tf))).map(b=>b._py.p+(b._py.tf===5?' (tom neutro)':'')))];
+    if(faltam.length) warn('Sem gravação no Yabla nem no Yoyo, fica de fora: '+faltam.join(', ')+'.',5000);
+    for(const b of bs){
+      if(my!==token) return;
+      const {syl,tf}=b._py, v=tf!==5 && (avail(voice,syl,tf) ? voice : otherVoice(syl,tf));   // na falta da voz escolhida, usa a outra
+      if(!v) continue;
+      await new Promise(ok=>{ const a=new Audio(audioUrl(v,syl,tf)); cur=a; b.classList.add('playing'); a.onended=a.onerror=a.onpause=()=>{ b.classList.remove('playing'); ok(); }; a.play().catch(a.onended); });
+      if(my!==token) return; await sleep(150);
+    }
+  });
+  function textoPinyin(){                     // o campo Pinyin em texto: só a sílaba em "só pinyin", 你(nǐ) nos formatos com caractere
+    if(!trPy.querySelector('.py-u')) return trPy.textContent;
+    const plano=n=>n.classList && n.classList.contains('py-g') ? [...n.childNodes].flatMap(plano) : [n];
+    return [...trPy.childNodes].flatMap(plano).map(n=>{
+      if(n.nodeType===3) return n.data;
+      const p=n.querySelector('.py-p'), h=n.querySelector('.py-h');
+      return !p ? n.textContent : pyFmt==='py' ? p.textContent : h.textContent+'('+p.textContent+')'+(pyFmt==='ruby'?' ':'');
+    }).join('').replace(/ +([，。！？、；：,.!?;:）》」』”’])/g,'$1').trim();
+  }
+  copiar.forEach(b=>b.addEventListener('click',async()=>{
+    const id=b.dataset.copia;
+    try{ await navigator.clipboard.writeText(id==='tr-py' ? textoPinyin() : $(id).value); b.textContent='copiado ✓'; setTimeout(()=>{ b.textContent='copiar'; },1500); }
+    catch(e){ warn('Não deu para copiar aqui. Selecione o texto e use Ctrl+C.'); }
+  }));
   let msgTimer=null;
-  function warn(t){ trMsg.querySelector('span').textContent=t; trMsg.hidden=false; clearTimeout(msgTimer); msgTimer=setTimeout(()=>{ trMsg.hidden=true; },10000); }
+  function warn(t,ms=10000){ trMsg.querySelector('span').textContent=t; trMsg.hidden=false; clearTimeout(msgTimer); msgTimer=setTimeout(()=>{ trMsg.hidden=true; },ms); }
   trMsg.querySelector('button').addEventListener('click',()=>{ trMsg.hidden=true; });
   async function trRun(fromPt){              // do português: preenche pinyin e caracteres; dos caracteres: só o pinyin
     const q=(fromPt?trPt:trZh).value.trim(), my=++trSeq;
@@ -1837,8 +1897,8 @@ body.has-player{padding-bottom:440px}
         : 'O Google Tradutor mudou o formato da resposta e o tradutor pode não funcionar. Enquanto isso, use o Google Tradutor pelo link no fim da página.');
     }
   }
-  trPt.addEventListener('input',()=>{ grow(); clearTimeout(trTimer); trTimer=setTimeout(()=>trRun(true),500); });
-  trZh.addEventListener('input',()=>{ grow(); clearTimeout(trTimer); trTimer=setTimeout(()=>trRun(false),500); });
+  trPt.addEventListener('input',()=>{ grow(); atualizaCopiar(); clearTimeout(trTimer); trTimer=setTimeout(()=>trRun(true),500); });
+  trZh.addEventListener('input',()=>{ grow(); atualizaCopiar(); clearTimeout(trTimer); trTimer=setTimeout(()=>trRun(false),500); });
   document.querySelectorAll('#tr-opts input').forEach(inp=>{
     inp.checked = inp.value===(inp.name==='tr-tone'?pyTone:pyFmt);
     inp.addEventListener('change',()=>{
